@@ -986,15 +986,15 @@ class CookieAuditScanner {
       this.log('Attesa invio batch GA4...');
       await this.page.waitForTimeout(5000);
 
-      // === GENERA SUMMARY ===
-      this.generateSummary();
-
     } catch (error) {
       this.log(`Errore: ${error.message}`, 'error');
       this.report.error = error.message;
     } finally {
       if (this.browser) await this.browser.close();
     }
+
+    // === GENERA SUMMARY (fuori dal try per garantire esecuzione) ===
+    this.generateSummary();
 
     // Output
     this.printReport();

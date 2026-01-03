@@ -1,0 +1,2863 @@
+{
+  "url": "https://www.repubblica.it/",
+  "timestamp": "2026-01-03T08:44:31.765Z",
+  "cmp": {
+    "detected": true,
+    "type": "iubenda",
+    "loaded": true,
+    "consentState": {
+      "necessary": true,
+      "preferences": null,
+      "statistics": null,
+      "marketing": null
+    },
+    "blockedScripts": [],
+    "consent": {
+      "necessary": true,
+      "preferences": null,
+      "statistics": null,
+      "marketing": null
+    },
+    "hasResponse": true
+  },
+  "preConsent": {
+    "requests": [
+      {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140z8853765578za20gzb853765578zd853765578&_p=1767429873394&gcs=G101&gcd=13p3t3p3p5l1&npa=1&dma_cps=-&dma=0&tcfd=10000&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dt=la%20Repubblica%20-%20News%20in%20tempo%20reale%20-%20Le%20notizie%20e%20i%20video%20di%20politica%2C%20cronaca%2C%20economia%2C%20sport&tfd=1760",
+        "gcsRaw": "G101",
+        "consentMode": "ads_only",
+        "gcd": "13p3t3p3p5l1",
+        "events": [
+          "page_view"
+        ],
+        "event": "page_view",
+        "isStandardEvent": true,
+        "eventCategory": "standard",
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      }
+    ],
+    "cookies": [
+      {
+        "name": "gig_canary",
+        "domain": "cdns.eu1.gigya.com",
+        "value": "latest",
+        "expires": 1767430472.250303,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "kw_wtu",
+        "domain": ".repubblica.it",
+        "value": "https://www.repubblica.it/",
+        "expires": 1767516272,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_1pc_enableds",
+        "domain": ".repubblica.it",
+        "value": "true",
+        "expires": 1801989872.316307,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_sntseg",
+        "domain": ".repubblica.it",
+        "value": "off",
+        "expires": 1767516272,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_inc",
+        "domain": ".repubblica.it",
+        "value": "off",
+        "expires": 1798965872,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "___nrbic",
+        "domain": ".repubblica.it",
+        "value": "2|t8a5m8|t8a5m8|t8a5m8|5770e2b3-1e23-48a9-9b56-2eae14d8dff4|%5B%5D|true|1|https%3A%2F%2Fwww.repubbli...",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "___nrbi",
+        "domain": ".repubblica.it",
+        "value": "2|t8a5m8|2407de0f-423a-4694-95a2-21f138eb7047|%5B%5D|t8a5m8|1|||",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "compass_uid",
+        "domain": ".repubblica.it",
+        "value": "2407de0f-423a-4694-95a2-21f138eb7047",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_cb",
+        "domain": ".repubblica.it",
+        "value": "B5Q8JZCsV9XTDkEIS0",
+        "expires": 1801557872,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_chartbeat2",
+        "domain": ".repubblica.it",
+        "value": ".1767429872692.1767429872692.1.Bgj9f2DLG1pnBGrJ1iDok0LECySO6V.1",
+        "expires": 1801557872,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_cb_svref",
+        "domain": ".repubblica.it",
+        "value": "external",
+        "expires": 1767431672,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_t_tests",
+        "domain": ".repubblica.it",
+        "value": "eyJKejJURFl5cmYydEFCIjp7ImNob3NlblZhcmlhbnQiOiJBIiwic3BlY2lmaWNMb2NhdGlvbiI6WyJqT3Z5UCJdfSwibGlmdF9l...",
+        "expires": 1767433472,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "6517_u",
+        "domain": ".newsroom.bi",
+        "value": "2407de0f-423a-4694-95a2-21f138eb7047",
+        "expires": 1782981873.016875,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_s",
+        "domain": ".newsroom.bi",
+        "value": "5770e2b3-1e23-48a9-9b56-2eae14d8dff4",
+        "expires": -1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_lv",
+        "domain": ".newsroom.bi",
+        "value": "null",
+        "expires": 1770021873.016986,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_ut",
+        "domain": ".newsroom.bi",
+        "value": "0",
+        "expires": 1770021873.017003,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "gmid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "gmid.ver4.AtLtl5rpew.G5VGDdmUEspUtD-IuklndvJxedfy_JxxIsiQLfQLWoW6zWG15UZCyTQn9IXqs4Ry.8Sx6GMPDamtr-8...",
+        "expires": 1798965873.054706,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ucid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "XCNvNR7d6XvkRKi83hPrpA",
+        "expires": 1798965873.054821,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "hasGmid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "ver4",
+        "expires": 1783068273.0549,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "gig_bootstrap_3_1LA7c1Tgh8TOu8RyhRNltE6n6Avs4pEXj5bhyQNpnpC3KHJ60mcdJ6xOubYt6iUJ",
+        "domain": ".repubblica.it",
+        "value": "eulogin_ver4",
+        "expires": 1798965873,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "IMRID",
+        "domain": ".imrworldwide.com",
+        "value": "6d0cf8f1-e880-11f0-9cd2-b91937905831",
+        "expires": 1801125873.225438,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "_ga_CJNJE8FY4S",
+        "domain": ".repubblica.it",
+        "value": "GS2.1.s1767429873$o1$g0$t1767429873$j60$l0$h0",
+        "expires": 1801989873.645952,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_ga",
+        "domain": ".repubblica.it",
+        "value": "GA1.1.1326319462.1767429874",
+        "expires": 1801989873.646214,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      }
+    ],
+    "localStorage": {
+      "marfeel-sdk-store": "eyJjcmVhdGlvbiI6MTc2NzQyOTg3MjU1OSwidXBkYXRlIjoxNzY3NDI5ODcyNTYwLCJlbnRyaWVzIjp7ImNyb3VwaWVyLWV4cGVyaWVuY2VzLWNvdW50LWVudHJ5Ijp7IkFDX0hJZlhsS3BfUmFteGdDVnJUUnNnMGciOnsiMjAyNiI6eyIwIjp7IjMiOnsiaW1wcmVz...",
+      "_cb": "B5Q8JZCsV9XTDkEIS0",
+      "_cb_svref": "external",
+      "3_1LA7c1Tgh8TOu8RyhRNltE6n6Avs4pEXj5bhyQNpnpC3KHJ60mcdJ6xOubYt6iUJ_gig": "{}",
+      "_chartbeat2_expires": "1801557872693",
+      "_chartbeat2": ".1767429872692.1767429872692.1.Bgj9f2DLG1pnBGrJ1iDok0LECySO6V.1",
+      "_t_tests": "eyJKejJURFl5cmYydEFCIjp7ImNob3NlblZhcmlhbnQiOiJBIiwic3BlY2lmaWNMb2NhdGlvbiI6WyJqT3Z5UCJdfSwibGlmdF9leHAiOiJtIn0=",
+      "_t_tests_expires": "1767433472741",
+      "_cb_svref_expires": "1767431672697",
+      "_cb_expires": "1801557872693"
+    },
+    "sessionStorage": {
+      "___nrbi": "{\"firstVisit\":1767429872,\"userId\":\"2407de0f-423a-4694-95a2-21f138eb7047\",\"userVars\":[],\"futurePreviousVisit\":1767429872,\"timesVisited\":1}",
+      "___nrbic": "{\"isNewUser\":true,\"previousVisit\":1767429872,\"lastBeat\":1767429872,\"currentVisitStarted\":1767429872,\"sessionId\":\"5770e2b3-1e23-48a9-9b56-2eae14d8dff4\",\"sessionVars\":[],\"visitedInThisSession\":true,\"pag...",
+      "compass_rfv_6517": "{\"rfv\":{\"rfv\":1,\"r\":0,\"f\":0,\"v\":0},\"ts\":\"2026-01-03T08:44:33.172Z\"}",
+      "fbssls_182234715127717": "{\"authResponse\":null,\"status\":\"unknown\",\"expiresAt\":1767516273820}",
+      "kw_tab_id": "1767429872318"
+    }
+  },
+  "postConsent": {
+    "requests": [
+      {
+        "tracker": "iubenda",
+        "url": "https://cpl.iubenda.com/big_data/consent?apikey=oCBkKyN8NdxQyYX9VUnj2y90FGAIo0cN"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://idb.iubenda.com/csdata?db=hits1"
+      },
+      {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140za20gzb853765578zd853765578&_p=1767429873394&gcs=G111&gcu=1&gcd=13r3v3r3r5l1&npa=0&dma=0&tcfd=10000&gcut=3&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&_s=2&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dt=la%20Repubblica%20-%20News%20in%20tempo%20reale%20-%20Le%20notizie%20e%20i%20video%20di%20politica%2C%20cronaca%2C%20economia%2C%20sport&tfd=5160",
+        "gcsRaw": "G111",
+        "consentMode": "granted",
+        "gcd": "13r3v3r3r5l1",
+        "events": [
+          "user_engagement"
+        ],
+        "event": "user_engagement",
+        "isStandardEvent": true,
+        "eventCategory": "standard",
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://cdn.iubenda.com/cs/tcf/stub-v2.js"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://static.criteo.net/js/ld/publishertag.ids.js"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://cdn.iubenda.com/cs/stable/iubenda_cs.js"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://cdn.iubenda.com/cookie_solution/iubenda_cs/1.90.1/core-it.js"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://cs.iubenda.com/cookie-solution/confs/js/23960187.js"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://cdn.iubenda.com/cs/tcf/versions/tcf-v2-0.30.0.js"
+      },
+      {
+        "tracker": "GTM Container",
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-WT5GJ7M"
+      },
+      {
+        "tracker": "iubenda",
+        "url": "https://idb.iubenda.com/csdata?db=hits1"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/syncframe?origin=publishertagids&topUrl=www.repubblica.it&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Yahoo/Verizon",
+        "url": "https://ups.analytics.yahoo.com/ups/58934/cms"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/sid/json?origin=publishertagids&domain=repubblica.it&sn=ChromeSyncframe&so=0&topUrl=www.repubblica.it"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://369534880798a45e8c42f5c51a394f1a.safeframe.googlesyndication.com/safeframe/1-0-45/html/container.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/omsdk/releases/live/omweb-v1.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/ping?e=1"
+      },
+      {
+        "tracker": "Yahoo/Verizon",
+        "url": "https://ups.analytics.yahoo.com/ups/58934/cms?verify=true"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/sodar?id=sodar2&v=237&li=gpt_m202512040101&jk=6275035700161515&rc="
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/bg/ppjhCdp1LMNpc7maSzUD5dObPmw5eK7rW7lX9QBIJgA.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://369534880798a45e8c42f5c51a394f1a.safeframe.googlesyndication.com/safeframe/1-0-45/html/container.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://369534880798a45e8c42f5c51a394f1a.safeframe.googlesyndication.com/safeframe/1-0-45/html/container.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/92713008973204867?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://369534880798a45e8c42f5c51a394f1a.safeframe.googlesyndication.com/safeframe/1-0-45/html/container.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/10328805351071521106"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/ping?e=1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/qs_click_protection_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/qs_click_protection_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/qs_click_protection_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=osv-info&clickstring=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&eventType=clickstring&clientTime=1767429880221&ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=osv-info&clickstring=C0vWA9tZYadvqJ4-ouvQP9YbLwQ2vt62-hAGVooCdyRSz1PyVzTgQASD7qbshYP0CoAGNlIeyAcgBBagDAcgDmwSqBK8CT9BG4Tc_PH2l-tHcaB4LAb-R9CQBhA214OLupgMZF7Dc4iv4IYenTzVfbOJuH_f8OjFxtmzC8OKaAlRAutyC7SOp5HDelaH6WGbO0zvPfW8EUnDO1dLyUlEz7bAdlr92pjxYKwVvomQacHJY652fEcFSHBMjaVmufYLEce70mXktFt1YCWawGS7E1cmUGiBhYW9jAPhVd04BC_8eQSCcCW_4x41oLXJvrRnwDN_Wz19i9SeHMogabo5oaEHN2g7rzj1I8YU5ZFntl4fJKWGK2_bDAN-mOt2nPD_72T1ysI-HaHmHzrseXayVoFc-GJAVIBxWZ3tamM00-MY-dq5BjNYh4zcsW0LLKen7j6y8hH7AzQymDjS8zm6RlfUBO3eqxv0w1BAbBd4KyZ35dGrowASM6enQrwXgBAOIBam0uodVkAYBoAZ2gAfb6_jNAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIwLHKsP3ukQMVD5SOCB11wzLY6g0TCLOFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATqYCDINgTDYgUEdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJAJj4hHoN1kASCjg0MjI0MDk0MjcYAbIYCRICkVQYdiIBANAZAdgZAQ&eventType=clickstring&clientTime=1767429880270&ai=C0vWA9tZYadvqJ4-ouvQP9YbLwQ2vt62-hAGVooCdyRSz1PyVzTgQASD7qbshYP0CoAGNlIeyAcgBBagDAcgDmwSqBK8CT9BG4Tc_PH2l-tHcaB4LAb-R9CQBhA214OLupgMZF7Dc4iv4IYenTzVfbOJuH_f8OjFxtmzC8OKaAlRAutyC7SOp5HDelaH6WGbO0zvPfW8EUnDO1dLyUlEz7bAdlr92pjxYKwVvomQacHJY652fEcFSHBMjaVmufYLEce70mXktFt1YCWawGS7E1cmUGiBhYW9jAPhVd04BC_8eQSCcCW_4x41oLXJvrRnwDN_Wz19i9SeHMogabo5oaEHN2g7rzj1I8YU5ZFntl4fJKWGK2_bDAN-mOt2nPD_72T1ysI-HaHmHzrseXayVoFc-GJAVIBxWZ3tamM00-MY-dq5BjNYh4zcsW0LLKen7j6y8hH7AzQymDjS8zm6RlfUBO3eqxv0w1BAbBd4KyZ35dGrowASM6enQrwXgBAOIBam0uodVkAYBoAZ2gAfb6_jNAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIwLHKsP3ukQMVD5SOCB11wzLY6g0TCLOFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATqYCDINgTDYgUEdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJAJj4hHoN1kASCjg0MjI0MDk0MjcYAbIYCRICkVQYdiIBANAZAdgZAQ"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=osv-info&clickstring=CqUq59tZYadnqJ4-ouvQP9YbLwQ2vt62-hAGVooCdyRSz1PyVzTgQASD7qbshYP0CoAGNlIeyAcgBBagDAcgDmwSqBK8CT9AwCuccfh74TP5prHthe9V1XnBuBZeKCxLznQH7uZyFLnFLLjSrWtKMp25bva0d--1fEHiqPS6HdltQf8R8GQiObW5snWXtU_gXpo64MJamt3bnMQXedxXZHZd7_25ozrfImHLeFTuMvxLBaTJXE4ZIcmGCw1vXUswoCifoks189s12oOr4Yz63CA9EpF2HLN5bjRMBfheItlWLyIyV9QAjnPG5zaISz6-pMUzhpLuqwOxYzfsagGiUN92RbQem1wojJncijf-l1w5jQoCFa39ahdYPwMNacAN0xMaZdvvMr6OmlHlOpXV2SEhb81EBuOTsICZz5y1zE0Z634Ki3izc-HHcEvQDe78OrTlemkCK8gW_YtMVLh6qs0MjqQJma8b6Vlde2O49oTKdBElbwASM6enQrwXgBAOIBam0uodVkAYBoAZ2gAfb6_jNAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIvrHKsP3ukQMVD5SOCB11wzLY6g0TCLGFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATqYCDINgTDYgUEdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJAABrg0Y320ASCjg0MjI0MDk0MjcYAbIYCRICkVQYdiIBANAZAdgZAQ&eventType=clickstring&clientTime=1767429880312&ai=CqUq59tZYadnqJ4-ouvQP9YbLwQ2vt62-hAGVooCdyRSz1PyVzTgQASD7qbshYP0CoAGNlIeyAcgBBagDAcgDmwSqBK8CT9AwCuccfh74TP5prHthe9V1XnBuBZeKCxLznQH7uZyFLnFLLjSrWtKMp25bva0d--1fEHiqPS6HdltQf8R8GQiObW5snWXtU_gXpo64MJamt3bnMQXedxXZHZd7_25ozrfImHLeFTuMvxLBaTJXE4ZIcmGCw1vXUswoCifoks189s12oOr4Yz63CA9EpF2HLN5bjRMBfheItlWLyIyV9QAjnPG5zaISz6-pMUzhpLuqwOxYzfsagGiUN92RbQem1wojJncijf-l1w5jQoCFa39ahdYPwMNacAN0xMaZdvvMr6OmlHlOpXV2SEhb81EBuOTsICZz5y1zE0Z634Ki3izc-HHcEvQDe78OrTlemkCK8gW_YtMVLh6qs0MjqQJma8b6Vlde2O49oTKdBElbwASM6enQrwXgBAOIBam0uodVkAYBoAZ2gAfb6_jNAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIvrHKsP3ukQMVD5SOCB11wzLY6g0TCLGFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATqYCDINgTDYgUEdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJAABrg0Y320ASCjg0MjI0MDk0MjcYAbIYCRICkVQYdiIBANAZAdgZAQ"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/s/cookie_push_onload.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://af5b83283b35f446f4580cf5786275c4.safeframe.googlesyndication.com/safeframe/1-0-45/html/container.html?n=1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/s/cookie_push_onload.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/HdsydzJK.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/s/cookie_push_onload.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/HdsydzJK.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?fcd=true"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/omsdk/releases/live/omweb-v1.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/omsdk/releases/live/omweb-v1.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/HdsydzJK.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/H0ZEmIz7.html"
+      },
+      {
+        "tracker": "Yahoo/Verizon",
+        "url": "https://ups.analytics.yahoo.com/ups/58933/cms?google_gid=CAESECEMZmupLjOfVjQSIX3YJyM&google_cver=1&google_push=AXcoOmSjzumSp33tDzB7YrxMMT8Mjzk4Js9Wz5AT2YdkFJcBK_rJYwwPkd192_n2iFSbClD5i2kF3gTIYe4yWaEjhSlygnu8Kvz16iIBCnJ3FmJyNIIgmhIHBHp2tsVI1_lYwaDvvTiTWXHy9SCTrX9tgHGx&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://dis.criteo.com/dis/usersync.aspx?r=4&p=14&cp=google&cu=1&url=https%3A%2F%2Fcm.g.doubleclick.net%2Fpixel%3Fgoogle_nid%3Dcjp%26google_hm%3D%40%40CRITEO_USERID%40%40%26google_push%3DAXcoOmQxhRXRzcrJ4V_I1vX4Rl63QcBAvydxx1kiAvrhCOjrCslW8vvcCbwLWqALcDG0PfPPk2BIh9zqR7nWY3VKqO1i3ZvUCGOVqJggNIHI_EVwYOSud-1iQWIcn7zZBaO6sLBaAyiCf5PFm7qiOCymlYhQ&google_gid=CAESEDw_CBla1WcgJcTM0Z68leI&google_cver=1&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/8843968527926231609?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/17090734608045762359?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/8437722946342857835?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/4617319858127342231?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/15882275379094827117?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/11990204036784453030?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/13517171780615840145?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/H0ZEmIz7.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/sodar/H0ZEmIz7.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/omsdk/releases/live/omweb-v1.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pcs/activeview?xai=AKAOjsubJ6kJ2ewYx2-x3qpAJsnRzinUZEQnR0gqb3GmxqnJS6_ElmQeFPJpQSj09vTatrrNoc5PFpKD43I_s0YuI-Car6CpyHVydPOhSUguZA93dzSOUIIE9BiWZnScJkZ1pA6uR0H0GTRZwm25fOCsa66pptCIzw_pMLi-E-udAFackO4CGq7H8Wj7i5kz&sig=Cg0ArKJSzKUbOlHCkfXbEAE&id=lidar2&mcvt=1225&p=0,959,1,960&tm=1581.5&tu=356.19999980926514&mtos=1225,1225,1225,1225,1225&tos=1225,0,0,0,0&v=20251210&bin=7&avms=nio&bs=1920,1080&mc=1&vu=1&app=0&itpl=19&adk=2532103389&rs=4&la=0&cr=0&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNDMuMC43NDk5LjQiLG51bGwsMCxudWxsLCI2NCIsW1siSGVhZGxlc3NDaHJvbWUiLCIxNDMuMC43NDk5LjQiXSxbIkNocm9taXVtIiwiMTQzLjAuNzQ5OS40Il0sWyJOb3QgQShCcmFuZCIsIjI0LjAuMC4wIl1dLDBd&vs=4&r=v&co=6336267900&rst=1767429879501&rpt=587&isd=0&lsd=0&met=ce&wmsd=0&pbe=0&fle=0&vae=0&spb=0&sfl=0&ffslot=0&reach=8&io2=0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/ping?e=1"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://dynamic.criteo.com/js/ld/ld.js?a=20098"
+      },
+      {
+        "tracker": "Facebook SDK",
+        "url": "https://connect.facebook.net/en_US/fbevents.js"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=COT0KS3C77U8DR5JPAFG&lib=ttq"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://amplify.outbrain.com/cp/obtp.js"
+      },
+      {
+        "tracker": "Bing Ads",
+        "url": "https://bat.bing.com/bat.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/rx_omid_video.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/rx_omid_video.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/bg/ppjhCdp1LMNpc7maSzUD5dObPmw5eK7rW7lX9QBIJgA.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/rx_omid_video.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/bg/ppjhCdp1LMNpc7maSzUD5dObPmw5eK7rW7lX9QBIJgA.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/sodar?id=sodar2&v=237&li=gpt_m202512040101&jk=6901521697007901&rc="
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/bg/ppjhCdp1LMNpc7maSzUD5dObPmw5eK7rW7lX9QBIJgA.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/bg/ppjhCdp1LMNpc7maSzUD5dObPmw5eK7rW7lX9QBIJgA.js"
+      },
+      {
+        "tracker": "Bing Ads",
+        "url": "https://bat.bing.com/p/action/187200996.js"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/i18n/pixel/static/main.MTc2YTgwMDRlMA.js"
+      },
+      {
+        "tracker": "Facebook SDK",
+        "url": "https://connect.facebook.net/signals/config/247428115450514?v=2.9.248&r=stable&domain=www.repubblica.it&hme=17590b9a2e1b26755cdc9ecb401f9f46bca979d3ccce95d786db0936167af731&ex_m=94%2C156%2C134%2C20%2C67%2C68%2C127%2C63%2C43%2C128%2C72%2C62%2C10%2C141%2C80%2C15%2C93%2C28%2C122%2C115%2C70%2C73%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C224%2C167%2C57%2C226%2C227%2C50%2C183%2C27%2C69%2C232%2C231%2C170%2C30%2C56%2C9%2C59%2C87%2C88%2C89%2C95%2C118%2C29%2C26%2C120%2C117%2C116%2C135%2C71%2C137%2C136%2C45%2C55%2C111%2C14%2C140%2C40%2C213%2C215%2C177%2C23%2C24%2C25%2C17%2C18%2C39%2C35%2C37%2C36%2C76%2C82%2C86%2C100%2C126%2C129%2C41%2C101%2C21%2C19%2C107%2C64%2C33%2C131%2C130%2C132%2C123%2C22%2C32%2C54%2C99%2C139%2C65%2C16%2C133%2C104%2C31%2C193%2C163%2C284%2C211%2C154%2C196%2C189%2C164%2C97%2C119%2C75%2C109%2C49%2C44%2C103%2C42%2C108%2C114%2C53%2C60%2C113%2C48%2C51%2C47%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C52%2C83%2C58%2C61%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C46%2C124%2C77%2C74%2C66%2C105%2C96%2C38%2C125%2C34%2C98%2C12%2C147"
+      },
+      {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140z8853765578za20gzb853765578zd853765578&_p=1767429873394&gcs=G111&gcd=13r3v3r3r5l1&npa=0&dma=0&tcfd=10000&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&_s=3&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dt=la%20Repubblica%20-%20News%20in%20tempo%20reale%20-%20Le%20notizie%20e%20i%20video%20di%20politica%2C%20cronaca%2C%20economia%2C%20sport&tfd=10408",
+        "gcsRaw": "G111",
+        "consentMode": "granted",
+        "gcd": "13r3v3r3r5l1",
+        "events": [
+          "banner_click"
+        ],
+        "event": "banner_click",
+        "isStandardEvent": false,
+        "eventCategory": "custom",
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;ecn1=1;etm1=0;eid1=11;"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&label=part2viewed&ad_mt=482"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/xbbe/pixel?d=CJbEPhDSi7adAhitivvNAiABMAE&v=APEucNVebSoB1Oz7jYZhjj6bPuo6L0q8Ylxg2Q1i366wdfG4t6Ew4Q9pAF4C1KBI-jGR_ETM80rS_dSrlpzP6b-kYIag1BHZmKNTn6lnd7oP0XdMQJDh2a3ZMHWMXApixpDBa3NwV8JN_awQGqsZoPRFKomZ1qO2Rqe-hknxi3EfNoXtObJl6dODqq97FRVxm_0gBUijTcu6gNnz79PJg0X3HWLuyOfUbT_ne6H84Fh_NY4CnKtBhzGzL2rLcimvKHeVDFK6u9vEDs6aDlB1psfnPnniZdkBWr5f9kHcj7ZV6LBhN4USyFLPkt2on1xAvVHkmfdcI_peWnmN8P6EqcGp1OioPsOqAV0eIP3VcRC4kQyit339QFJsmfM0cNNTz-NGhpdBEUR7dgARtrmXTddx9Wq0qLeca2668pu0OGVBmldjSgL3brHszYVt2UsOA1e1TxtOLbjczUTkaZLnrnl1lDSRRR5-haR99zwcKJLUsBlwtM4QtqprnCzxYE__JehoZISir_ogv6wpuqMsMsEr4EHIqvQYfoCtRDYe5OXpQ4oEI3dLQ3RQ_MdbFJL1piLI66X1x6DGMMjuV4x_XzOlOiZQYVAhgwOg_5oTbk7JqruxdAn7DZc0ul-Tfr2MywpPAc6eagZq_tQgQJp862vsqIHKCAnYoYE8CVd73DZVRQiIY1agzk-Vt2Oiu2YJMgf2SjuARCpcBD01YWEbxO50ByIyEp7FuHMHLyiqY03cwNOmRhOSlc3ayQQn1VcfgnZJogVpIr-Kow8GwViHRGbk9pZu8biYsbjOKnO5r6_s72BBK9gMD-pZIoW_a14PoBYhktW60Jv35PPMCX2beUEIX-2_ISd-PZsyWAWgpQUqOWLCH7TzHDpTCsLWu9S7BNfp-0ZBnDpWBoYvjT1k6iRXC9rrs-5wzUkAot5JBgGOPDoJBpX9zOnuc84RnpELm_JY9iHLpUMK7MQuZrHtP8j9QrZcXAa3NOxGvojjZycvhBnXTEuU1pAOERTIG5HJlQllWpOp4Vet1_yjUsALXGlmci7u850Dh1yid_yajdbPVSNBpgktliNXr8K0scsws8rYrAWCBnYK4e_i1Ehu_4okCC-GyeNSsFkpS7HQySKPJtviT5mwHpXpE0F7D1x3ChD-1sr1kKKv8b8z6InL_o3vf5Qk9t0MP1JNh0_nbMn81SadXFokYGvQfg8EQfoUqqfFdTJLzRvEDmW9StQ7om4wGwUBJ2eEr2hsM4-lDhpN0B86v9pqRDfCw-lk_Nl9sOx_lvdFwTKs06-Ff2mLX4jBOLriVXWLRgSgYL1nddbz-aGusN1rlejehBjSXqghT0lAJZbquaifUe602Nf9FGRLpAtOZjT6x89-dtDdBBIyqYNpTNzoS8Cv3IsJD3EMihm8nHpQQuUOevgLcVLOOwy8UtL9raUPqv6G3MJ-2DTjSKEZqmsxwTjb-GjyMmnDVi9IKiNdjDde2E5R13nhhFiGj8UGKjn-RmUwwJi-UGMRojbvzzqhG5WqRU5u-BAjyBrsKl3BUm_mizPkOTkTeNUiyl_Aksldfp_Nj9ZDJt1v0VHubrWMR9j79pD64H50d3esomjoEog9NaUMjCeKZjWdW66eqDzf9m5MrdI6tY2QCDYPZ3JrTMGqsEEEvczNydDr5OWdKwwkON8xKeGuxwujw2_GiZumdLuKBVOR4YJCNAwHQiIW6RGT_1fM9d_8nNzdJ7m1-6QSvuYjkXJy-S-lUpAhZKSyvGmp618PLzYFzTsqR6V1whi0w19T2mwYyt-kK9-MVf9puMqIcQe2ir5jepigwKljSP7BBe1UUhniVrNQVraFnBTpO71VfEkt4zbNfdD6o3cQ-TxQ8SwhaWT0c5Xa39SZA_7YuURs-GHp9rM0W33DxJKHOgTQxuhuYlflS6ZxooBtzo1-gv9YCDyub5pOUW-lqudasaKxfKw4hbG95d33dPNwkHNkLnHKs78mDkY07WPOjQKkUlh3ua3SLG6kvvrGmh2BxOeUFL15CACs_YD52NZB9uPIs-LN9sFH5E3s4mAg71QsZ-5nO4lR6oEiMFrxf5X_yuauzqbnMmCSAjJskJ5grCBCvulbgVjQPUeL8yvxcePkmV8DXA67biBphfoOqCQfP5AkaV4ruYWAbSLZSGbzLsC0L2MCFlQLE3toK1XbXtROyFpurhGNfZr5-5XvzwodvuVhA9NBZxaeEqbdLF__zvGbWauq2vSfIJz_CE9ZN4Wl9mtTPu3hNGyZJqrZtYd6jx7py_KSpTjKWUGhrXOWFbK_a-OJRaR2cD7blR4TvF2B0MDfLLWevtME08BPXbECI-UBwIZoEiTXl9TxV3lkbxHmfg5nKIlxjrWS8U2_146suYcUoobuIImML929jmiRt40U-XeEhHJC6D9cCiAcNQ1GKSNDkXCAKQSQnFyBA7e3l-rsYOn-OtMYpKrpP859Nyqu-P_FHJ-JsYfwKYxivzLXaO1hbAuuYBADBhcKjaaaEIFEthpf4FgFOE8EDXIzYflUau8aqWO8GwPn7JQnGrUszZJjnDOaNBLDQ0ehnW5rzapp4jn1ltc4e4eaj6m0glQ8W0rignu-xCZdgy_jbrMQPowvt7BzadJ7lsF76jAH-dp3YstWGqWQ7fHQbST8fPlL90LdMqqhscJyen8UnLn02fafodKrbiof6IGcfn_73qTic6P1U8-4HBjisxzv1UfXyGddrmpLNt0-m4XOgt9qzwJJjnrUDqk3ZmlDQ350zvg6uogFWCHFBRQPBesxlXf6h4WeZjPFfUtVVhwCdMRLgETcC6OilRKiqWRHom-rfcSIyBxvNtzxY7VDDU8SGuhHONv-xvbgBP21Feq0In3_2FsPETEEuFV9EN4igIrylJYpWvAx7mx-tYyWU4yysgd5CwcRVnU7-KFEL2wcX5t1scVbeTjYwKPlUUA8gg5TjVwK4EZSrTsE5HT_v0y8ZHm4JCXZ3k8rfiJQFe7xSOBvAF2SfUJZtvclfJqmjzy2ykGZGHfnGKwslSTliWTN3uzVwxOSq2A8qPkU5804g0cWlMAPJJr3n7DXUz-7xZ1lJmELIjHkcyqmcaAzshnSiMTR34ePLYzEvLLyqgTL_MjbevAS5ZTzcVJxje1Zv26-ndlNxlTVg8W3i9p7CMoljNAEvj-qo0P6oHnCBoHveuROsa2GS_jhaWTZ92rTN1XOpe5mv5MNNO99fdv4jwdrTeRnSpiCt2dsZZC0qgxRebYI-o3NWr33IFia6pDJNKLUIPoDoElkxCfO7ybWugDt1vcqUiK0cGtqfJJX7rxOXEah0xBDZjbRG0H2TifWj5WylqMdkjhf5edI7VTDZmWixB30QiN1p5WdsZ4tORdCGkRb8irjidrQ30OjUvB_FDvTqL1HGfu5suTaalxk9F4KbdvFpcFKoJ37dyTHycXhW-E6ebWpAeAGSn6lDI8SPOK3NM5LfW8s1JtVFBAOfE0qQetImFerPxijKP3n7vUpMiCmyjA8UCOkdJMNO2vPH1R0Vku9k5I0UfPvs677sDWpsKOC1bQHyf14EcC_u8FJ-0ZwBsJOw5OHv5E4nuR96Pe7C6K7K1J861OwhRnVOdNVFbjxgCxPZSTpMGravoDSCK72fxravDqJPODTs7O_QHac5tELSorP8ut40sz9cjFofskv3BdW10V-xUydL8qyP-_qVwBEsj4133jkv-osjL-iX7PUunQmJC8a_Q14XpNsh8Hi8WD-rgpgWJ2BoktGyqo2pkQbecMbSIWuEu-sa_QnYoHBg3ZQmg2HuMoe2zZGnFJzhfzuiYyZRLLllrAHcXCP3jXhlFy--IZiZfaQPK5Lp1trzBtKAFkSfbDVckpzEIgnfCQ4cnk7L-jbYNL1z78HhXew8SHtjSu6OvmhINak6d2NN8FxZPyZ5h3G8CAnsTu5CUXdqnYEN1SvBYO1dQHh0GlBNNLXU66BOL-JucJ-91exMGpaOlauuKrsIYSHobjPxl7zVgVhfjbvvYyoCgAEeAcw9clhJf19ISpNc8sn3i8MDntS1p7piazMQgK2cCJWkc_6kINNLjtOPq4Cs9fZLv3LsV0ajM9jNRcVl_QMtu13S5cEAkaeHvS5MbbqMwvgbTLa3SaORMltovg3Lo4ymaUQ0VRnu8WO65XjmxCqT3yJPpEBxfRJN4Ns_0lCqiwUyyW2cQUBclpW8jdrlgUSo4y6UEk6a8ZcQ262ERn7Jju2m9041xlOztZiJb-hPWRY7RymFZEYd1gviwHuDZYSCSeRM4OJqOEURuUcoUohtti9aRVd8lV0frRipzRia8xzYQCMJPCpXLUfONFHFK3P0utZvD6YIXmOHdr9M11-EZCSF4NBeRRRstuJYSmUYyoRByVMHPd--8_-cfQtPtvxZFIZMQmlRwwPXKrrUc_RsRVu10TMS0axStP8B_wlN-kn65PapF3SSQgbfzlieKoSS5GTz0uj_9yAEz9T9uu7HuAWKctIZHtqk-R9BxqmOoPZV2lvGTC4N7d55sjWKxwx9du8LDbS0hbNcULcE5J1FpIP-yN0EXSyg6Vo6DP1DBx2XztIMwQF46PCaJ-kD_S3uKH8VDy8dAiwnp2zOZPlnMCQGzGZffinyejPPCJABC5lfwJkBfIsjylc4v1J9RIFpBufs89Vnl-K_J1ttUUAIxsXN3B49-QGu-XSRtngxUqLV6cnLgvEX4soFFov7kL4R02gTyJRdhiDiMUY96jRXRcm21mXGbjIchNiN7bSQwF2tPT5YaTVVdm2fPkFEAMJO06P_Y7Rp9O9IaUei2cGhFZ2kTCowFXu8aKWAMzqVQjeQ5s1M6vP5k8obL-RFHfN9H6lev3KhHP9-t4bBfwSP70dF1whCcl_YNwVGFfOtc1kXCkfZyvo5ZB7FaP6hMUGLb_IVJYQf5y54GBBo-hDyPhuIfKjJGBitoHrihZFayac-b0tqsBXKWeLnZDn6HeopDEABiMUnzsioiPRp_H4NdQCOiuUaecT72kGRi65ssuHn3_xu6Eloe7dZ_bSKcNMW2sxtS2X5xHt4QI5QHPmNS16zuJQwiFaZYS3woLyaJg-oi69HPr3XZajMtNR3JnU4O_gqytaitQqWbo_Qlznb9RxHvvOM5rKW7tBAO9T8p0zlKzMn5d-UrxYAnutEYhEEBHVCP96jPoxciTtsS3z3u3Ed3YlEg2PGxnsKawAmF5zqPCVsu7y16dODRvB18kvELQi7Rx_Q7BHEY--S9ufc5kP_HN3bOWzgtly18pvENlQDK7nopO7jf95tgEiJsBK7jQShAAcKD3KQ9I3paTuGKP5p5T2a9jZkR7ObE3r0UnX7ILHM9LVHXuyzEVSaSNpmrHuMlp5Rg1b4uYNkJ2VdGXVM4itohpo1JNO_1otIW-sZAOPBvMjMxiicMbvayf4wYsoRoeKV0QkzcJ96ns21mguUS44nwggBdx1lIoQYUkLcstI0_6F9My9MlxZtfQ4ADOfA9dda8ENIpdUdl-vZ59Fe5T8G4FGl8ELWerjvW1TLM6DzpCvXVlskyNlbW7Tgr8wM3P4fgKCMXD14Z0a44_jA1UQrZJ1Je92QHxdliOqKnscORpKTCCKY0GwyO-T8tgxOeATjdt7P_FZxrvY9HTGxHYSjWqwCHr1Xqzy5Nh7besUuSBIjuPDmhAmOJIT3_bMDeqGv1O9CAx_R690AEA5ZEsp6wDdXL2OkZF37Yk4ibHe0b20M1qJRb5moplzLWIjOcnTuS_eJAHFJ-DfhsmZIEo1-C989Z6e-0Ct6zONTc4NmPZ0ExZn6EykBlAJDiUO4XL19_lVk3iU53S-zEYaBZHt9lWyclCZUg"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=video_impression_ping"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&label=vast_creativeview&ad_mt=482"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://wave.outbrain.com/mtWavesBundler/handler/004aac25b363e320eea25779f3b51ece6f"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://amplify.outbrain.com/topics"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://tr.outbrain.com/cachedClickId?marketerId=004aac25b363e320eea25779f3b51ece6f"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://tr.outbrain.com/unifiedPixel?au=false&bust=011966948307276293&referrer=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&pRef=https%3A%2F%2Fwww.repubblica.it%2F&cht=tcf&marketerId=004aac25b363e320eea25779f3b51ece6f&name=PAGE_VIEW&dl=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&g=0&zone=all&pld=2011&obApiVersion=1.1&obtpVersion=b389cf7ae897_2025-12-29"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pcs/activeview?xai=AKAOjsukXrwzRbvjhTS2rWZGuCnmABLFBOtwejq8MpfyxvwBMSrWCxDTbhUFkZHsXuoSngJcpRFKi02Dx3jSQr2fvr4TYKG-RHFW3-Sh_Y3jhQOeRXEcsRbjGIIGckmecg2s_TRAYHx22rVfQMJ4i1FsJVBJrFXLGHpyLPCQjDwgyE4YYzNExNs7jsl2hijoyIDAyP7p1V0g41PsQS9SxkBAANfY&sai=AMfl-YSc1SZOJldUmnEFs9iVLx8EcPcCA6UytXeDRvJQflSrZSMVEp4LvIzNKXUSI-VSBWLcA5MJ-R8pBU90A7UOiRSdEqSBZ5PIl_yMO564DcpnxNNxTQXW8kJz0WM5gI-_gwSSRqZrnLS7jSnJ0AwTsKA&sig=Cg0ArKJSzM3fQiRDzmFkEAE&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yOGAE&id=lidarv&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D15%26sdk%3Do%26p%3D1,78,239,500%26tm%3D492%26tu%3D0%26tos%3D492,0,0,0,0%26mtos%3D492,492,492,492,492%26mcvt%3D492%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D492%26is%3D33554707%26i0%3D33554707%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D15%26sdk%3Do%26p%3D1,78,239,500%26tm%3D492%26tu%3D0%26tos%3D492,0,0,0,0%26mtos%3D492,492,492,492,492%26mcvt%3D492%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D492%26is%3D33554707%26i0%3D33554707%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26atos%3D0,0,0,0,0%26avt%3D0%26ss%3D0&avm=1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yO&label=active_view_start&ad_mt=%5BAD_MT%5D&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D0%26sdk%3Do%26p%3D1,78,239,500%26tm%3D492%26tu%3D0%26tos%3D492,0,0,0,0%26mtos%3D492,492,492,492,492%26mcvt%3D492%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D492%26is%3D33554707%26i0%3D33554707%26ic%3D33556754%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D492%26dfvs%3D492%26dvpt%3D492%26qmt%3D492,492,492,492,492%26qas%3D0%26qnv%3D0%26qmv%3D0&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D0%26sdk%3Do%26p%3D1,78,239,500%26tm%3D492%26tu%3D0%26tos%3D492,0,0,0,0%26mtos%3D492,492,492,492,492%26mcvt%3D492%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D492%26is%3D33554707%26i0%3D33554707%26ic%3D33556754%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D492%26dfvs%3D492%26dvpt%3D492%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;acvw=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D0%26sdk%3Do%26p%3D1,78,239,500%26tm%3D500%26tu%3D0%26tos%3D500,0,0,0,0%26mtos%3D500,500,500,500,500%26mcvt%3D500%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D500%26is%3D33554707%26i0%3D33554707%26ic%3D33556754%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D500%26dfvs%3D500%26dvpt%3D500%26qmt%3D500,500,500,500,500%26qas%3D0%26qnv%3D0%26qmv%3D0;gv=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D0%26sdk%3Do%26p%3D1,78,239,500%26tm%3D500%26tu%3D0%26tos%3D500,0,0,0,0%26mtos%3D500,500,500,500,500%26mcvt%3D500%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D500%26is%3D33554707%26i0%3D33554707%26ic%3D33556754%26cs%3D33556754%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D500%26dfvs%3D500%26dvpt%3D500%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0;dc_rfl=%5BURL_SIGNALS%5D;ecn1=1;etm1=0;eid1=210001;"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://www.clarity.ms/tag/uet/187200996",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Bing Ads",
+        "url": "https://bat.bing.com/action/0?ti=187200996&Ver=2&mid=0a1de5e9-4bfc-49ac-bd34-27adf4d8e222&bo=1&sid=72d269c0e88011f0859aadec121d62d1&vid=72d29790e88011f0a8c98dd363cefb7e&vids=1&msclkid=N&pi=0&lg=it-IT&sw=1920&sh=1080&sc=24&nwd=1&p=https%3A%2F%2Fwww.repubblica.it%2F&r=&lt=1052&evt=pageLoad&ifm=1&sv=2&cdb=AQAU&rn=121873"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://www.googleadservices.com/pagead/conversion/16633429550/?random=1767429882334&cv=11&fst=1767429882334&bg=ffffff&guid=ON&async=1&en=conversion&gtm=45be5ca1v9189819892za200zd9189819892xec&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115583767~115616985~115938466~115938468~116184927~116184929~116251938~116251940~116744866&u_w=1920&u_h=1080&url=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&ref=https%3A%2F%2Fwww.repubblica.it%2F&top=https%3A%2F%2Fwww.repubblica.it%2F&label=AZwqCKWIlsoZEK78t_s9&capi=1&gtm_ee=1&frm=2&value=1&currency_code=EUR&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&ec_mode=a&gcl_ctr=1~0&data=event%3Dconversion&em=tv.1&fmt=7",
+        "gcd": "13l3l3l3l1l1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/967792575/?random=1767429882374&cv=11&fst=1767429882374&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be5ca1v9102093543za200zd9102093543xec&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391253~115583767~115938466~115938469~116184927~116184929~116251938~116251940~116744866&u_w=1920&u_h=1080&url=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&ref=https%3A%2F%2Fwww.repubblica.it%2F&top=https%3A%2F%2Fwww.repubblica.it%2F&frm=2&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=4",
+        "gcd": "13l3l3l3l1l1"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/i18n/pixel/static/identify_999e0538.js"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/syncframe?topUrl=track.adform.net&origin=onetag&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Facebook Pixel",
+        "url": "https://www.facebook.com/tr/?id=247428115450514&ev=PageView&dl=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D_removed_%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257Chomepage%26sysvars%3D%257C%257C%257C%257C%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253A%252F%252Fwww.repubblica.it%252F&rl=https%3A%2F%2Fwww.repubblica.it%2F&if=true&ts=1767429883369&sw=1920&sh=1080&v=2.9.248&r=stable&ec=0&o=12318&fbp=fb.2.1767429883362.868357647196066827&eid=ob3_plugin-set_761f041679cd13f948eb7a0cf636d050c1c3b7bed4eac8b19ef288236bb403a9&ler=other&pmd[title]=&plt=1051.5&it=1767429882214&coo=false&up_url=lid&dlc=1&cf=1&expv2[0]=pl0&expv2[1]=el2&expv2[2]=bc1&expv2[3]=mr2&rqm=GET",
+        "event": "PageView",
+        "eventCategory": "standard",
+        "pixelId": "247428115450514",
+        "destinationUrl": "https://track.adform.net/serving/container/?pm=3239568&lid=_removed_&ctype=0&media=0&PageName=repubblica|homepage&sysvars=||||&itm=eyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ&rnd=1933060343&cpref=&loc=https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Facebook Pixel",
+        "url": "https://www.facebook.com/tr/?id=247428115450514&ev=ViewContent&dl=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D_removed_%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257Chomepage%26sysvars%3D%257C%257C%257C%257C%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253A%252F%252Fwww.repubblica.it%252F&rl=https%3A%2F%2Fwww.repubblica.it%2F&if=true&ts=1767429883381&sw=1920&sh=1080&v=2.9.248&r=stable&ec=1&o=12318&fbp=fb.2.1767429883379.123133843299116023&eid=ob3_plugin-set_1b80e27def478eb1d460626c02542d51a8363ff496d2e38f496464c6c017e93f&ler=other&plt=1051.5&it=1767429882214&coo=false&up_url=lid&dlc=1&cf=1&expv2[0]=pl0&expv2[1]=el2&expv2[2]=bc1&expv2[3]=mr2&rqm=GET",
+        "event": "ViewContent",
+        "eventCategory": "standard",
+        "pixelId": "247428115450514",
+        "destinationUrl": "https://track.adform.net/serving/container/?pm=3239568&lid=_removed_&ctype=0&media=0&PageName=repubblica|homepage&sysvars=||||&itm=eyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ&rnd=1933060343&cpref=&loc=https://www.repubblica.it/"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel/act"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/viewthroughconversion/16633429550/?random=383294517&cv=11&fst=1767429882334&bg=ffffff&guid=ON&async=1&en=conversion&gtm=45be5ca1v9189819892za200zd9189819892xec&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115583767~115616985~115938466~115938468~116184927~116184929~116251938~116251940~116744866&u_w=1920&u_h=1080&url=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&ref=https%3A%2F%2Fwww.repubblica.it%2F&top=https%3A%2F%2Fwww.repubblica.it%2F&label=AZwqCKWIlsoZEK78t_s9&capi=1&gtm_ee=1&frm=2&value=1&currency_code=EUR&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&ec_mode=a&gcl_ctr=1~0&data=event%3Dconversion&em=tv.1&fmt=3&ct_cookie_present=false&crd=CPLOsQIItN6xAgihuLECCLHBsQIIsMGxAgixw7ECCIrFsQIIwsmxAgi0xrECCPvYsQII29yxAgjZ17ECCIfbsQII08WxAgjrzLECCO3OsQII1c-xAgju0LECCJfUsQIIyduxAgjK2bECCMXcsQJKGXRyaWdnZXI9bmF2aWdhdGlvbi1zb3VyY2VaAwoBAWIDCgED&cerd=CgEA&fsk=ChEIgJnjygYQhIyu063f8vz2ARIsAEdaIGqvj9bc6T2fPi7kkarRy1grDvqA94ttRJXOS76Iv4L7qRy0M8eGcb8aAufz&pscrd=IhMI_vrXsv3ukQMVgrqOCB13XS7IMgwIA2IICAAQABgAIAAyDAgEYggIABAAGAAgADIMCAdiCAgAEAAYACAAMgwICGIICAAQABgAIAAyDAgJYggIABAAGAAgADIMCApiCAgAEAAYACAAMgwIAmIICAAQABgAIAAyDAgLYggIABAAGAAgADIMCBViCAgAEAAYACAAMgwIH2IICAAQABgAIAAyDAgTYggIABAAGAAgADIMCBJiCAgAEAAYACAAOhlodHRwczovL3RyYWNrLmFkZm9ybS5uZXQvegwICWIICAAQABgAIAA",
+        "gcd": "13l3l3l3l1l1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://www.google.com/pagead/1p-user-list/967792575/?random=1767429882374&cv=11&fst=1767427200000&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be5ca1v9102093543za200zd9102093543xec&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391253~115583767~115938466~115938469~116184927~116184929~116251938~116251940~116744866&u_w=1920&u_h=1080&url=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&ref=https%3A%2F%2Fwww.repubblica.it%2F&top=https%3A%2F%2Fwww.repubblica.it%2F&frm=2&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&data=event%3Dgtag.config&rfmt=3&fmt=3&is_vtc=1&cid=CAQSjQEAwksa0d_wPgoZPGJJ9U9N87OqZuOu5JPjw4IOghwVe7BH3fK4TahMw2Iv-Tw6uk9O7VO0HPOLGTgfc20zn5mEC6KMzBHwmj-zV5AxyE6oCjRBR9Q7foEGCIrcgbXm9PwscHlmAx60RHExpZ6-wHze_S_8O0-cjT8ahZNLIXIbFo7-Vl8NOz1sWgffTpE&random=1759606301&rmt_tld=0&ipr=y",
+        "gcd": "13l3l3l3l1l1"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://www.google.com/pagead/1p-conversion/16633429550/?random=383294517&cv=11&fst=1767429882334&bg=ffffff&guid=ON&async=1&en=conversion&gtm=45be5ca1v9189819892za200zd9189819892xec&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=103116026~103200004~104527906~104528500~104684208~104684211~105391252~115583767~115616985~115938466~115938468~116184927~116184929~116251938~116251940~116744866&u_w=1920&u_h=1080&url=https%3A%2F%2Ftrack.adform.net%2Fserving%2Fcontainer%2F%3Fpm%3D3239568%26lid%3D145882859%26ctype%3D0%26media%3D0%26PageName%3Drepubblica%257chomepage%26sysvars%3D%257c%257c%257c%257c%26itm%3DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%26rnd%3D1933060343%26cpref%3D%26loc%3Dhttps%253a%252f%252fwww.repubblica.it%252f&ref=https%3A%2F%2Fwww.repubblica.it%2F&top=https%3A%2F%2Fwww.repubblica.it%2F&label=AZwqCKWIlsoZEK78t_s9&capi=1&gtm_ee=1&frm=2&value=1&currency_code=EUR&hn=www.googleadservices.com&npa=0&pscdl=noapi&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&ec_mode=a&gcl_ctr=1~0&data=event%3Dconversion&em=tv.1&fmt=3&ct_cookie_present=false&crd=CPLOsQIItN6xAgihuLECCLHBsQIIsMGxAgixw7ECCIrFsQIIwsmxAgi0xrECCPvYsQII29yxAgjZ17ECCIfbsQII08WxAgjrzLECCO3OsQII1c-xAgju0LECCJfUsQIIyduxAgjK2bECCMXcsQJKGXRyaWdnZXI9bmF2aWdhdGlvbi1zb3VyY2VaAwoBAWIDCgED&cerd=CgEA&fsk=ChEIgJnjygYQhIyu063f8vz2ARIsAEdaIGqvj9bc6T2fPi7kkarRy1grDvqA94ttRJXOS76Iv4L7qRy0M8eGcb8aAufz&pscrd=IhMI_vrXsv3ukQMVgrqOCB13XS7IMgwIA2IICAAQABgAIAAyDAgEYggIABAAGAAgADIMCAdiCAgAEAAYACAAMgwICGIICAAQABgAIAAyDAgJYggIABAAGAAgADIMCApiCAgAEAAYACAAMgwIAmIICAAQABgAIAAyDAgLYggIABAAGAAgADIMCBViCAgAEAAYACAAMgwIH2IICAAQABgAIAAyDAgTYggIABAAGAAgADIMCBJiCAgAEAAYACAAOhlodHRwczovL3RyYWNrLmFkZm9ybS5uZXQvegwICWIICAAQABgAIAA&is_vtc=1&cid=CAQSjQEAwksa0fyoUZ_DkjtPi4sgW7jizEcXcYEwAKD14f41mxvejCM_hk-xXs3CAcqKa4FObaY7ItfuDHT9NO-M6Wc-30pIL4udl0bs0YLZ_KVJ_5tubvo-kw-qtSVbnbbuDD64XvdLWlQQAITGUqEQpURJDNGbf1O10XreRuHzlL6NFLKi1c-BN_G2xeSSmho&random=3717273349",
+        "gcd": "13l3l3l3l1l1"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://scripts.clarity.ms/0.8.45/clarity.js",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/sid/json?origin=onetag&domain=track.adform.net&sn=ChromeSyncframe&so=undefined&topUrl=track.adform.net"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://c.clarity.ms/c.gif",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://c.bing.com/c.gif?ctsa=mr&CtsSyncId=0791B17B33F74824BAADD8C621702DCB&RedC=c.clarity.ms&MXFR=1B96D82F4D2A650D3AC1CEF9492A6B1A",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://i.clarity.ms/collect",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140z8853765578za20gzb853765578zd853765578&_p=1767429877950&gcs=G111&gcd=13r3v3r3r5l1&npa=0&dma=0&tcfd=10000&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=1&pscdl=noapi&_eu=AAAAAAQ&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dr=https%3A%2F%2Fwww.repubblica.it%2F&dt=Crans-Montana%2C%20la%20procuratrice%3A%20%E2%80%9CInnesco%20dalle%20fontane%20luminose.%20Si%20indaga%20per%20omicidio%20e%20lesioni%22%20-%20la%20Repubblica&_s=1&tfd=7028",
+        "gcsRaw": "G111",
+        "consentMode": "granted",
+        "gcd": "13r3v3r3r5l1",
+        "events": [
+          "video_playerReady",
+          "video_init",
+          "video_adverror"
+        ],
+        "event": "video_playerReady",
+        "isStandardEvent": false,
+        "eventCategory": "custom",
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://c.clarity.ms/c.gif?ctsa=mr&CtsSyncId=0791B17B33F74824BAADD8C621702DCB&MUID=3EB6702A3682604A0EAE66FC37DC61CE",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://sslwidget.criteo.com/event?a=20098&v=5.43.0&p0=e%3Dexd%26site_type%3Dd%26ref%3Dhttps%253A%252F%252Fwww.repubblica.it&p1=e%3Dvh&p2=e%3Ddis&bundle=QwOsf19ocnpWaXBtZklLbGR1ZFJyNnVyZDFlajlmaDRIM2NkY3hWSzRwRDVyMFpZUklHTnl1amhHQ3MxOVl6MWdVbyUyQjljTk50WksyTiUyQmxjUTlucHZIdTNBN2NIYWJiaHhDSkV4TWtRaExiTlhlWENzNDR2RG82MXBYWm5nT2FuZ1ZRSUswTHExQktLJTJCRUJSbGRSVWN0eWhtUkElM0QlM0Q&tld=track.adform.net&dy=1&fu=https%253A%252F%252Ftrack.adform.net%252Fserving%252Fcontainer%252F%253Fpm%253D3239568%2526lid%253D145882859%2526ctype%253D0%2526media%253D0%2526PageName%253Drepubblica%25257chomepage%2526sysvars%253D%25257c%25257c%25257c%25257c%2526itm%253DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%2526rnd%253D1933060343%2526cpref%253D%2526loc%253Dhttps%25253a%25252f%25252fwww.repubblica.it%25252f&pu=https%253A%252F%252Fwww.repubblica.it&ceid=64cdc3ae-034c-4a84-8b22-8fba027e959d&gra=1&grs=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA&grv=5"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://widget.eu.criteo.com/event?a=20098&v=5.43.0&p0=e%3Dexd%26site_type%3Dd%26ref%3Dhttps%253A%252F%252Fwww.repubblica.it&p1=e%3Dvh&p2=e%3Ddis&bundle=QwOsf19ocnpWaXBtZklLbGR1ZFJyNnVyZDFlajlmaDRIM2NkY3hWSzRwRDVyMFpZUklHTnl1amhHQ3MxOVl6MWdVbyUyQjljTk50WksyTiUyQmxjUTlucHZIdTNBN2NIYWJiaHhDSkV4TWtRaExiTlhlWENzNDR2RG82MXBYWm5nT2FuZ1ZRSUswTHExQktLJTJCRUJSbGRSVWN0eWhtUkElM0QlM0Q&tld=track.adform.net&dy=1&fu=https%253A%252F%252Ftrack.adform.net%252Fserving%252Fcontainer%252F%253Fpm%253D3239568%2526lid%253D145882859%2526ctype%253D0%2526media%253D0%2526PageName%253Drepubblica%25257chomepage%2526sysvars%253D%25257c%25257c%25257c%25257c%2526itm%253DeyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ%2526rnd%253D1933060343%2526cpref%253D%2526loc%253Dhttps%25253a%25252f%25252fwww.repubblica.it%25252f&pu=https%253A%252F%252Fwww.repubblica.it&ceid=64cdc3ae-034c-4a84-8b22-8fba027e959d&gra=1&grs=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA&grv=5"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=sodar&v=34&t=2&li=v_h.0.0.0&bgai=BBZ85-NZYaYydFaX1odAP-eqkuAUAAAAAOAHgBAI&bg=!8POl87zNAAbBJJhj4SQ7ADQBe5WfOKjvfGmMR0kDNdAd59kL_WtLx2xL9OJxnjsWQGGQiHVhLVQHLjya6Am3be3xiVPKAgAAB9tSAAAABGgBB34ANRdqQzh4Qy7t6mh-GyxSOmGHVE_NEXo7yExYAfnIXL7GkXZqeX81qnBoG_v2dEGqv4O_ZUknmQLp2BuoeyDkrdT6GvJ_69TUt0btPzmb8jjV6QZQNSPEJxnOj10LZv_94sZapED50xNjqfjta9QlfOuX_6oJJFuiq6-SDcInLCoe0DRKhP19WBuVnZNkc0eX0PUdMdPQ15-Pttwc5tgMTFutBf8-PTo160IqMbZ1nUCsvQRApmR1KRwtm_N0NvzAri5KCuTpPS9a72VU7iMbwPOQ3JxDdAP1NxqnFzFElRZyV1ynwX9T9cjVbNyD5QYhRA0zvV1sWuDd4Yl9Klh0TqKJTSM9zB_34oy44chVuBH0YCb6oomjb5g_i_S9mwrIsuDtQ3y8dZM7A1z0qG5Oma4GogvxOVWUvDYr-FCF0r9p-26N7Ie7M60OgmmAR9yIt2yhoQ_zKQPY6SZNqKdXIRkSMkX6oRI-y_iddLkkTu5nBne6T4-90pdDOm5uYDrq2s-hzyoM4nK3vrJz4pSA7jK26l3RiDVIlLzJW4-NWbJzRSbugnRwg0OlHIyworlkBec7DLb58MtpypeIELoWCoNOE408xxgiuft-nCUlr7ixKkj-EaklxccwijX2ePe12vu09ypo-mPtlXYaPGfEeRuXvg4LJl_dsFHXlff6EntUKR0O7HnillJVQlQ4lTaC49UeDXmDVQXO0NkKwc8cGpT7goi1wMmAg1NchkgTGLioF8dEpc-oexaT822mFqJ1U4S_DKY4FkGBo4qz29o7W47mr58FvBTim50OVRjzltF6b9DGptuMiRICAA00WFcL39027QX4O9tO71EANWJ7JPXbg53Kg2-1rIU5H3Bs4T4N6XS8zifTdBAMdul2IGToJJ2IVIv9BGzlSx_gMgStVDLVedC9ulBQRDTp-pd1VaCad-jlMP7E6dif4PjsYrBxQOHN3fOBrMr8lkf94v_DALyOvNIQQMsoGe-gqMfxZPOHGes-p1NsqyMX8YJe9EO71jVdHDfI4L8IibDIa9eUQuMnvHc5WMJ6aFMPWUrA-HVMJA"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pcs/activeview?xai=AKAOjsukXrwzRbvjhTS2rWZGuCnmABLFBOtwejq8MpfyxvwBMSrWCxDTbhUFkZHsXuoSngJcpRFKi02Dx3jSQr2fvr4TYKG-RHFW3-Sh_Y3jhQOeRXEcsRbjGIIGckmecg2s_TRAYHx22rVfQMJ4i1FsJVBJrFXLGHpyLPCQjDwgyE4YYzNExNs7jsl2hijoyIDAyP7p1V0g41PsQS9SxkBAANfY&sai=AMfl-YSc1SZOJldUmnEFs9iVLx8EcPcCA6UytXeDRvJQflSrZSMVEp4LvIzNKXUSI-VSBWLcA5MJ-R8pBU90A7UOiRSdEqSBZ5PIl_yMO564DcpnxNNxTQXW8kJz0WM5gI-_gwSSRqZrnLS7jSnJ0AwTsKA&sig=Cg0ArKJSzM3fQiRDzmFkEAE&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yOGAE&id=lidarv&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D9%26sdk%3Do%26p%3D1,78,239,500%26tm%3D2022%26tu%3D0%26tos%3D2022,0,0,0,0%26mtos%3D2022,2022,2022,2022,2022%26mcvt%3D2022%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D2022%26is%3D33554707%26i0%3D33554707%26ic%3D16777217%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2022%26dtoss%3D1%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1530%26dfvs%3D1530%26dvpt%3D1530&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D9%26sdk%3Do%26p%3D1,78,239,500%26tm%3D2022%26tu%3D0%26tos%3D2022,0,0,0,0%26mtos%3D2022,2022,2022,2022,2022%26mcvt%3D2022%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D2022%26is%3D33554707%26i0%3D33554707%26ic%3D16777217%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2022%26dtoss%3D1%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1530%26dfvs%3D1530%26dvpt%3D1530%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=sodar&v=34&t=2&li=v_h.0.0.0&bgai=BzE4P-NZYaciYE5Co4_UPmpPngAwAAAAAOAHgBAI&bg=!gIOlg8zNAAbBJJhj4SQ7ADQBe5WfOGZfYSoXEQvfvD34MbXL_cimO7QvUSBTfzQr8HgDlHV4pcgtd9mUnpp793vWP09yAgAABhFSAAAAA2gBB34ANd2QouhLXyraHIknknuxXAR4Z6f_KR9Xe7hdb_eWv3C2z6-1cr2bvc4wDiQtc_cuD_hWkmugmQLyGNPeGJ0ZLO3qIYvQvIkAtrviDBevFNTZDuVRQ7psIjXGRbea-7utDAVA1VQo4ZoVMpECvR5i6k3qh-toGkh81Ixb4TZp2V2MuaBC359C08dbwOg5pVqG_P9Kfn-fMvQQZ1TGGQtEJgkaZfhBRhjGtPW_fgiqToBpb2k35Vqsr7pAqg1zXL4pioYUTtABnXWn84Exih9qf0OWBV4A9GmgXxlxjDMnMR3w4FtcJFZiPEhzgtmXsl5Hr1oY2yR62kLgtG1hwO8-YI3XdJGWNi6Z7QYReUGvtsI1Q9dZS_VgZOrreOCxwdQt1AwO5Q97mR7e_KL9ZSBOV88YAoi53UoLmYXLGDb2F_UaQjCEBnGBRWx1_lQsEcee-uSpLw8_zJi3W7A3mmT98nS0bSJm6UYfTToVl6no9vBjWLHYEBKoANmgu3gQ2VRHrOApU8650IMLQfZCOviYGtCNOO0nZbjGf8PXfxal1Ub9HJml_TU0jf-g-yGHisfAOs7XvTed2o2H-77hiQm2VnI2oUr66Nnm-Xd72PYasXC8T3xRFDaM9VaxLx-QNum6gmIAgRKffyJ3aKh50NqIrZoxYoaMw7LIQkBMg4mTfX75V35-goHsTBKzrG6-6sbMjlIsPIqRITA9U2XKb4FtXvwEwCz4rdPzTnRYh2mN_X3MK3KhKYkDwbH96cUj5JRAzYZi15MgeuAqUz7pP4cY3U6j7M4rOVq7dKkSSi5-ImXxl9bncEu9t4xGIDlKIRd__cyAbknzE-vZTVlToBSui5flO0g4Rf1a-aprzjrU3ZlCSJAikPdQ66e-biESmi1dTyoCbTgq1ZeyUSOAHe1t7P8TkIX89WLW79YC0cJVAVkkIs7g2Eo3cOMpuLkDuwss9KhJatlbWty-tQpbErTh9mbC-T7iAtPiZ-lLsL_cJwnyticGBYrocWQYzop3hFo_cgFRbk6B0XpqL2z8Oh7kHwZ86Ivs39v1hVhBqk6vI-240Px0rfher9guHQ"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=sodar&v=34&t=2&li=v_h.0.0.0&bgai=BluHG-NZYafeGFOOT6tkPpf72GQAAAAA4AeAEAg&bg=!AAOlA0zNAAbBJJhj4SQ7ADQBe5WfOBMzIfFFcduhXXQrp0ug3S_II9ZPv3iqmB2WFs1nGsYYSmwyJjdyGleJEq0y36-1AgAABvpSAAAABGgBB34ANSzMYhI1mLdsl8Ra_0EZj7qXSPSNmCfYtfkq38GZI_JwL6k0-whRmtfaz1SngcLSyeAVXg4xmQLtOINjemDhWNJzlnnEOC0nF2I33SKqWn4zKvhXM7_RB2AUjddXW0C69yW-hfShEXNGJaa9mWGcSBSDBIHa7YE3pnXUG6kEf7xyUzZyBDviqxe2mY0PdKMDSzQh4bwj8dJdXl795xV0NerqNAsaswhC-lwlspOOGj9vBdamoH7me_JlPhYr2nEobjYrmlUpzN51dXQxMcyRHNCUxiOIAsIv8UjP1rnT_XL8cZumpIT3WwbjzxV9WjpnA069Bh9e-EzRJeL6JUMPzq1Ml8JUIex8tY_xrtuc9NZNKZFfs8n6AleIj4wYMbr6pzDaLrKSay9Uq_kmeRP1H36-GIiErlQNIFx6ga1lyaN5OMBvHECkzAJcJQxibfTXXv4WLG6khEXXJq99n5Ee4Ofh5ELqEX0sTTwN3OoXv4MAHdSTEJuNYx2g97AaSWuGQY2ASRUOrudh05YLaR6-_AswW6dRPBhL025LvONEM9V5R1SWgFE1xXogg0gX5uSBx_uHEX0FmFyMOEaptC0xONF8CPC00P1ARQ_9R9qiwS2x5NW-M7TIjFRId5DhXxQo3eFIA2SwBmVe-Qr4FJ23E5OIAUMO4mh2SOve_xSA0IJKvyKVMDYrkgx-GeLRDWP6n5Wr8Z2X3SrBLEhTg19jNvf8NWrj2GWknlsu6sLXXtxRrrO5wmrg8irIAryTQzs9ihPE3YHH67j6DtNKeJUSc3sQFnerCzlGlLyfcC7iUkMP6UQKxGKZmNB5hYtp7ii5uODWskkYlGvwukj0X0s4JH5OjTKar_WNClbSKyrO0PYnprfPQbULPIM0dXb-O5YNug9cqQAegUQoQvKPdmnO6EEBjJYPzidPlYmN0n2DVGEg8t61lDJmQa9Rmkmx1UhH3vFvjDcPFMiCKMbLdPqeKFVcTxOm5UDuHBBfXtdAzHhvEAgQzY7f_rTJXXHr7_OfRWlhsM00KjgNRrjD-DQJUBwuWNCqRv7ADY2B4rKDPupZJHwB2Bk"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://ib.adnxs.com/getuid?https://dis.criteo.com/dis/rtb/appnexus/cookiematch.aspx?appnxsid=$UID&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/sync?c=8&r=1&a=1&u=https%3A%2F%2Fdpm.demdex.net%2Fibs%3Adpid%3D28645%26dpuuid%3D%40USERID%40&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Outbrain",
+        "url": "https://sync.outbrain.com/cookie-sync?p=criteo&uid=k-sO-GCptLc2afGzLQXgGuAaJhnSK-aylQTbhuAg&initiator=partner&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Taboola",
+        "url": "https://sync-t1.taboola.com/sg/criteortb-network/1/rtb-h/?taboola_hm=k-HBJB0ZtLc2afGzLQXgGuAaJhnSIX11kvm0SuYA&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://dis.criteo.com/dis/rtb/google/cookiematch.aspx?id=&CriteoUserId=k-91El3ZtLc2afGzLQXgGuAaJhnSKmqy3fKrI4tQ&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA&google_error=15"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://dis.criteo.com/dis/rtb/appnexus/cookiematch.aspx?appnxsid=6400367087162392488&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Adobe Analytics",
+        "url": "https://dpm.demdex.net/ibs:dpid=28645&dpuuid=0ITJUF82bXl4T2lUam9pR3pObmY4eVh1UW13YUxZelVBMDdOOXdaJTJCd09YZW9pSmclM0Q"
+      },
+      {
+        "tracker": "Adobe Analytics",
+        "url": "https://dpm.demdex.net/demconf.jpg?et:ibs%7cdata:dpid=28645&dpuuid=0ITJUF82bXl4T2lUam9pR3pObmY4eVh1UW13YUxZelVBMDdOOXdaJTJCd09YZW9pSmclM0Q"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://gum.criteo.com/sync?c=9&r=1&a=1&u=https%3A%2F%2Faa.agkn.com%2Fadscores%2Fg.pixel%3Fsid%3D9212273938%26ct%3D%40USERID%40&gdpr=1&gdpr_consent=CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIAu3TBIQNlHJDURVCgKIgFrzDMaEyUoTtKJ6BkiFMZY2NYCFxvm4tjWQCY4vr99ld9mR-N7dr82dzy26hnv3a9_-S1UJCdIYetDfv8ZBKT-9IE9_x8v4v4_N7pE2-eS1n_tGvp4j9-YvP_dBmxt-TSff7Pn__rl_e7X__c_n37v94XX77__-__f_-7___2b_--C9kBYAHAAzQDPgI8ASqA7YCCgEaQJEASUAlGBMkCiwFHAKpAVZArABXMCvoFqwLeAXsAGCQdwAFwAUABUAC4AHAAPAAgABIAC-AGQAagA8ACGAEwAKoAbwA_ACEgEMARIAjgBNACtAGAAMOAZQBlgDZAHPAO4A74B7AHxAPsA_QCAAEUgIuAjEBGgEcgJEAk0BPwFBgKgAq4BcwC9AGKANEAbQA3ABxAD2gIdgR6BIoCaQE7AKHAUeApEBTYC2AFwALkAXYAu8BeYDDYGRgZIAycBlwDMwGcgM-gauBrIDYwG0ANvAbmA3UByYDlwHjgPjAf8BAQCCYEGAIQwQtBC-CHoIfgR9AkVBJgEmQJZgS3Al8BMACZYEzgJqgTYAm4BOYCdIE7gJ4QUHBQgChYFFQKSgUuApkBTyCn4KgAVGAqcBV0CtgFbwK-AWFAscBZUC00FrAWtAtyBcUC9Q6ESAAuACgAKgAcABAACSAFwAXwAyADUAHgATAApgBVgC4ALoAYgA3gB-gEMARIAjgBNACjAFaAMAAYYAygBogDZAHPAO4A74B7AHxAPsA_YCKAIxARwBJoCfgKDAVEBVwCxAFzgLyAvQBigDaAG4gOIA4wB7QD7AIQAQ6AicBF8CPQJFATIAmkBOwCh4FHgUgApMBTYCrAFigLYAW6AuABckC7ALtAXeAvMBfQDDQGPQMjAyQBk4DKoGWAZcAzMBnIDPgGmgNVgauBrADaAG3gN1AcWA5MBy4DxwHxgPrAfcA_sB_wEAQICAQYAhaBD0COwEfQJCASKAkyBKuCWYJaAS6Al8BMACZYEzgJqgTYAm4BOYCdME7QTuAngBPMCgwFCAKFgUSAoqBSUClwFPAKfgVGAqdBVwFXQK2AVvAsGBZMCysFrAWtAtyBbsC4oFxwLlgXqIQPgAFgAUABcADUAKoAXAAxABvAD8AMAAc8A7gDvAIoARwAlIBQYCogKuAXMAxQBtADjAIdAROAj0BNICkwFNgKsAWKAtEBcAC5AF2AMjAZOAzkBqoDxwHxgP7AgIBBgCFoEPQJCASKAl0BM4CbAE5gJ3ATwAnmBQYCioFJQKXAU_Aq-BYIC1oFuSUFAABYAFAAOAAkAB4AEMAJgAVQAuABigEMARIAjgBRgCtAGAANkAd4A_ACOQFRAVcAuYBigDiAIQAQ6Ai-BHoEigKPAUnApoCmwFigLYAXIAuwBecDIwMkAZOAywBnIDPgGsANvAfGBAECAgEDwIMAQhAh6BH0CRQElQJVgStAl0BL4CZwE1QJsATcAnNBO0E7gJ4ATzAoqBSUClwFPAKjAVOArYBW-CwQLBgWLAsrBawFrQLcgXIAuWBeopBwAAXABQAFQAOAAgABJADIANAAeABDACYAFUAMQAfoBDAESAI4AUYArQBgADKAGiANkAc4A74B9gH6ARYAjEBHAElAKDAVEBVwC5gF5AMUAbQA3EBxAHGAPaAfYBDoCJwEXwI9AkUBNICdgFDgKQAUnApoCmwFWALFAWwAuABckC7ALtAXmAvoBhsDIwMkAZPAywDLgGcwNYA1kBt4DdQHJgPFAeOA-MB_YD_gICAQTAgwBCECFoEMwIcgR2Aj6BIqCTAJMgSrAlmBLoCXwEwAJlgTOAmqBNgCc0E7QTuAngBPMChYFFQKSgUuAp4BT8CowFTgK2AVvAsEBYUCxYFkwLKwWsBa0C3IFxQLkAXqLAkQAHwAYABkAEUAKgAsgBqAG8AQgBDACKAEgAK4AXwA2AB_AFIAMAAZYA4AB3AEcAJEAUUApoBdgC9AGEAMaAZwA04BzQDqgHoAPsAgUBB4CPQExAJtATvAocCiIFNAU2AqyBYgFigLOAWiAtgBcAC7AF3AL9AYAAwcBhgDDwGPgMhAZWAzMBn4DQoGigaMA1MBrQDYAGxwNqA2sBuADdAG_AOOAcsA60B3EDuwO8gd-B4QDxwHvAPpggICAoEFwIYAQ4Ah6BE0CKIEWQI5AR6gj-CQQEnAJWgSyAmUBM2CbAJswTbBN0CcYE5gJ3ATwAnkBPaCfgJ-gT_AoDBQ4FDwKIgUTAouBRkCkAFJAKTAUuApsBTgCn4FQgKjgVWAq1BV4FX4KwgrGBWYCt0FcAVxAsKBYkCyAFlALLAWYAs4BaMC08FrQWugtmC2gFuQLdgXOAuoBdkC7oF4QL1gXuAvgAAA"
+      },
+      {
+        "tracker": "Clarity",
+        "url": "https://i.clarity.ms/collect",
+        "event": "Recording",
+        "eventCategory": "session"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;ecn1=1;etm1=0;eid1=960584;"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&label=videoplaytime25&ad_mt=3958"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yO&label=active_view_video_playtime_25&ad_mt=%5BAD_MT%5D&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D1%26sdk%3Do%26p%3D1,78,239,500%26tm%3D3534%26tu%3D0%26tos%3D3534,0,0,0,0%26mtos%3D3534,3534,3534,3534,3534%26mcvt%3D3534%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D3534%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D1512%26dtoss%3D2%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1512%26dfvs%3D1512%26dvpt%3D1512%26qmt%3D1512,1512,1512,1512,1512%26qas%3D0%26qnv%3D0%26qmv%3D0&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D1%26sdk%3Do%26p%3D1,78,239,500%26tm%3D3534%26tu%3D0%26tos%3D3534,0,0,0,0%26mtos%3D3534,3534,3534,3534,3534%26mcvt%3D3534%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D3534%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D1512%26dtoss%3D2%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1512%26dfvs%3D1512%26dvpt%3D1512%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;acvw=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D1%26sdk%3Do%26p%3D1,78,239,500%26tm%3D3538%26tu%3D0%26tos%3D3538,0,0,0,0%26mtos%3D3538,3538,3538,3538,3538%26mcvt%3D3538%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D3538%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D1511%26dtoss%3D2%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1511%26dfvs%3D1511%26dvpt%3D1511%26qmt%3D1511,1511,1511,1511,1511%26qas%3D0%26qnv%3D0%26qmv%3D0;gv=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D1%26sdk%3Do%26p%3D1,78,239,500%26tm%3D3538%26tu%3D0%26tos%3D3538,0,0,0,0%26mtos%3D3538,3538,3538,3538,3538%26mcvt%3D3538%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D3538%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50333971%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D1511%26dtoss%3D2%26c%3D1%26mc%3D1%26nc%3D1%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D1511%26dfvs%3D1511%26dvpt%3D1511%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0;ecn1=1;etm1=0;eid1=210002;"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yO&label=active_view_pause&ad_mt=%5BAD_MT%5D&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4258%26tu%3D99%26tos%3D4159,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4258%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D1024%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D625%26dtoss%3D3%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D625%26dfvs%3D625%26dvpt%3D724&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4258%26tu%3D99%26tos%3D4159,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4258%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D1024%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D625%26dtoss%3D3%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D625%26dfvs%3D625%26dvpt%3D724%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;acvw=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4258%26tu%3D99%26tos%3D4159,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4258%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D1024%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D621%26dtoss%3D3%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D621%26dfvs%3D621%26dvpt%3D720;gv=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4258%26tu%3D99%26tos%3D4159,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4258%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D1024%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D621%26dtoss%3D3%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D621%26dfvs%3D621%26dvpt%3D720%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0;ecn1=1;etm1=0;eid1=210008;"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/13139670644863070149?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/15864419000114016158"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/15864419000114016158"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/8113791365703197766?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/927391625083895835?"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/simgad/12530598733788822031"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/abg_lite_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://tpc.googlesyndication.com/pagead/js/r20251211/r20110914/client/window_focus_fy2021.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/managed/js/activeview/current/ufs_web_display.js"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=fle-fetch-start2"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=colleague-executed&name=4"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "Criteo",
+        "url": "https://static.criteo.net/empty.html"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pagead/gen_204?id=av-js&type=reach&proto=CAlgAWACaAM%3D"
+      },
+      {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140z8853765578za20gzb853765578zd853765578&_p=1767429877950&gcs=G111&gcd=13r3v3r3r5l1&npa=0&dma=0&tcfd=10000&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=1&pscdl=noapi&_eu=AAAAAAQ&_s=2&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dr=https%3A%2F%2Fwww.repubblica.it%2F&dt=Crans-Montana%2C%20la%20procuratrice%3A%20%E2%80%9CInnesco%20dalle%20fontane%20luminose.%20Si%20indaga%20per%20omicidio%20e%20lesioni%22%20-%20la%20Repubblica&tfd=14825",
+        "gcsRaw": "G111",
+        "consentMode": "granted",
+        "gcd": "13r3v3r3r5l1",
+        "events": [
+          "video_play"
+        ],
+        "event": "video_play",
+        "isStandardEvent": false,
+        "eventCategory": "custom",
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "TikTok Pixel",
+        "url": "https://analytics.tiktok.com/api/v2/pixel"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yO&label=active_view_resume&ad_mt=%5BAD_MT%5D&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D7%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4279%26tu%3D99%26tos%3D4180,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4279%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D21%26dtoss%3D4%26c%3D1%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D21%26dfvs%3D21%26dvpt%3D21&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D7%26sdk%3Do%26p%3D1,78,239,500%26tm%3D4279%26tu%3D99%26tos%3D4180,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D4279%26is%3D33554707%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D21%26dtoss%3D4%26c%3D1%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D0%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D21%26dfvs%3D21%26dvpt%3D21%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://googleads.g.doubleclick.net/pagead/interaction/?ai=Cys839tZYadrqJ4-ouvQP9YbLwQ2FvfyChAGn09LYmhWMkoz92AEQASD7qbshYP0CoAHr_e3iAcgBBagDAcgDmwSqBK8CT9DshrNIb3q4Sx3KsBMaXWB0o_NJttBMDIsrUoEfshAbemZPXxdOHB3RI6JQ2K7xdc4qXDA85peLrOlMAKcUAxjVh10cESvZFSz7aCkeoWd2dBINhsH8WuVoxYKA6n_NQLun0nY9ffdeF3RJubSHiu4TQYfyiNpWDKhWAQuM40_sEU1Wqtb5wCaWPPcnqrtK2mibz9hp4g55ePulprgvIMvK7nIxrNx4eA_5ctrnzB_ZtbwB91Y8heR1dx0eGuMZE0BQnpdH4s-y3STWtaz9VCrv51gj-AmuVK4KC7CUl-gq_3m0rOyxJlpNo3jNTs1gKA82GUQ2M73-ORUB_TAxvmZn8LI4EMaS7yfypjffEaNaWStiOCB2ck8hvNDToRQYSPnY8Nj6We9oVfJnSVmwwASY9e3pwgXgBAOIBeDIy-JWkAYBoAZ5gAf9gZKdAqgHpr4bqAfMzrECqAfz0RuoB5bYG6gHqpuxAqgHjs4bqAeT2BuoB_DgG6gH7paxAqgH_p6xAqgHr76xAqgH1ckbqAfZtrECqAeaBqgH_56xAqgH35-xAqgH-MKxAqgH-8KxAqgHv9OxAqgH59exAtgHANIIMgiA4YAQEAEYnQEyCKqCgICAgIAIOg6AwAOAgISAgJSu4AOoB0i9_cE6WNzxyLD97pEDgAoDyAsBgAwBqg0CSVTiDRMIv7HKsP3ukQMVD5SOCB11wzLY6g0TCLKFzLD97pEDFQ-UjggddcMy2PANAYgO____________AbATuoDeH9gTDYgUAdgUAdAVAcoWAgoA-BYBgBcBshcOGAIqCjg0MjI0MDk0MjeqGBcJANAv28s3GkESCjg0MjI0MDk0MjcYAbIYCRIC41kYeSIBANAZAQ&sigh=gajMexS3-fM&cid=CAQSUADCSxrRCOBbjNWJYdH95rBHu6P_XvNmqyl8yHwlzKntmed2ghiAeyHOZfF9DMw2AKHvFyHJvuygNd0-87-20vEjaXLYB6McKQ384E2Kr0yO&label=active_view_pause&ad_mt=%5BAD_MT%5D&acvw=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D7127%26tu%3D110%26tos%3D7017,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D7127%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2837%26dtoss%3D5%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D2837%26dfvs%3D2837%26dvpt%3D2848&gv=v%3D20251210%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D7127%26tu%3D110%26tos%3D7017,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D7127%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2837%26dtoss%3D5%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D2837%26dfvs%3D2837%26dvpt%3D2848%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMIyPS5sf3ukQMVENS4CB2ayRnAEAAYACC2q_91QhMI2r3UsP3ukQMVD5SOCB11wzLYSABQOliYdWDb-_ILaNyeo9ABePaz9wGCAZsBChMI2r3UsP3ukQMVD5SOCB11wzLYEhMIqpa5sf3ukQMV_AdECB3BSgUrIhoI4MjL4lYQrYr7zQKoAtKLtp0CsAL1jNHoAyjXCEAB4AEBgAIBmAIBoAKn09LYmhWoAgLAAnnIAvupuyHSAiYYACITCNq91LD97pEDFQ-UjggddcMy2CgBMAE4p9PS2JoVQAFIAZoDBKLc6LXQAwM;dc_eps=AHas8cDpRsbIOgzPo4FvaHJzFwCsrhVDFkoZiHABpxa3tCbcigkM2XPya8W_W9oPxtgGNfKhRQoNHAm4D3OWAk6deUzVnNbFbg2WdYWLLhWD;met=1;acvw=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D7127%26tu%3D110%26tos%3D7017,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D7127%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2833%26dtoss%3D5%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D2833%26dfvs%3D2833%26dvpt%3D2844;gv=v%3D20251209%26bin%3D30%26cb%3Drxov%26e%3D6%26sdk%3Do%26p%3D1,78,239,500%26tm%3D7127%26tu%3D110%26tos%3D7017,0,0,0,0%26mtos%3D4159,4159,4159,4159,4159%26mcvt%3D4159%26ps%3D0,0%26scs%3D0,0%26bs%3D0,0%26a%3D0%26at%3D0%26dat%3D0%26amtos%3D0,0,0,0,0%26as%3D0%26vpt%3D7127%26is%3D33554450%26i0%3D33554707%26i1%3D33554707%26ic%3D0%26cs%3D50334995%26gmm%3D4%26nmt%3D0%26tcm%3D0%26dur%3D15000%26dtos%3D2833%26dtoss%3D5%26c%3D0%26mc%3D1%26nc%3D0%26lte%3D1%26mv%3D0%26nv%3D0%26avms%3Domid%26psm%3D1%26ces%3D200104%26ssb%3D0,0,0,0,0,0,0,0,0,0,0%26omidp%3DGoogle2%26omidpv%3D0.0.0%26omidor%3D8%26omids%3Dh%26omidam%3Dl%26omidct%3Dvideo%26omidia%3D0%26nopd%3D0%26dvs%3D2833%26dfvs%3D2833%26dvpt%3D2844%26atos%3D0,0,0,0,0%26avt%3D0%26davs%3D0%26dafvs%3D0%26dav%3D0%26ss%3D0;ecn1=1;etm1=0;eid1=210008;"
+      },
+      {
+        "tracker": "Google Ads",
+        "url": "https://pagead2.googlesyndication.com/pcs/activeview?xai=AKAOjst_cDbF8LbpR4EcMDCxKqMARSTaki4KoMrJW1tq1YNBtUKlNCRgJ0GIPa5w7djW_x5QNvap9G5CFDMX8QHOHcDMasbOEbikbknunDJCrjeC4zmCE1WC1en-9_CwTVDSLPhprWTGhUgIzokBw0U7sIpKJ9nXyRrAyET4rI9rgCuYiTvpN2IF40jqqGfM&sig=Cg0ArKJSzOrlQuJklmExEAE&id=lidar2&mcvt=1000&p=7850,1415,7851,1416&tm=18899.400000095367&tu=17793.299999713898&mtos=1000,1000,1000,1000,1000&tos=1106,0,0,0,0&v=20251210&bin=7&avms=nio&bs=1920,1080&mc=1&vu=1&app=0&itpl=19&adk=1230652169&rs=4&la=0&cr=0&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNDMuMC43NDk5LjQiLG51bGwsMCxudWxsLCI2NCIsW1siSGVhZGxlc3NDaHJvbWUiLCIxNDMuMC43NDk5LjQiXSxbIkNocm9taXVtIiwiMTQzLjAuNzQ5OS40Il0sWyJOb3QgQShCcmFuZCIsIjI0LjAuMC4wIl1dLDBd&vs=4&r=v&co=6336267900&rst=1767429879587&rpt=460&isd=0&lsd=0&met=ce&wmsd=0&pbe=0&fle=0&vae=0&spb=0&sfl=0&ffslot=0&reach=8&io2=0"
+      }
+    ],
+    "cookies": [
+      {
+        "name": "gig_canary",
+        "domain": "cdns.eu1.gigya.com",
+        "value": "latest",
+        "expires": 1767430472.250303,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "kw_wtu",
+        "domain": ".repubblica.it",
+        "value": "https://www.repubblica.it/",
+        "expires": 1767516272,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_1pc_enableds",
+        "domain": ".repubblica.it",
+        "value": "true",
+        "expires": 1801989872.316307,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_sntseg",
+        "domain": ".repubblica.it",
+        "value": "off",
+        "expires": 1767516272,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_inc",
+        "domain": ".repubblica.it",
+        "value": "off",
+        "expires": 1798965872,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "___nrbic",
+        "domain": ".repubblica.it",
+        "value": "2|t8a5m8|t8a5m8|t8a5m8|5770e2b3-1e23-48a9-9b56-2eae14d8dff4|%5B%5D|true|1|https%3A%2F%2Fwww.repubbli...",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "___nrbi",
+        "domain": ".repubblica.it",
+        "value": "2|t8a5m8|2407de0f-423a-4694-95a2-21f138eb7047|%5B%5D|t8a5m8|1|||",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "compass_uid",
+        "domain": ".repubblica.it",
+        "value": "2407de0f-423a-4694-95a2-21f138eb7047",
+        "expires": 1782978273,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_cb",
+        "domain": ".repubblica.it",
+        "value": "B5Q8JZCsV9XTDkEIS0",
+        "expires": 1801557872,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_chartbeat2",
+        "domain": ".repubblica.it",
+        "value": ".1767429872692.1767429872692.1.Bgj9f2DLG1pnBGrJ1iDok0LECySO6V.1",
+        "expires": 1801557872,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_cb_svref",
+        "domain": ".repubblica.it",
+        "value": "external",
+        "expires": 1767431672,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_t_tests",
+        "domain": ".repubblica.it",
+        "value": "eyJKejJURFl5cmYydEFCIjp7ImNob3NlblZhcmlhbnQiOiJBIiwic3BlY2lmaWNMb2NhdGlvbiI6WyJqT3Z5UCJdfSwibGlmdF9l...",
+        "expires": 1767433472,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "6517_u",
+        "domain": ".newsroom.bi",
+        "value": "2407de0f-423a-4694-95a2-21f138eb7047",
+        "expires": 1782981880.174438,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_s",
+        "domain": ".newsroom.bi",
+        "value": "5770e2b3-1e23-48a9-9b56-2eae14d8dff4",
+        "expires": -1,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_lv",
+        "domain": ".newsroom.bi",
+        "value": "null",
+        "expires": 1770021880.174613,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "6517_ut",
+        "domain": ".newsroom.bi",
+        "value": "0",
+        "expires": 1770021880.174632,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "gmid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "gmid.ver4.AtLtl5rpew.G5VGDdmUEspUtD-IuklndvJxedfy_JxxIsiQLfQLWoW6zWG15UZCyTQn9IXqs4Ry.8Sx6GMPDamtr-8...",
+        "expires": 1798965873.054706,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ucid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "XCNvNR7d6XvkRKi83hPrpA",
+        "expires": 1798965873.054821,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "hasGmid",
+        "domain": ".eulogin.repubblica.it",
+        "value": "ver4",
+        "expires": 1783068273.0549,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "gig_bootstrap_3_1LA7c1Tgh8TOu8RyhRNltE6n6Avs4pEXj5bhyQNpnpC3KHJ60mcdJ6xOubYt6iUJ",
+        "domain": ".repubblica.it",
+        "value": "eulogin_ver4",
+        "expires": 1798965873,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "IMRID",
+        "domain": ".imrworldwide.com",
+        "value": "6d0cf8f1-e880-11f0-9cd2-b91937905831",
+        "expires": 1801125873.225438,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "_ga",
+        "domain": ".repubblica.it",
+        "value": "GA1.1.1326319462.1767429874",
+        "expires": 1801989879.049026,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "__cf_bm",
+        "domain": ".onesignal.com",
+        "value": "QHWl2chYH3fQUasJug0Qyo2XHLXmvt6DtQvFiFUdhRc-1767429877-1.0.1.1-L_w6AcZiRj7EX7QjHGK44MNa4JyhmjvsS03jO...",
+        "expires": 1767431677.02809,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "kw_gedicluster",
+        "domain": ".repubblica.it",
+        "value": "404",
+        "expires": 1767516277,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "blaize_session",
+        "domain": ".repubblica.it",
+        "value": "1840062b-6264-4b6e-88b6-ccfdc6e76151",
+        "expires": 1779525877.28816,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "blaize_tracking_id",
+        "domain": ".repubblica.it",
+        "value": "fb81b737-50a9-4e19-9998-a244941a051a",
+        "expires": 1801989877.288182,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "AWSALB",
+        "domain": "www.repubblica.it",
+        "value": "FAM7DLHWvzls7/ffoZnPQl4hJYJw3OzghHjCifaJzqbuBf3TUW6FTMunNDoCJDLlAc9wVb4Ki55I1w8qAJOXNFW/xsrIOyiwcGFD...",
+        "expires": 1768034677.483747,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "AWSALBCORS",
+        "domain": "www.repubblica.it",
+        "value": "FAM7DLHWvzls7/ffoZnPQl4hJYJw3OzghHjCifaJzqbuBf3TUW6FTMunNDoCJDLlAc9wVb4Ki55I1w8qAJOXNFW/xsrIOyiwcGFD...",
+        "expires": 1768034677.483887,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ope_uid",
+        "domain": ".tagger.opecloud.com",
+        "value": "2-yESj57+WTh+3Dnk4JT2lq/idnrwZcJ78YLzC4ukfYBsZOxpxVrv+j1VFigW+SvuQQ77ovg==",
+        "expires": 1798965877.560788,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ope_uidp",
+        "domain": ".tagger.opecloud.com",
+        "value": "0312b708-9099-4ccd-8e4b-24f6cd236bbc",
+        "expires": 1798965877.560887,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "kw_dmpsgms",
+        "domain": ".repubblica.it",
+        "value": "3,11,15,16,17,26,34,35,73,74,1z,2v,4j,f,g,u,nonabbonato",
+        "expires": 1798965877,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_iub_cs-23960187",
+        "domain": ".repubblica.it",
+        "value": "%7B%22timestamp%22%3A%222026-01-03T08%3A44%3A36.892Z%22%2C%22version%22%3A%221.90.1%22%2C%22consent%...",
+        "expires": 1783154676,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "euconsent-v2",
+        "domain": ".repubblica.it",
+        "value": "CQdc5gAQdc5gAB7FwBITCMFsAP_AAAAAAAAAL4tR_G__bXlr-bb36ftkeYxf9_hr7sQxBgbJk24FzLvW7JwX32E7NAzatqYKmRIA...",
+        "expires": 1798934400,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "_iub_cs-23960187-granular",
+        "domain": ".repubblica.it",
+        "value": "%7B%22gac%22%3A%22MX4qAQIBCAEFAQgBDAEFAQMBDgEIAQQBAQEKAQcCAgEBAQkBIAEDAQ4BEAEBAQgBEwEGARMBBAETAQgBAQ...",
+        "expires": 1783154677,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "_iub_previous_preference_id",
+        "domain": ".repubblica.it",
+        "value": "%7B%2223960187%22%3A%222026%2F01%2F03%2F08%2F44%2F36%2F892%2F38f2c9%22%7D",
+        "expires": 1783154677,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "i",
+        "domain": ".openx.net",
+        "value": "e42e7451-1aef-4dba-ab2b-df2e857b37c1|1767429877",
+        "expires": 1798965878.147628,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "lotame_domain_check",
+        "domain": ".repubblica.it",
+        "value": "repubblica.it",
+        "expires": 1767429887,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "panoramaId_expiry",
+        "domain": ".repubblica.it",
+        "value": "1767516277917",
+        "expires": 1767516277,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_gedicluster_status",
+        "domain": ".repubblica.it",
+        "value": "3",
+        "expires": 1767516278,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_dmpid",
+        "domain": ".repubblica.it",
+        "value": "ope:2-7RDYFW2GTZT2FPFVV53UGNWQVEIGDLJFHASDBA7IG3O26EMAPXLA____",
+        "expires": 1798965878,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "pd",
+        "domain": ".openx.net",
+        "value": "v2|1767429878|gyvMkWxhhE",
+        "expires": 1768725878.147695,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "uid",
+        "domain": ".criteo.com",
+        "value": "12a193f4-dfd9-49ef-a4d6-fc747f347c30",
+        "expires": 1801125878.196978,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TDID",
+        "domain": ".adsrvr.org",
+        "value": "cfd4d0d7-1480-4504-8f94-acfb4654129e",
+        "expires": 1798965878.263692,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TDCPM",
+        "domain": ".adsrvr.org",
+        "value": "CAEYBSABKAIyCwiA3YH24avlPhAFOAE.",
+        "expires": 1798965878.263765,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "uid",
+        "domain": ".turn.com",
+        "value": "2492452532467798156",
+        "expires": 1782981880.786968,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "khaos",
+        "domain": ".rubiconproject.com",
+        "value": "MJY246AI-5-IUQW",
+        "expires": 1798965884.937995,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "khaos_p",
+        "domain": ".rubiconproject.com",
+        "value": "MJY246AI-5-IUQW",
+        "expires": 1798965884.938027,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "FCCDCF",
+        "domain": ".repubblica.it",
+        "value": "%5Bnull%2Cnull%2Cnull%2Cnull%2Cnull%2Cnull%2C%5B%5B32%2C%22%5B%5C%22347455c6-f34b-4a72-ace4-d3999ca1...",
+        "expires": 1801125878,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "cto_bundle",
+        "domain": ".repubblica.it",
+        "value": "rKAzV19zUEY4UWpnY3lMbzc0Z1BxT2s4T21zcG5uRDJmZzZyWUlCR2FDYjJnaXVLWGpuSVFaNzN4JTJCZGNFMWNVUWlDMEhNNnVu...",
+        "expires": 1801125878,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "A3",
+        "domain": ".yahoo.com",
+        "value": "d=AQABBPbWWGkCEJonhGnBMN9uDHTlVVuPWi8FEgEBAQEoWmliadxP0iMA_eMDAA&S=AQAAAgQbincajEU8h4O_2aJXg00",
+        "expires": 1798987481.075477,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "IDE",
+        "domain": ".doubleclick.net",
+        "value": "AHWqTUmzv_YA-l5Lof1JCd5nSkD7ct9m8nOhP46MNbmDtyAQpFvW-uvGbE5mzX2DibQ",
+        "expires": 1801989879.411846,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__gads",
+        "domain": ".repubblica.it",
+        "value": "ID=7812981ed5d71cc3:T=1767429878:RT=1767429878:S=ALNI_MY4WMjp-S7Rlesrr2tQl-zjIux88w",
+        "expires": 1801125878,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__gpi",
+        "domain": ".repubblica.it",
+        "value": "UID=000012e257c5787a:T=1767429878:RT=1767429878:S=ALNI_MZz0T-STy3Dbh8KRrkgqpnszVuySA",
+        "expires": 1801125878,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__eoi",
+        "domain": ".repubblica.it",
+        "value": "ID=56e0ee9e31af244d:T=1767429878:RT=1767429878:S=AA-AfjZOBElehfCvRQCf_ali7ECj",
+        "expires": 1782981878,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "C",
+        "domain": ".adform.net",
+        "value": "1",
+        "expires": 1770108280.05423,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "uid",
+        "domain": ".adform.net",
+        "value": "5791324574883171845",
+        "expires": 1772613880.291476,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "___iat_gid",
+        "domain": ".insurads.com",
+        "value": "1490B95F475B1052",
+        "expires": 1798965880.46293,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "APC",
+        "domain": ".doubleclick.net",
+        "value": "AfxxVi5bapDUli-1uu6D4gGX9v8YFhwKEcsoYafbVxFOGDruHZJh0g",
+        "expires": 1782981880.376084,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "___iat_ses",
+        "domain": ".repubblica.it",
+        "value": "1490B95F475B1052",
+        "expires": 1767431680,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "___iat_vis",
+        "domain": ".repubblica.it",
+        "value": "1490B95F475B1052.229a192757aae55a30bd1f39f8a17815.1767429880115.f0806ab0b3f2a82287f06a609a7b4349.AAR...",
+        "expires": 1782981880,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_ga_CJNJE8FY4S",
+        "domain": ".repubblica.it",
+        "value": "GS2.1.s1767429873$o1$g0$t1767429880$j56$l0$h0",
+        "expires": 1801989880.400363,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "eud",
+        "domain": ".rfihub.com",
+        "value": "H4sIAAAAAAAA_-OSMXR2dA12dfcKDMn1d3U1q8g1DbVwTIvMCQw2SA7iNTQ3MzcxsrSwMDA3MX_FiMK3AAAJXcpjPQAAAA",
+        "expires": 1801125880.750842,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ruds",
+        "domain": ".rfihub.com",
+        "value": "H4sIAAAAAAAA_-MStjQwMrIwNbG0tDQ1NLW0MDM1sBTiM9TNK88L9I70jAgqSMsEAGtKn8YlAAAA",
+        "expires": -1,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "rud",
+        "domain": ".rfihub.com",
+        "value": "H4sIAAAAAAAA_-MStjQwMrIwNbG0tDQ1NLW0MDM1sBTiM9TNK88L9I70jAgqSMsEAGtKn8YlAAAA",
+        "expires": 1801125880.750989,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "euds",
+        "domain": ".rfihub.com",
+        "value": "H4sIAAAAAAAA_-OSMXR2dA12dfcKDMn1d3U1q8g1DbVwTIvMCQw2SAYAO7WsHh4AAAA",
+        "expires": -1,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ssi",
+        "domain": ".sitescout.com",
+        "value": "bdced665-be9f-44df-b408-0ad129743bc4#1767429880756",
+        "expires": 1798965881.012625,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__uis",
+        "domain": ".go.sonobi.com",
+        "value": "85876a82-6fda-4cba-81f7-13acb41c106d",
+        "expires": 1798965880.77302,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "HAPLB3G",
+        "domain": ".go.sonobi.com",
+        "value": "s3598|aVjW+",
+        "expires": -1,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "mlcwc",
+        "domain": ".moloco.com",
+        "value": "eyJ2ZXJzaW9uIjoxLCJwYXlsb2FkIjoiNlkxVmVZckd1VFIycUFoTW4wdlgxZEwwUDNVZU1tN3pFTVFIRDNlTmRnUXl5OVhtNnhK...",
+        "expires": 1798965880.774899,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "receive-cookie-deprecation",
+        "domain": ".rubiconproject.com",
+        "value": "1",
+        "expires": 1775205884.938098,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "tt_viewer",
+        "domain": ".teads.tv",
+        "value": "46aa77a0-3532-4bc4-add1-178a9642d007",
+        "expires": 1798879480.792846,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "bcookie",
+        "domain": ".linkedin.com",
+        "value": "\"v=2&3ad30940-7144-4dd1-8c47-68867214939e\"",
+        "expires": 1798965880.81513,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "lidc",
+        "domain": ".linkedin.com",
+        "value": "\"b=VGST05:s=V:r=V:a=V:p=V:g=3531:u=1:x=1:i=1767429880:t=1767516280:v=2:sig=AQHdB83hS2u-givj10a5OlahO...",
+        "expires": 1767516280.815228,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "uids",
+        "domain": ".4dex.io",
+        "value": "eyJ1aWRzIjp7ImFkYWdpbyI6eyJleHBpcmVzIjoiMjAyNi0wMy0wNFQwODo0NDo0MC44MDUzNDk0ODVaIiwidWlkIjoiNjcyYjRi...",
+        "expires": 1772582400.822004,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "suid",
+        "domain": ".simpli.fi",
+        "value": "2F88295249F143B09F5921CDCB53EF4C",
+        "expires": 1799052280.86053,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "wrvUserID",
+        "domain": ".yellowblue.io",
+        "value": "spIe9YanCH",
+        "expires": 1770021880.943811,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "SCM",
+        "domain": ".smaato.net",
+        "value": "0fff0c0501",
+        "expires": 1769244280.944449,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "SCMg",
+        "domain": ".smaato.net",
+        "value": "0fff0c0501",
+        "expires": 1769244280.944502,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "tuuid",
+        "domain": ".360yield.com",
+        "value": "f5824f65-494f-4284-b0f3-77625e2849ea",
+        "expires": 1775205880.944987,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "tuuid_lu",
+        "domain": ".360yield.com",
+        "value": "1767429880",
+        "expires": 1775205880.945052,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "tuuid",
+        "domain": ".bidswitch.net",
+        "value": "0511f3fb-215e-47f3-98f2-3c19766da136",
+        "expires": 1798965881.076703,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "c",
+        "domain": ".bidswitch.net",
+        "value": "1767429880",
+        "expires": 1798965880.945751,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "presage-ssp",
+        "domain": ".presage.io",
+        "value": "%7B%22uuid%22%3A%2229a3ee44-75d8-42b5-bc41-11cd57a0610f%22%7D",
+        "expires": 1783241080.946363,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "_ssuma",
+        "domain": ".sitescout.com",
+        "value": "eyI2OCI6MTc2NzQyOTg4MDk5MH0",
+        "expires": 1770021881.012715,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TEST-COOKIE",
+        "domain": ".inmobi.com",
+        "value": "YES",
+        "expires": 1798965881.072949,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "idsp_c",
+        "domain": ".inmobi.com",
+        "value": "3eedeed4-3f73-40d1-98c8-36e7261a62f3",
+        "expires": 1775205881.074929,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "IDSYNC",
+        "domain": ".analytics.yahoo.com",
+        "value": "\"19h2~2ti8:19h1~2ti8\"",
+        "expires": 1798965881.075421,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "tuuid_lu",
+        "domain": ".bidswitch.net",
+        "value": "1767429881",
+        "expires": 1798965881.076778,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "gob_cookie",
+        "domain": ".inmobi.com",
+        "value": "YES",
+        "expires": 1798965881.17851,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "iid",
+        "domain": ".inmobi.com",
+        "value": "ID5-3-b5d4ae9f-4073-49c0-b3f1-76c4dccb2c73",
+        "expires": 1798965881.178425,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "3pc_test",
+        "domain": "static.anonm.io",
+        "value": "1",
+        "expires": 1767433481,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "lantern",
+        "domain": ".repubblica.it",
+        "value": "f37c76ba-7b71-4544-af12-b4df0f62e10a",
+        "expires": 1770021881,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "FCNEC",
+        "domain": ".repubblica.it",
+        "value": "%5B%5B%22AKsRol-ljDAl2l4A9Gu7e5jF2VDuq9n6Uo79FXICyWNZz9vC5hfjAmtC9YFHwqaO6wa1GU9ikL4qV-HXgmVUogYAOSo...",
+        "expires": 1798965881,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "_ttp",
+        "domain": ".tiktok.com",
+        "value": "37jweISO0roeIWXkb5QwsZtzQWW",
+        "expires": 1801125881.615937,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ad-id",
+        "domain": ".amazon-adsystem.com",
+        "value": "A_zy5vBI4k9-rrnTtGshgzA",
+        "expires": 1790844281.773099,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ad-privacy",
+        "domain": ".amazon-adsystem.com",
+        "value": "0",
+        "expires": 1801989881.773172,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__rtbh.uid",
+        "domain": "track.adform.net",
+        "value": "%7B%22eventType%22%3A%22uid%22%2C%22id%22%3A%22unknown%22%2C%22expiryDate%22%3A%222027-01-03T08%3A44...",
+        "expires": 1798965882,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "__rtbh.lid",
+        "domain": "track.adform.net",
+        "value": "%7B%22eventType%22%3A%22lid%22%2C%22id%22%3A%22mqoC8chVaxSksnYSKvGM%22%2C%22expiryDate%22%3A%222027-...",
+        "expires": 1798965882,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "idw-fe-id",
+        "domain": "www.repubblica.it",
+        "value": "89752616-0ea6-4cc3-8091-e2a03f6334c2",
+        "expires": 1798965882,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "kw_qr_dc",
+        "domain": ".repubblica.it",
+        "value": "1767429876985|0|https://www.repubblica.it/|5|0|0|2||0|0|0|2|0|0|0|0|0|0|0",
+        "expires": 1768034682,
+        "httpOnly": false,
+        "secure": false,
+        "sameSite": "Lax"
+      },
+      {
+        "name": "flashtalkingad1",
+        "domain": ".flashtalking.com",
+        "value": "\"GUID=6577F0A9DF8CA2\"",
+        "expires": 1801593882.372748,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ar_debug",
+        "domain": ".doubleclick.net",
+        "value": "1",
+        "expires": 1770021882.412425,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ab",
+        "domain": ".agkn.com",
+        "value": "0001%3ArVvwazee%2BHuuyYXttqFlYJ2vcrr%2FB4Rg",
+        "expires": 1798965882.417182,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "u",
+        "domain": ".agkn.com",
+        "value": "C|0GAAw65N6MOuTegAAAAAAARCWAAAAAAEAJAAAAAAABI1A__8fBSsxvhVlOGQAAAAAAABH1QAAAAAAm6fsAAAAAABZA1n______...",
+        "expires": 1798965882.417354,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "MUID",
+        "domain": ".bing.com",
+        "value": "3EB6702A3682604A0EAE66FC37DC61CE",
+        "expires": 1801125885.144631,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "MR",
+        "domain": ".bat.bing.com",
+        "value": "0",
+        "expires": 1768034682.865564,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "g",
+        "domain": ".creativecdn.com",
+        "value": "nOWE0JS4zbcILbsTsltZ_1767429882890",
+        "expires": 1798965882.964312,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "c",
+        "domain": ".creativecdn.com",
+        "value": "nOWE0JS4zbcILbsTsltZ_lPc0Pwh0AVfD8B7dFJyo_1767429882890",
+        "expires": 1798965882.964401,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ts",
+        "domain": ".creativecdn.com",
+        "value": "1767429882",
+        "expires": 1798965882.964427,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "CLID",
+        "domain": "www.clarity.ms",
+        "value": "afc3641e15a8486caa807a004cbb635a.20260103.20270103",
+        "expires": 1798965883.076773,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "sub",
+        "domain": "account.anonymised.io",
+        "value": "65157196-5289-4038-ba30-1f25fb60461a",
+        "expires": 1798965883.237088,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "XANDR_PANID",
+        "domain": ".adnxs.com",
+        "value": "5HIsgbtY9bdwNWBGX99wBvpJ-wNrV9od_ooEGMrdVzcyIDY6ywGifc-c_54poxVeI9-rAiFbPJ0S-qbzsiqPQOI_RDkQoF5SlJIv...",
+        "expires": 1775205885.043526,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "uuid2",
+        "domain": ".adnxs.com",
+        "value": "6400367087162392488",
+        "expires": 1775205885.043654,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "MR",
+        "domain": ".c.bing.com",
+        "value": "0",
+        "expires": 1768034685.144717,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "SRM_B",
+        "domain": ".c.bing.com",
+        "value": "3EB6702A3682604A0EAE66FC37DC61CE",
+        "expires": 1801125885.144739,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "SM",
+        "domain": ".c.clarity.ms",
+        "value": "C",
+        "expires": -1,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "MUID",
+        "domain": ".clarity.ms",
+        "value": "3EB6702A3682604A0EAE66FC37DC61CE",
+        "expires": 1801125884.173829,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "MR",
+        "domain": ".c.clarity.ms",
+        "value": "0",
+        "expires": 1768034684.173862,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "ANONCHK",
+        "domain": ".c.clarity.ms",
+        "value": "0",
+        "expires": 1767430484.173874,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "oidc.user%3Ahttps%3A%2F%2Faccount.anonymised.io%2Flogin",
+        "domain": ".repubblica.it",
+        "value": "%7B%22session_state%22%3Anull%2C%22access_token%22%3A%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQ...",
+        "expires": 1798965884,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "KADUSERCOOKIE",
+        "domain": ".pubmatic.com",
+        "value": "F901463E-5617-41F7-B9F1-29F1E10BF403",
+        "expires": 1798965884.888037,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "SPugT",
+        "domain": ".pubmatic.com",
+        "value": "1767429884",
+        "expires": 1770021884.888125,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "CMID",
+        "domain": ".casalemedia.com",
+        "value": "aVjW-NHM4ZcAJ04iAt2CxwAA",
+        "expires": 1798965884.972639,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "CMPS",
+        "domain": ".casalemedia.com",
+        "value": "2469",
+        "expires": 1775205884.913731,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "CMPRO",
+        "domain": ".casalemedia.com",
+        "value": "2469",
+        "expires": 1775205884.972721,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "audit_p",
+        "domain": ".rubiconproject.com",
+        "value": "1|+3Jg25R+OJeG6vxKMqb3TjnKh3i+YMt4bPv46sldwd4FLwQquUpMn+MQJd7zm7Mq350/67mQYWbyUhTWCqUS/CTTs5/4KbtBgl...",
+        "expires": 1798965884.937865,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "audit",
+        "domain": ".rubiconproject.com",
+        "value": "1|+3Jg25R+OJeG6vxKMqb3TjnKh3i+YMt4bPv46sldwd4FLwQquUpMn+MQJd7zm7Mq350/67mQYWbyUhTWCqUS/CTTs5/4KbtBgl...",
+        "expires": 1798965884.938049,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "pid",
+        "domain": ".smartadserver.com",
+        "value": "5900376039979699363",
+        "expires": 1775205884.973991,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TestIfCookieP",
+        "domain": ".smartadserver.com",
+        "value": "ok",
+        "expires": 1801644284.974063,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "csync",
+        "domain": ".smartadserver.com",
+        "value": "79:k-rfBbwZtLc2afGzLQXgGuAaJhnSIV3qAJxWvvdw",
+        "expires": 1770021884.974084,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "opt_out",
+        "domain": ".postrelease.com",
+        "value": "1",
+        "expires": 1798965884.976364,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "cto_bundle",
+        "domain": ".criteo.com",
+        "value": "Cpveb19vOXY4UGMlMkZ5Y3VHcEowenZSRERPUEhXYXBHUSUyRjY3eGVoOThuQXdwWTJXdFQ5bTIzWVRWQnpBRHVhb2drNyUyQldR...",
+        "expires": 1801125884.987534,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TapAd_TS",
+        "domain": ".tapad.com",
+        "value": "1767429885019",
+        "expires": 1772613885.033448,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "TapAd_DID",
+        "domain": ".tapad.com",
+        "value": "b8d860e1-99d2-464d-ad37-79034383f393",
+        "expires": 1772613885.03352,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "anj",
+        "domain": ".adnxs.com",
+        "value": "dTM7k!M40*dWIy(ghqdmU(7TEr>3*C#[2Q9NW9TfRh0MLZLmlzpzLVXWt7C+HW`PfR[r#NV:4/30:(aq/rDt.8y-0BeO!aB]u5ZW...",
+        "expires": 1775205885.043623,
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+      },
+      {
+        "name": "demdex",
+        "domain": ".demdex.net",
+        "value": "57238539659563696222150857657106454837",
+        "expires": 1782981885.056202,
+        "httpOnly": false,
+        "secure": true,
+        "sameSite": "None"
+      }
+    ],
+    "localStorage": {
+      "kw_iub_exp": "2026-01-03T08:44:36.892Z",
+      "isPushNotificationsEnabled": "false",
+      "_GESPSK-pubcid.org": "[\"pubcid.org\",null,1767429877624,null,null,null,null,null,null,[100]]",
+      "_GESPSK-crwdcntrl.net": "[\"crwdcntrl.net\",null,1767429877624,null,null,null,null,null,null,[100]]",
+      "idw-fe-id": "89752616-0ea6-4cc3-8091-e2a03f6334c2",
+      "ope_fpid": "0c89235a-682d-4ada-bdd4-75739834fc9e",
+      "cohort_ids": "[\"26316\",\"45881\",\"40437\",\"14723\",\"27232\",\"4164\",\"20086\",\"13481\",\"default\"]",
+      "_cb": "B5Q8JZCsV9XTDkEIS0",
+      "isOptedOut": "false",
+      "cto_bundle": "rKAzV19zUEY4UWpnY3lMbzc0Z1BxT2s4T21zcG5uRDJmZzZyWUlCR2FDYjJnaXVLWGpuSVFaNzN4JTJCZGNFMWNVUWlDMEhNNnVuY0ozY0k3MGxCWHZaZlpMVnROYktXT1Z0VXB4YUZSWWZXS0pzbGo2ek1EUnU2RkxZcWt3NGN5cVUlMkYlMkJKY3d4enlKVyUyRjdv...",
+      "_GESPSK-esp.criteo.com": "[\"esp.criteo.com\",null,1767429877623,null,null,null,null,null,null,[100]]",
+      "_chartbeat2": ".1767429872692.1767429872692.1.Bgj9f2DLG1pnBGrJ1iDok0LECySO6V.1",
+      "loglevel": "ERROR",
+      "_cb_expires": "1801557872693",
+      "_cb_svref": "external",
+      "3_1LA7c1Tgh8TOu8RyhRNltE6n6Avs4pEXj5bhyQNpnpC3KHJ60mcdJ6xOubYt6iUJ_gig": "{}",
+      "os_pageViews": "1",
+      "anon-sl": "{\"settings\":{\"ppidEnabled\":false,\"ppsEnabled\":false,\"secureSignalsEnabled\":false}}",
+      "_cb_svref_expires": "1767431672697",
+      "panoramaId_expiry": "1767516277917",
+      "_GESPSK-uidapi.com": "[\"uidapi.com\",null,1767429877623,null,null,null,null,null,null,[100]]",
+      "_GESPSK-id5-sync.com": "[\"id5-sync.com\",null,1767429878591,null,null,null,null,null,null,[106]]",
+      "idw-intscores": "[{\"url\":\"https%3A%2F%2Fwww.repubblica.it%2F\",\"value\":0}]",
+      "marfeel-sdk-store": "eyJjcmVhdGlvbiI6MTc2NzQyOTg3MjU1OSwidXBkYXRlIjoxNzY3NDI5ODcyNTYwLCJlbnRyaWVzIjp7ImNyb3VwaWVyLWV4cGVyaWVuY2VzLWNvdW50LWVudHJ5Ijp7IkFDX0hJZlhsS3BfUmFteGdDVnJUUnNnMGciOnsiMjAyNiI6eyIwIjp7IjMiOnsiaW1wcmVz...",
+      "oidc.user:https://account.anonymised.io/login:https://www.repubblica.it": "{\"session_state\":null,\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL3d3dy5yZXB1YmJsaWNhLml0IiwiZXhwIjoxNzc3NDI5ODgyLCJzdWIiOiJwVmdiZ3AzdllNWG5BdkRNb25DVm8wWjA0VysxWk90YTdPR...",
+      "_chartbeat2_expires": "1801557872693",
+      "_GESPSK-openx": "[\"openx\",\"eyJpIjoiNUM1MFVScnZUYnFySzk4dWhYczN3UT09In0=\",1767429878065]",
+      "_t_tests": "eyJKejJURFl5cmYydEFCIjp7ImNob3NlblZhcmlhbnQiOiJBIiwic3BlY2lmaWNMb2NhdGlvbiI6WyJqT3Z5UCJdfSwibGlmdF9leHAiOiJtIn0=",
+      "_cc_id_update_ts": "1767429877998",
+      "_t_tests_expires": "1767433472741"
+    },
+    "sessionStorage": {
+      "___nrbi": "{\"firstVisit\":1767429872,\"userId\":\"2407de0f-423a-4694-95a2-21f138eb7047\",\"userVars\":[],\"futurePreviousVisit\":1767429872,\"timesVisited\":1}",
+      "idw-page-count": "3",
+      "kw_tab_id": "1767429872318",
+      "onesignal-pageview-count": "1",
+      "___nrbic": "{\"isNewUser\":true,\"previousVisit\":1767429872,\"lastBeat\":1767429872,\"currentVisitStarted\":1767429872,\"sessionId\":\"5770e2b3-1e23-48a9-9b56-2eae14d8dff4\",\"sessionVars\":[],\"visitedInThisSession\":true,\"pag...",
+      "compass_rfv_6517": "{\"rfv\":{\"rfv\":1,\"r\":0,\"f\":0,\"v\":0},\"ts\":\"2026-01-03T08:44:33.172Z\"}",
+      "fbssls_182234715127717": "{\"authResponse\":null,\"status\":\"unknown\",\"expiresAt\":1767516273820}"
+    }
+  },
+  "violations": [
+    {
+      "type": "tracking_before_consent",
+      "tracker": "GA4",
+      "details": {
+        "tracker": "GA4",
+        "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-CJNJE8FY4S&gtm=45je5ca1v898106140z8853765578za20gzb853765578zd853765578&_p=1767429873394&gcs=G101&gcd=13p3t3p3p5l1&npa=1&dma_cps=-&dma=0&tcfd=10000&cid=1326319462.1767429874&ul=it-it&sr=1920x1080&uaa=x86&uab=64&uafvl=HeadlessChrome%3B143.0.7499.4%7CChromium%3B143.0.7499.4%7CNot%2520A(Brand%3B24.0.0.0&uamb=0&uam=&uap=macOS&uapv=10_15_7&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~104527906~104528501~104684208~104684211~105391253~115583767~115938466~115938468~116184927~116184929~116251938~116251940&dl=https%3A%2F%2Fwww.repubblica.it%2F&cu=EUR&sid=1767429873&sct=1&seg=0&dt=la%20Repubblica%20-%20News%20in%20tempo%20reale%20-%20Le%20notizie%20e%20i%20video%20di%20politica%2C%20cronaca%2C%20economia%2C%20sport&tfd=1760",
+        "gcsRaw": "G101",
+        "consentMode": "ads_only",
+        "gcd": "13p3t3p3p5l1",
+        "events": [
+          "page_view"
+        ],
+        "event": "page_view",
+        "isStandardEvent": true,
+        "eventCategory": "standard",
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      }
+    }
+  ],
+  "technicalPings": [
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cs/tcf/stub-v2.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cs/stable/iubenda_cs.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cookie_solution/iubenda_cs/1.90.1/core-it.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cs.iubenda.com/cookie-solution/confs/js/23960187.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cs/tcf/versions/tcf-v2-0.30.0.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cs/tcf/v3-versioned/vendorlist.140.json",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://cdn.iubenda.com/cs/tcf/gac-vendors.json",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "Facebook SDK",
+      "url": "https://connect.facebook.net/it_IT/sdk.js",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "iubenda",
+      "url": "https://idb.iubenda.com/csdata?db=hits1",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "GTM Container",
+      "url": "https://www.googletagmanager.com/gtm.js?id=GTM-WT5GJ7M",
+      "reason": "Library/CMP Load"
+    },
+    {
+      "tracker": "Facebook SDK",
+      "url": "https://connect.facebook.net/it_IT/sdk.js?hash=d3326b805f85b79fba98e6a6c1a795d5",
+      "reason": "Library/CMP Load"
+    }
+  ],
+  "events": {
+    "preConsent": [
+      {
+        "tracker": "GA4",
+        "event": "page_view",
+        "eventCategory": "standard",
+        "consentMode": "ads_only",
+        "timestamp": "2026-01-03T08:44:33.683Z",
+        "phase": "PRE_CONSENT",
+        "isStandard": true,
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      }
+    ],
+    "postConsent": [
+      {
+        "tracker": "GA4",
+        "event": "user_engagement",
+        "eventCategory": "standard",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:37.054Z",
+        "phase": "POST_CONSENT",
+        "isStandard": true,
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "GA4",
+        "event": "banner_click",
+        "eventCategory": "custom",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:42.299Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pageTitle": "la Repubblica - News in tempo reale - Le notizie e i video di politica, cronaca, economia, sport",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:42.839Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      },
+      {
+        "tracker": "Facebook Pixel",
+        "event": "PageView",
+        "eventCategory": "standard",
+        "timestamp": "2026-01-03T08:44:43.390Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pixelId": "247428115450514",
+        "destinationUrl": "https://track.adform.net/serving/container/?pm=3239568&lid=_removed_&ctype=0&media=0&PageName=repubblica|homepage&sysvars=||||&itm=eyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ&rnd=1933060343&cpref=&loc=https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Facebook Pixel",
+        "event": "ViewContent",
+        "eventCategory": "standard",
+        "timestamp": "2026-01-03T08:44:43.390Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pixelId": "247428115450514",
+        "destinationUrl": "https://track.adform.net/serving/container/?pm=3239568&lid=_removed_&ctype=0&media=0&PageName=repubblica|homepage&sysvars=||||&itm=eyJzdjUiOiJob21lcGFnZSIsInN2NiI6InJlcHViYmxpY2EifQ&rnd=1933060343&cpref=&loc=https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:43.638Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:44.017Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:44.117Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:44.122Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      },
+      {
+        "tracker": "GA4",
+        "event": "video_playerReady",
+        "eventCategory": "custom",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:44.140Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "GA4",
+        "event": "video_init",
+        "eventCategory": "custom",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:44.141Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "GA4",
+        "event": "video_adverror",
+        "eventCategory": "custom",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:44.141Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false,
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      },
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:44.148Z",
+        "phase": "POST_CONSENT",
+        "isStandard": false
+      }
+    ],
+    "interactions": [
+      {
+        "tracker": "Clarity",
+        "event": "Recording",
+        "eventCategory": "session",
+        "timestamp": "2026-01-03T08:44:45.158Z",
+        "phase": "INTERACTION",
+        "isStandard": false
+      },
+      {
+        "tracker": "GA4",
+        "event": "video_play",
+        "eventCategory": "custom",
+        "consentMode": "granted",
+        "timestamp": "2026-01-03T08:44:51.934Z",
+        "phase": "INTERACTION",
+        "isStandard": false,
+        "pageTitle": "Crans-Montana, la procuratrice: “Innesco dalle fontane luminose. Si indaga per omicidio e lesioni\" - la Repubblica",
+        "pageUrl": "https://www.repubblica.it/"
+      }
+    ]
+  },
+  "forms": {
+    "found": [],
+    "submitted": null
+  },
+  "summary": {},
+  "error": "page.waitForTimeout: Target page, context or browser has been closed"
+}
