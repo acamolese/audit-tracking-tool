@@ -125,7 +125,7 @@ class CookieAuditScanner {
       },
       violations: [],
       technicalPings: [],
-      ga4Events: {
+      events: {
         preConsent: [],
         postConsent: [],
         interactions: []  // Eventi triggerati da interazioni simulate
@@ -159,12 +159,49 @@ class CookieAuditScanner {
     try {
       const urlObj = new URL(url);
 
-      // Facebook: estrai evento
+      // Facebook Pixel: estrai evento
       if (trackerName === 'Facebook Pixel') {
         const eventName = urlObj.searchParams.get('ev');
         if (eventName) details.event = eventName;
         const pixelId = urlObj.searchParams.get('id');
         if (pixelId) details.pixelId = pixelId;
+      }
+
+      // LinkedIn Insight: estrai evento
+      if (trackerName === 'LinkedIn Insight') {
+        // LinkedIn usa il parametro "event" o traccia conversioni
+        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('conversionId');
+        if (eventName) details.event = eventName;
+        else details.event = 'PageView'; // Default per LinkedIn
+      }
+
+      // TikTok Pixel: estrai evento
+      if (trackerName === 'TikTok Pixel') {
+        const eventName = urlObj.searchParams.get('event');
+        if (eventName) details.event = eventName;
+      }
+
+      // Pinterest: estrai evento
+      if (trackerName === 'Pinterest') {
+        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('ed');
+        if (eventName) details.event = eventName;
+      }
+
+      // Twitter/X: estrai evento
+      if (trackerName === 'Twitter/X') {
+        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('txn_id');
+        if (eventName) details.event = eventName;
+        else details.event = 'PageView';
+      }
+
+      // Hotjar: identifica tipo di tracciamento
+      if (trackerName === 'Hotjar') {
+        details.event = 'Recording';
+      }
+
+      // Clarity: identifica tipo di tracciamento
+      if (trackerName === 'Clarity') {
+        details.event = 'Recording';
       }
 
       // Google: estrai consent state
@@ -243,23 +280,24 @@ class CookieAuditScanner {
     return events;
   }
 
-  // Traccia evento GA4
-  trackGA4Event(details, phase) {
+  // Traccia evento da qualsiasi tracker (GA4, Facebook, LinkedIn, ecc.)
+  trackEvent(details, phase) {
     const eventData = {
+      tracker: details.tracker || 'unknown',
       event: details.event || 'unknown',
-      consentMode: details.consentMode || 'unknown',
+      consentMode: details.consentMode || null,
       timestamp: new Date().toISOString(),
       phase: phase,
       isStandard: details.isStandardEvent || false,
-      ...details
+      pixelId: details.pixelId || null
     };
 
     if (phase === 'PRE_CONSENT') {
-      this.report.ga4Events.preConsent.push(eventData);
+      this.report.events.preConsent.push(eventData);
     } else if (phase === 'INTERACTION') {
-      this.report.ga4Events.interactions.push(eventData);
+      this.report.events.interactions.push(eventData);
     } else {
-      this.report.ga4Events.postConsent.push(eventData);
+      this.report.events.postConsent.push(eventData);
     }
 
     return eventData;
@@ -283,24 +321,25 @@ class CookieAuditScanner {
 
     if (!trackerName) return;
 
-    // Ottieni POST body per GA4
+    // Ottieni POST body
     const postData = request.postData();
     const details = this.extractRequestDetails(url, trackerName, postData);
     const isLibraryLoad = ['GTM Container', 'Facebook SDK', 'Cookiebot', 'OneTrust', 'iubenda'].includes(trackerName);
     const isGoogleDenied = this.isGoogleDeniedMode(url);
 
-    // Traccia eventi GA4 (anche multipli dal body POST)
-    if (trackerName === 'GA4') {
-      // Se ci sono eventi multipli nel body, tracciali tutti
-      if (details.events && details.events.length > 0) {
+    // Traccia eventi da tutti i tracker (GA4, Facebook, LinkedIn, ecc.)
+    if (details.event) {
+      // GA4: può avere eventi multipli nel body POST
+      if (trackerName === 'GA4' && details.events && details.events.length > 0) {
         for (const eventName of details.events) {
           const eventDetails = { ...details, event: eventName, isStandardEvent: GA4_STANDARD_EVENTS.includes(eventName) };
-          this.trackGA4Event(eventDetails, this.phase);
-          this.log(`   [GA4 EVENT] ${eventName} (${details.consentMode || 'N/A'})`);
+          this.trackEvent(eventDetails, this.phase);
+          this.log(`   [EVENT] ${trackerName}: ${eventName} (${details.consentMode || 'N/A'})`);
         }
-      } else if (details.event) {
-        this.trackGA4Event(details, this.phase);
-        this.log(`   [GA4 EVENT] ${details.event} (${details.consentMode || 'N/A'})`);
+      } else {
+        // Tutti gli altri tracker (Facebook, LinkedIn, TikTok, ecc.)
+        this.trackEvent(details, this.phase);
+        this.log(`   [EVENT] ${trackerName}: ${details.event}`);
       }
     }
 
@@ -834,13 +873,26 @@ class CookieAuditScanner {
       post => !this.report.preConsent.cookies.find(pre => pre.name === post.name)
     );
 
-    // Estrai eventi GA4 unici
-    const allGA4Events = [
-      ...this.report.ga4Events.preConsent,
-      ...this.report.ga4Events.postConsent,
-      ...this.report.ga4Events.interactions
+    // Estrai tutti gli eventi
+    const allEvents = [
+      ...this.report.events.preConsent,
+      ...this.report.events.postConsent,
+      ...this.report.events.interactions
     ];
-    const uniqueGA4Events = [...new Set(allGA4Events.map(e => e.event))];
+
+    // Raggruppa eventi per tracker
+    const eventsByTracker = {};
+    allEvents.forEach(e => {
+      if (!eventsByTracker[e.tracker]) {
+        eventsByTracker[e.tracker] = [];
+      }
+      if (!eventsByTracker[e.tracker].includes(e.event)) {
+        eventsByTracker[e.tracker].push(e.event);
+      }
+    });
+
+    // Estrai eventi unici
+    const uniqueEvents = [...new Set(allEvents.map(e => `${e.tracker}: ${e.event}`))];
 
     this.report.summary = {
       violations: this.report.violations.length,
@@ -853,13 +905,14 @@ class CookieAuditScanner {
                         this.report.violations.length === 0 &&
                         this.report.cookiebot.consentState?.marketing === true,
       blockedScriptsCount: this.report.cookiebot.blockedScripts?.length || 0,
-      // GA4 Events summary
-      ga4Events: {
-        total: allGA4Events.length,
-        preConsent: this.report.ga4Events.preConsent.length,
-        postConsent: this.report.ga4Events.postConsent.length,
-        interactions: this.report.ga4Events.interactions.length,
-        uniqueEvents: uniqueGA4Events
+      // Events summary (tutti i tracker)
+      events: {
+        total: allEvents.length,
+        preConsent: this.report.events.preConsent.length,
+        postConsent: this.report.events.postConsent.length,
+        interactions: this.report.events.interactions.length,
+        uniqueEvents: uniqueEvents,
+        byTracker: eventsByTracker
       },
       // Forms summary
       formsFound: this.report.forms.found.length,
@@ -909,14 +962,16 @@ class CookieAuditScanner {
     console.log(`  Post-consenso: ${this.report.summary.cookiesPostConsent}`);
     console.log(`  Nuovi dopo accettazione: ${this.report.summary.newCookiesAfterConsent}`);
 
-    // Eventi GA4
-    console.log('\nEVENTI GA4:');
-    console.log(`  Pre-consenso: ${this.report.summary.ga4Events?.preConsent || 0}`);
-    console.log(`  Post-consenso: ${this.report.summary.ga4Events?.postConsent || 0}`);
-    console.log(`  Da interazioni: ${this.report.summary.ga4Events?.interactions || 0}`);
-    if (this.report.summary.ga4Events?.uniqueEvents?.length > 0) {
-      console.log(`  Eventi rilevati: ${this.report.summary.ga4Events.uniqueEvents.join(', ')}`);
-    }
+    // Eventi (tutti i tracker)
+    console.log('\nEVENTI:');
+    console.log(`  Pre-consenso: ${this.report.summary.events?.preConsent || 0}`);
+    console.log(`  Post-consenso: ${this.report.summary.events?.postConsent || 0}`);
+    console.log(`  Da interazioni: ${this.report.summary.events?.interactions || 0}`);
+    // Mostra eventi per tracker
+    const byTracker = this.report.summary.events?.byTracker || {};
+    Object.entries(byTracker).forEach(([tracker, events]) => {
+      console.log(`  ${tracker}: ${events.join(', ')}`);
+    });
 
     // Form
     console.log('\nFORM:');

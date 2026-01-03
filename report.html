@@ -576,44 +576,44 @@
         </div>
       </div>
 
-      <!-- Eventi GA4 -->
+      <!-- Eventi (tutti i tracker) -->
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
             <span class="icon blue">&#128202;</span>
-            Eventi GA4
+            Eventi
           </h3>
-          <span id="ga4Badge" class="badge badge-neutral"></span>
+          <span id="eventsBadge" class="badge badge-neutral"></span>
         </div>
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-value" id="ga4Pre">0</div>
+            <div class="stat-value" id="eventsPre">0</div>
             <div class="stat-label">Pre-Consenso</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" id="ga4Post">0</div>
+            <div class="stat-value" id="eventsPost">0</div>
             <div class="stat-label">Post-Consenso</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" id="ga4Interactions">0</div>
+            <div class="stat-value" id="eventsInteractions">0</div>
             <div class="stat-label">Da Interazioni</div>
           </div>
         </div>
 
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Eventi Rilevati</h4>
+          <h4>Eventi per Tracker</h4>
           <span class="arrow">&#9660;</span>
         </div>
         <div class="collapsible-content">
-          <ul id="ga4EventsList" class="item-list"></ul>
+          <div id="eventsByTracker"></div>
         </div>
 
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Eventi Standard Attesi</h4>
+          <h4>Tutti gli Eventi Rilevati</h4>
           <span class="arrow">&#9660;</span>
         </div>
         <div class="collapsible-content">
-          <ul id="ga4StandardList" class="item-list"></ul>
+          <ul id="allEventsList" class="item-list"></ul>
         </div>
       </div>
 
@@ -842,53 +842,62 @@
         cookiesPostList.appendChild(li);
       });
 
-      // GA4 Events
-      const ga4Summary = report.summary?.ga4Events || {};
-      document.getElementById('ga4Pre').textContent = ga4Summary.preConsent || 0;
-      document.getElementById('ga4Post').textContent = ga4Summary.postConsent || 0;
-      document.getElementById('ga4Interactions').textContent = ga4Summary.interactions || 0;
-      document.getElementById('ga4Badge').textContent = (ga4Summary.total || 0) + ' eventi';
+      // Eventi (tutti i tracker)
+      const eventsSummary = report.summary?.events || {};
+      document.getElementById('eventsPre').textContent = eventsSummary.preConsent || 0;
+      document.getElementById('eventsPost').textContent = eventsSummary.postConsent || 0;
+      document.getElementById('eventsInteractions').textContent = eventsSummary.interactions || 0;
+      document.getElementById('eventsBadge').textContent = (eventsSummary.total || 0) + ' eventi';
 
-      // Lista eventi rilevati
-      const ga4EventsList = document.getElementById('ga4EventsList');
-      ga4EventsList.innerHTML = '';
-      const allEvents = [
-        ...(report.ga4Events?.preConsent || []).map(e => ({...e, phase: 'Pre'})),
-        ...(report.ga4Events?.postConsent || []).map(e => ({...e, phase: 'Post'})),
-        ...(report.ga4Events?.interactions || []).map(e => ({...e, phase: 'Interaction'}))
-      ];
+      // Eventi per tracker
+      const eventsByTrackerDiv = document.getElementById('eventsByTracker');
+      eventsByTrackerDiv.innerHTML = '';
+      const byTracker = eventsSummary.byTracker || {};
 
-      if (allEvents.length === 0) {
-        ga4EventsList.innerHTML = '<li style="text-align:center;color:#888;">Nessun evento GA4 rilevato</li>';
+      if (Object.keys(byTracker).length === 0) {
+        eventsByTrackerDiv.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">Nessun evento rilevato</p>';
       } else {
-        allEvents.forEach(e => {
-          const li = document.createElement('li');
-          const dotColor = e.consentMode === 'denied' ? 'gray' : 'green';
-          li.innerHTML = `
-            <span class="dot ${dotColor}"></span>
-            <span class="tracker-name">${e.event}</span>
-            <span class="tracker-detail">${e.phase} - ${e.consentMode || 'N/A'}</span>
+        Object.entries(byTracker).forEach(([tracker, events]) => {
+          const trackerDiv = document.createElement('div');
+          trackerDiv.style.marginBottom = '16px';
+          trackerDiv.innerHTML = `
+            <h5 style="font-size:14px;color:var(--primary);margin-bottom:8px;font-weight:600;">${tracker}</h5>
+            <ul class="item-list">
+              ${events.map(ev => `
+                <li>
+                  <span class="dot green"></span>
+                  <span class="tracker-name">${ev}</span>
+                </li>
+              `).join('')}
+            </ul>
           `;
-          ga4EventsList.appendChild(li);
+          eventsByTrackerDiv.appendChild(trackerDiv);
         });
       }
 
-      // Lista eventi standard attesi
-      const ga4StandardList = document.getElementById('ga4StandardList');
-      ga4StandardList.innerHTML = '';
-      const standardEvents = ['page_view', 'scroll', 'click', 'form_start', 'form_submit', 'generate_lead', 'view_item', 'view_item_list', 'add_to_cart', 'remove_from_cart', 'user_engagement'];
-      const detectedEvents = ga4Summary.uniqueEvents || [];
+      // Lista tutti gli eventi rilevati
+      const allEventsList = document.getElementById('allEventsList');
+      allEventsList.innerHTML = '';
+      const allEvents = [
+        ...(report.events?.preConsent || []).map(e => ({...e, phase: 'Pre'})),
+        ...(report.events?.postConsent || []).map(e => ({...e, phase: 'Post'})),
+        ...(report.events?.interactions || []).map(e => ({...e, phase: 'Interaction'}))
+      ];
 
-      standardEvents.forEach(eventName => {
-        const li = document.createElement('li');
-        const isDetected = detectedEvents.includes(eventName);
-        li.innerHTML = `
-          <span class="dot ${isDetected ? 'green' : 'red'}"></span>
-          <span class="tracker-name">${eventName}</span>
-          <span class="tracker-detail">${isDetected ? 'Rilevato' : 'Non rilevato'}</span>
-        `;
-        ga4StandardList.appendChild(li);
-      });
+      if (allEvents.length === 0) {
+        allEventsList.innerHTML = '<li style="text-align:center;color:#888;">Nessun evento rilevato</li>';
+      } else {
+        allEvents.forEach(e => {
+          const li = document.createElement('li');
+          const dotColor = e.phase === 'Pre' ? 'gray' : 'green';
+          li.innerHTML = `
+            <span class="dot ${dotColor}"></span>
+            <span class="tracker-name">${e.tracker}: ${e.event}</span>
+            <span class="tracker-detail">${e.phase}${e.consentMode ? ' - ' + e.consentMode : ''}</span>
+          `;
+          allEventsList.appendChild(li);
+        });
+      }
 
       // Form
       const forms = report.forms?.found || [];
