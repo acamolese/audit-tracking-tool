@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test/debug files
+*.har
+*.log
+
+# Generated reports (keep only templates)
+report-*.json
+report.json
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Audit Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1c3738;
+      --primary-light: #2a4a4b;
+      --accent: #06e89f;
+      --accent-hover: #05c989;
+      --danger: #ff4f50;
+      --warning: #ffb84d;
+      --success: #06e89f;
+      --bg: #f3f1ee;
+      --bg-dark: #1c3738;
+      --text: #111d0c;
+      --text-light: #5a6a5c;
+      --white: #ffffff;
+      --border-radius: 16px;
+      --shadow: 0 4px 24px rgba(28, 55, 56, 0.08);
+      --shadow-lg: 0 8px 40px rgba(28, 55, 56, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      padding: 20px 32px;
+    }
+
+    .header-content {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    /* Hero text */
+    .hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 48px;
+      font-weight: 400;
+      color: var(--primary);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* Card */
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input[type="url"],
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-family: inherit;
+      border: 2px solid #e5e5e5;
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--white);
+    }
+
+    .form-group input::placeholder {
+      color: #aaa;
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .checkbox-group:hover {
+      background: #ebe9e6;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .checkbox-group span {
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 18px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(6, 232, 159, 0.3);
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Status */
+    .status {
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.loading {
+      display: block;
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .status.error {
+      display: block;
+      background: #fff0f0;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .status.loading::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--accent);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .card {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo">Cookie<span>Audit</span></a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="hero">
+        <h1>Verifica la compliance del tuo sito</h1>
+        <p>Analizza cookie e tracker per garantire la conformita GDPR</p>
+      </div>
+
+      <div class="card">
+        <form id="scanForm">
+          <div class="form-group">
+            <label for="url">URL del sito</label>
+            <input
+              type="url"
+              id="url"
+              name="url"
+              placeholder="https://esempio.com"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="timeout">Timeout (ms)</label>
+            <input
+              type="number"
+              id="timeout"
+              name="timeout"
+              value="10000"
+              min="5000"
+              max="60000"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-group">
+              <input type="checkbox" id="visible" name="visible">
+              <span>Mostra browser durante la scansione</span>
+            </label>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary">
+            Avvia Scansione
+          </button>
+        </form>
+
+        <div id="status" class="status"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Cookie Audit Scanner - GDPR Compliance Tool
+  </footer>
+
+  <script>
+    const form = document.getElementById('scanForm');
+    const status = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const url = document.getElementById('url').value;
+      const timeout = document.getElementById('timeout').value;
+      const visible = document.getElementById('visible').checked;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Scansione in corso...';
+      status.className = 'status loading';
+      status.textContent = 'Analisi in corso, attendere...';
+
+      try {
+        const response = await fetch('/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url, timeout: parseInt(timeout), visible })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          window.location.href = `/report.html?id=${result.reportId}`;
+        } else {
+          status.className = 'status error';
+          status.textContent = result.error;
+        }
+      } catch (err) {
+        status.className = 'status error';
+        status.textContent = 'Errore di connessione: ' + err.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Avvia Scansione';
+      }
+    });
+  </script>
+</body>
+</html>

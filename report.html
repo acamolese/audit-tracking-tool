@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Audit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1c3738;
+      --primary-light: #2a4a4b;
+      --accent: #06e89f;
+      --accent-hover: #05c989;
+      --danger: #ff4f50;
+      --warning: #ffb84d;
+      --success: #06e89f;
+      --bg: #f3f1ee;
+      --bg-dark: #1c3738;
+      --text: #111d0c;
+      --text-light: #5a6a5c;
+      --white: #ffffff;
+      --border-radius: 16px;
+      --shadow: 0 4px 24px rgba(28, 55, 56, 0.08);
+      --shadow-lg: 0 8px 40px rgba(28, 55, 56, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      padding: 20px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-header {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-accent:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Main */
+    .main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 100px 24px;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--primary);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Verdict Banner */
+    .verdict-banner {
+      padding: 32px 40px;
+      border-radius: var(--border-radius);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .verdict-banner.success {
+      background: linear-gradient(135deg, #06e89f 0%, #05c989 100%);
+      color: var(--primary);
+    }
+
+    .verdict-banner.danger {
+      background: linear-gradient(135deg, #ff4f50 0%, #e63e3f 100%);
+      color: var(--white);
+    }
+
+    .verdict-banner.warning {
+      background: linear-gradient(135deg, #ffb84d 0%, #f5a623 100%);
+      color: var(--primary);
+    }
+
+    .verdict-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .verdict-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .verdict-content p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    /* Meta info */
+    .meta-info {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .meta-item strong {
+      color: var(--text);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      cursor: pointer;
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-title .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .card-title .icon.green { background: rgba(6, 232, 159, 0.15); }
+    .card-title .icon.red { background: rgba(255, 79, 80, 0.15); }
+    .card-title .icon.blue { background: rgba(0, 109, 255, 0.15); }
+    .card-title .icon.purple { background: rgba(182, 136, 255, 0.15); }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: rgba(6, 232, 159, 0.15); color: #05a06d; }
+    .badge-danger { background: rgba(255, 79, 80, 0.15); color: var(--danger); }
+    .badge-neutral { background: var(--bg); color: var(--text-light); }
+
+    /* Lists */
+    .item-list {
+      list-style: none;
+    }
+
+    .item-list li {
+      padding: 16px 20px;
+      background: var(--bg);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .item-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .item-list .tracker-name {
+      font-weight: 600;
+      color: var(--primary);
+      min-width: 140px;
+    }
+
+    .item-list .tracker-detail {
+      color: var(--text-light);
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .item-list .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .item-list .dot.red { background: var(--danger); }
+    .item-list .dot.green { background: var(--success); }
+    .item-list .dot.gray { background: #ccc; }
+
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-item {
+      padding: 24px;
+      background: var(--bg);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    /* Collapsible */
+    .collapsible-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 16px 0;
+      border-top: 1px solid #eee;
+      margin-top: 24px;
+    }
+
+    .collapsible-header h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .collapsible-header .arrow {
+      transition: transform 0.2s ease;
+    }
+
+    .collapsible-header.open .arrow {
+      transform: rotate(180deg);
+    }
+
+    .collapsible-content {
+      display: none;
+      padding-top: 16px;
+    }
+
+    .collapsible-content.open {
+      display: block;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--primary);
+      color: var(--accent);
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    /* Footer actions */
+    .footer-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--primary);
+      border: 2px solid #e5e5e5;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .verdict-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+      }
+
+      .verdict-content h2 {
+        font-size: 24px;
+      }
+
+      .meta-info {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .item-list li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .item-list .tracker-name {
+        min-width: auto;
+      }
+
+      .footer-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media print {
+      .header, .footer-actions { display: none; }
+      .card { box-shadow: none; border: 1px solid #eee; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo">Cookie<span>Audit</span></a>
+      <div class="header-actions">
+        <button onclick="downloadJson()" class="btn-header btn-outline">Scarica JSON</button>
+        <a href="/" class="btn-header btn-accent">Nuova Scansione</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Loading -->
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Caricamento report...</p>
+    </div>
+
+    <!-- Report Content -->
+    <div id="report" style="display:none;">
+
+      <!-- Verdict Banner -->
+      <div id="verdictBanner" class="verdict-banner">
+        <div class="verdict-icon" id="verdictIcon"></div>
+        <div class="verdict-content">
+          <h2 id="verdictTitle"></h2>
+          <p id="verdictDesc"></p>
+        </div>
+      </div>
+
+      <!-- Meta Info -->
+      <div class="meta-info">
+        <div class="meta-item">
+          <span>URL:</span>
+          <strong id="reportUrl"></strong>
+        </div>
+        <div class="meta-item">
+          <span>Data:</span>
+          <strong id="reportDate"></strong>
+        </div>
+      </div>
+
+      <!-- CMP Status -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon green">&#128274;</span>
+            Consent Management Platform
+          </h3>
+          <span id="cmpBadge" class="badge"></span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="cmpDetected">-</div>
+            <div class="stat-label">CMP Rilevato</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="blockedScripts">0</div>
+            <div class="stat-label">Script Bloccati</div>
+          </div>
+        </div>
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <h4>Stato Consenso Post-Click</h4>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="collapsible-content">
+          <div class="code-block" id="consentState">{}</div>
+        </div>
+      </div>
+
+      <!-- Violations -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon red">&#9888;</span>
+            Violazioni
+          </h3>
+          <span id="violationsBadge" class="badge"></span>
+        </div>
+        <ul id="violationsList" class="item-list"></ul>
+        <div id="violationsEmpty" class="empty-state" style="display:none;">
+          <div class="icon">&#10004;</div>
+          <p>Nessuna violazione rilevata</p>
+        </div>
+      </div>
+
+      <!-- Trackers Post-Consent -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon blue">&#128200;</span>
+            Tracker Post-Consenso
+          </h3>
+          <span id="trackersBadge" class="badge badge-neutral"></span>
+        </div>
+        <ul id="trackersList" class="item-list"></ul>
+        <div id="trackersEmpty" class="empty-state" style="display:none;">
+          <div class="icon">&#128064;</div>
+          <p>Nessun tracker rilevato dopo il consenso</p>
+        </div>
+      </div>
+
+      <!-- Eventi GA4 -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon blue">&#128202;</span>
+            Eventi GA4
+          </h3>
+          <span id="ga4Badge" class="badge badge-neutral"></span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="ga4Pre">0</div>
+            <div class="stat-label">Pre-Consenso</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="ga4Post">0</div>
+            <div class="stat-label">Post-Consenso</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="ga4Interactions">0</div>
+            <div class="stat-label">Da Interazioni</div>
+          </div>
+        </div>
+
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <h4>Eventi Rilevati</h4>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="collapsible-content">
+          <ul id="ga4EventsList" class="item-list"></ul>
+        </div>
+
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <h4>Eventi Standard Attesi</h4>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="collapsible-content">
+          <ul id="ga4StandardList" class="item-list"></ul>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon green">&#128221;</span>
+            Form
+          </h3>
+          <span id="formBadge" class="badge badge-neutral"></span>
+        </div>
+        <ul id="formsList" class="item-list"></ul>
+        <div id="formsEmpty" class="empty-state" style="display:none;">
+          <div class="icon">&#128196;</div>
+          <p>Nessun form valido trovato</p>
+        </div>
+      </div>
+
+      <!-- Cookies -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <span class="icon purple">&#127850;</span>
+            Cookie
+          </h3>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="cookiesPre">0</div>
+            <div class="stat-label">Pre-Consenso</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cookiesPost">0</div>
+            <div class="stat-label">Post-Consenso</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="cookiesNew">0</div>
+            <div class="stat-label">Nuovi</div>
+          </div>
+        </div>
+
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <h4>Cookie Pre-Consenso</h4>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="collapsible-content">
+          <ul id="cookiesPreList" class="item-list"></ul>
+        </div>
+
+        <div class="collapsible-header" onclick="toggleCollapsible(this)">
+          <h4>Cookie Post-Consenso</h4>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="collapsible-content">
+          <ul id="cookiesPostList" class="item-list"></ul>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="footer-actions">
+        <button onclick="window.print()" class="btn btn-secondary">
+          &#128424; Stampa Report
+        </button>
+        <button onclick="downloadJson()" class="btn btn-secondary">
+          &#128190; Scarica JSON
+        </button>
+        <a href="/" class="btn btn-primary">
+          &#128269; Nuova Scansione
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let reportData = null;
+
+    function toggleCollapsible(header) {
+      header.classList.toggle('open');
+      const content = header.nextElementSibling;
+      content.classList.toggle('open');
+    }
+
+    async function loadReport() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        document.getElementById('loading').innerHTML = '<p>ID report mancante</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/report/${id}`);
+        const data = await response.json();
+
+        if (!data.success) {
+          document.getElementById('loading').innerHTML = '<p>Report non trovato</p>';
+          return;
+        }
+
+        reportData = data.report;
+        renderReport(reportData);
+      } catch (err) {
+        document.getElementById('loading').innerHTML = '<p>Errore: ' + err.message + '</p>';
+      }
+    }
+
+    function renderReport(report) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('report').style.display = 'block';
+
+      // Meta
+      document.getElementById('reportUrl').textContent = report.url;
+      document.getElementById('reportDate').textContent = new Date(report.timestamp).toLocaleString('it-IT');
+
+      // Verdict
+      const violations = report.summary?.violations || 0;
+      const cmpDetected = report.cookiebot?.detected;
+      const banner = document.getElementById('verdictBanner');
+      const icon = document.getElementById('verdictIcon');
+      const title = document.getElementById('verdictTitle');
+      const desc = document.getElementById('verdictDesc');
+
+      if (violations === 0 && cmpDetected) {
+        banner.className = 'verdict-banner success';
+        icon.textContent = '✓';
+        title.textContent = 'Conforme';
+        desc.textContent = 'Il sito rispetta le normative GDPR sui cookie';
+      } else if (violations > 0) {
+        banner.className = 'verdict-banner danger';
+        icon.textContent = '!';
+        title.textContent = 'Non Conforme';
+        desc.textContent = `Rilevate ${violations} violazioni pre-consenso`;
+      } else {
+        banner.className = 'verdict-banner warning';
+        icon.textContent = '?';
+        title.textContent = 'Da Verificare';
+        desc.textContent = 'CMP non rilevato, verifica manuale consigliata';
+      }
+
+      // CMP
+      document.getElementById('cmpDetected').textContent = cmpDetected ? 'Si' : 'No';
+      document.getElementById('blockedScripts').textContent = report.summary?.blockedScriptsCount || 0;
+      document.getElementById('cmpBadge').textContent = cmpDetected ? 'Attivo' : 'Non rilevato';
+      document.getElementById('cmpBadge').className = 'badge ' + (cmpDetected ? 'badge-success' : 'badge-neutral');
+      document.getElementById('consentState').textContent = JSON.stringify(report.cookiebot?.consentState || {}, null, 2);
+
+      // Violations
+      const violationsList = document.getElementById('violationsList');
+      const violationsEmpty = document.getElementById('violationsEmpty');
+      document.getElementById('violationsBadge').textContent = violations + ' violazioni';
+      document.getElementById('violationsBadge').className = 'badge ' + (violations > 0 ? 'badge-danger' : 'badge-success');
+
+      if (violations === 0) {
+        violationsList.style.display = 'none';
+        violationsEmpty.style.display = 'block';
+      } else {
+        violationsList.innerHTML = '';
+        (report.violations || []).forEach(v => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="dot red"></span>
+            <span class="tracker-name">${v.tracker}</span>
+            <span class="tracker-detail">${v.details?.event || v.details?.url?.substring(0, 60) || ''}</span>
+          `;
+          violationsList.appendChild(li);
+        });
+      }
+
+      // Trackers post-consent
+      const trackersList = document.getElementById('trackersList');
+      const trackersEmpty = document.getElementById('trackersEmpty');
+      const postRequests = report.postConsent?.requests || [];
+      const trackerCounts = {};
+      postRequests.forEach(r => {
+        trackerCounts[r.tracker] = (trackerCounts[r.tracker] || 0) + 1;
+      });
+      const trackersArr = Object.entries(trackerCounts);
+
+      document.getElementById('trackersBadge').textContent = trackersArr.length + ' tracker';
+
+      if (trackersArr.length === 0) {
+        trackersList.style.display = 'none';
+        trackersEmpty.style.display = 'block';
+      } else {
+        trackersList.innerHTML = '';
+        trackersArr.forEach(([tracker, count]) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="dot green"></span>
+            <span class="tracker-name">${tracker}</span>
+            <span class="tracker-detail">${count} richieste</span>
+          `;
+          trackersList.appendChild(li);
+        });
+      }
+
+      // Cookies
+      document.getElementById('cookiesPre').textContent = report.summary?.cookiesPreConsent || 0;
+      document.getElementById('cookiesPost').textContent = report.summary?.cookiesPostConsent || 0;
+      document.getElementById('cookiesNew').textContent = report.summary?.newCookiesAfterConsent || 0;
+
+      const cookiesPreList = document.getElementById('cookiesPreList');
+      cookiesPreList.innerHTML = '';
+      (report.preConsent?.cookies || []).forEach(c => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="dot gray"></span>
+          <span class="tracker-name">${c.name}</span>
+          <span class="tracker-detail">${c.domain}</span>
+        `;
+        cookiesPreList.appendChild(li);
+      });
+
+      const cookiesPostList = document.getElementById('cookiesPostList');
+      cookiesPostList.innerHTML = '';
+      (report.postConsent?.cookies || []).forEach(c => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span class="dot gray"></span>
+          <span class="tracker-name">${c.name}</span>
+          <span class="tracker-detail">${c.domain}</span>
+        `;
+        cookiesPostList.appendChild(li);
+      });
+
+      // GA4 Events
+      const ga4Summary = report.summary?.ga4Events || {};
+      document.getElementById('ga4Pre').textContent = ga4Summary.preConsent || 0;
+      document.getElementById('ga4Post').textContent = ga4Summary.postConsent || 0;
+      document.getElementById('ga4Interactions').textContent = ga4Summary.interactions || 0;
+      document.getElementById('ga4Badge').textContent = (ga4Summary.total || 0) + ' eventi';
+
+      // Lista eventi rilevati
+      const ga4EventsList = document.getElementById('ga4EventsList');
+      ga4EventsList.innerHTML = '';
+      const allEvents = [
+        ...(report.ga4Events?.preConsent || []).map(e => ({...e, phase: 'Pre'})),
+        ...(report.ga4Events?.postConsent || []).map(e => ({...e, phase: 'Post'})),
+        ...(report.ga4Events?.interactions || []).map(e => ({...e, phase: 'Interaction'}))
+      ];
+
+      if (allEvents.length === 0) {
+        ga4EventsList.innerHTML = '<li style="text-align:center;color:#888;">Nessun evento GA4 rilevato</li>';
+      } else {
+        allEvents.forEach(e => {
+          const li = document.createElement('li');
+          const dotColor = e.consentMode === 'denied' ? 'gray' : 'green';
+          li.innerHTML = `
+            <span class="dot ${dotColor}"></span>
+            <span class="tracker-name">${e.event}</span>
+            <span class="tracker-detail">${e.phase} - ${e.consentMode || 'N/A'}</span>
+          `;
+          ga4EventsList.appendChild(li);
+        });
+      }
+
+      // Lista eventi standard attesi
+      const ga4StandardList = document.getElementById('ga4StandardList');
+      ga4StandardList.innerHTML = '';
+      const standardEvents = ['page_view', 'scroll', 'click', 'form_start', 'form_submit', 'generate_lead', 'view_item', 'view_item_list', 'add_to_cart', 'remove_from_cart', 'user_engagement'];
+      const detectedEvents = ga4Summary.uniqueEvents || [];
+
+      standardEvents.forEach(eventName => {
+        const li = document.createElement('li');
+        const isDetected = detectedEvents.includes(eventName);
+        li.innerHTML = `
+          <span class="dot ${isDetected ? 'green' : 'red'}"></span>
+          <span class="tracker-name">${eventName}</span>
+          <span class="tracker-detail">${isDetected ? 'Rilevato' : 'Non rilevato'}</span>
+        `;
+        ga4StandardList.appendChild(li);
+      });
+
+      // Form
+      const forms = report.forms?.found || [];
+      const formsList = document.getElementById('formsList');
+      const formsEmpty = document.getElementById('formsEmpty');
+      document.getElementById('formBadge').textContent = forms.length + ' form validi';
+
+      if (forms.length === 0) {
+        formsList.style.display = 'none';
+        formsEmpty.style.display = 'block';
+      } else {
+        formsList.innerHTML = '';
+        forms.forEach(f => {
+          const li = document.createElement('li');
+          const fields = [];
+          if (f.hasNameField) fields.push('nome');
+          if (f.hasSurnameField) fields.push('cognome');
+          if (f.hasEmailField) fields.push('email');
+          li.innerHTML = `
+            <span class="dot green"></span>
+            <span class="tracker-name">Form #${f.index + 1}</span>
+            <span class="tracker-detail">Campi: ${fields.join(', ')}</span>
+          `;
+          formsList.appendChild(li);
+        });
+      }
+
+    }
+
+    function downloadJson() {
+      if (!reportData) return;
+      const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-${reportData.url.replace(/[^a-z0-9]/gi, '_')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    loadReport();
+  </script>
+</body>
+</html>
