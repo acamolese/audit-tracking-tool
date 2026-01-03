@@ -294,6 +294,9 @@
     .item-list .dot.red { background: var(--danger); }
     .item-list .dot.green { background: var(--success); }
     .item-list .dot.gray { background: #ccc; }
+    .item-list .dot.blue { background: #006dff; }
+    .item-list .dot.purple { background: #8b5cf6; }
+    .item-list .dot.orange { background: #f59e0b; }
 
     /* Stats grid */
     .stats-grid {
@@ -549,7 +552,7 @@
         <div class="card-header">
           <h3 class="card-title">
             <span class="icon red">&#9888;</span>
-            Violazioni
+            Potenziali Violazioni
           </h3>
           <span id="violationsBadge" class="badge"></span>
         </div>
@@ -733,7 +736,8 @@
 
       // Verdict
       const violations = report.summary?.violations || 0;
-      const cmpDetected = report.cookiebot?.detected;
+      const cmpDetected = report.cmp?.detected;
+      const cmpType = report.cmp?.type || 'CMP';
       const banner = document.getElementById('verdictBanner');
       const icon = document.getElementById('verdictIcon');
       const title = document.getElementById('verdictTitle');
@@ -743,12 +747,12 @@
         banner.className = 'verdict-banner success';
         icon.textContent = '✓';
         title.textContent = 'Conforme';
-        desc.textContent = 'Il sito rispetta le normative GDPR sui cookie';
+        desc.textContent = `Il sito rispetta le normative GDPR sui cookie (${cmpType})`;
       } else if (violations > 0) {
         banner.className = 'verdict-banner danger';
         icon.textContent = '!';
-        title.textContent = 'Non Conforme';
-        desc.textContent = `Rilevate ${violations} violazioni pre-consenso`;
+        title.textContent = 'Possibile Non Conformità';
+        desc.textContent = `Rilevate ${violations} potenziali violazioni pre-consenso`;
       } else {
         banner.className = 'verdict-banner warning';
         icon.textContent = '?';
@@ -757,11 +761,11 @@
       }
 
       // CMP
-      document.getElementById('cmpDetected').textContent = cmpDetected ? 'Si' : 'No';
+      document.getElementById('cmpDetected').textContent = cmpDetected ? cmpType : 'No';
       document.getElementById('blockedScripts').textContent = report.summary?.blockedScriptsCount || 0;
-      document.getElementById('cmpBadge').textContent = cmpDetected ? 'Attivo' : 'Non rilevato';
+      document.getElementById('cmpBadge').textContent = cmpDetected ? cmpType : 'Non rilevato';
       document.getElementById('cmpBadge').className = 'badge ' + (cmpDetected ? 'badge-success' : 'badge-neutral');
-      document.getElementById('consentState').textContent = JSON.stringify(report.cookiebot?.consentState || {}, null, 2);
+      document.getElementById('consentState').textContent = JSON.stringify(report.cmp?.consentState || {}, null, 2);
 
       // Violations
       const violationsList = document.getElementById('violationsList');
@@ -776,10 +780,15 @@
         violationsList.innerHTML = '';
         (report.violations || []).forEach(v => {
           const li = document.createElement('li');
+          let detail = v.details?.event || v.details?.url?.substring(0, 60) || '';
+          // Aggiungi stato consenso cookie per GA4/Google
+          if (v.details?.gcsRaw) {
+            detail += ` <strong style="color:var(--danger);">(${v.details.gcsRaw})</strong>`;
+          }
           li.innerHTML = `
             <span class="dot red"></span>
             <span class="tracker-name">${v.tracker}</span>
-            <span class="tracker-detail">${v.details?.event || v.details?.url?.substring(0, 60) || ''}</span>
+            <span class="tracker-detail">${detail}</span>
           `;
           violationsList.appendChild(li);
         });
@@ -849,27 +858,71 @@
       document.getElementById('eventsInteractions').textContent = eventsSummary.interactions || 0;
       document.getElementById('eventsBadge').textContent = (eventsSummary.total || 0) + ' eventi';
 
-      // Eventi per tracker
+      // Eventi per tracker (organizzati per categoria)
       const eventsByTrackerDiv = document.getElementById('eventsByTracker');
       eventsByTrackerDiv.innerHTML = '';
       const byTracker = eventsSummary.byTracker || {};
 
+      const categoryLabels = {
+        standard: 'Eventi Standard',
+        custom: 'Eventi Custom',
+        click: 'Eventi Click',
+        session: 'Session Recording',
+        conversion: 'Conversioni'
+      };
+
+      const categoryColors = {
+        standard: 'green',
+        custom: 'blue',
+        click: 'purple',
+        session: 'gray',
+        conversion: 'orange'
+      };
+
       if (Object.keys(byTracker).length === 0) {
         eventsByTrackerDiv.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">Nessun evento rilevato</p>';
       } else {
-        Object.entries(byTracker).forEach(([tracker, events]) => {
+        Object.entries(byTracker).forEach(([tracker, categories]) => {
           const trackerDiv = document.createElement('div');
-          trackerDiv.style.marginBottom = '16px';
-          trackerDiv.innerHTML = `
-            <h5 style="font-size:14px;color:var(--primary);margin-bottom:8px;font-weight:600;">${tracker}</h5>
-            <ul class="item-list">
-              ${events.map(ev => `
-                <li>
-                  <span class="dot green"></span>
-                  <span class="tracker-name">${ev}</span>
+          trackerDiv.style.marginBottom = '24px';
+          trackerDiv.style.padding = '16px';
+          trackerDiv.style.background = 'var(--bg)';
+          trackerDiv.style.borderRadius = '12px';
+
+          let categoriesHtml = '';
+          Object.entries(categories).forEach(([category, events]) => {
+            const label = categoryLabels[category] || category;
+            const color = categoryColors[category] || 'gray';
+
+            const eventsHtml = events.map(ev => {
+              let detail = '';
+              if (ev.destinationUrl) {
+                detail = ev.destinationUrl.length > 50 ? ev.destinationUrl.substring(0, 50) + '...' : ev.destinationUrl;
+              } else if (ev.productName) {
+                detail = ev.productName;
+              } else if (ev.params && Object.keys(ev.params).length > 0) {
+                detail = Object.entries(ev.params).map(([k,v]) => `${k}: ${v}`).join(', ');
+              }
+              return `
+                <li style="padding:12px 16px;">
+                  <span class="dot ${color}"></span>
+                  <span class="tracker-name">${ev.name}</span>
+                  ${detail ? `<span class="tracker-detail">${detail}</span>` : ''}
                 </li>
-              `).join('')}
-            </ul>
+              `;
+            }).join('');
+
+            categoriesHtml += `
+              <div style="margin-top:12px;">
+                <span style="font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);font-weight:600;">${label}</span>
+                <ul class="item-list" style="margin-top:8px;">${eventsHtml}</ul>
+              </div>
+            `;
+          });
+
+          trackerDiv.innerHTML = `
+            <h5 style="font-size:16px;color:var(--primary);margin-bottom:4px;font-weight:600;">${tracker}</h5>
+            ${categoriesHtml}
           `;
           eventsByTrackerDiv.appendChild(trackerDiv);
         });

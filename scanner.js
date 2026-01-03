@@ -105,8 +105,9 @@ class CookieAuditScanner {
     this.report = {
       url: url,
       timestamp: new Date().toISOString(),
-      cookiebot: {
+      cmp: {
         detected: false,
+        type: null,  // 'cookiebot', 'iubenda', 'onetrust', etc.
         loaded: false,
         consentState: null,
         blockedScripts: []
@@ -159,55 +160,89 @@ class CookieAuditScanner {
     try {
       const urlObj = new URL(url);
 
-      // Facebook Pixel: estrai evento
+      // Facebook Pixel: estrai evento e parametri
       if (trackerName === 'Facebook Pixel') {
         const eventName = urlObj.searchParams.get('ev');
-        if (eventName) details.event = eventName;
+        if (eventName) {
+          details.event = eventName;
+          // Categorizza evento
+          const fbStandardEvents = ['PageView', 'ViewContent', 'Search', 'AddToCart', 'AddToWishlist', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Lead', 'CompleteRegistration', 'Contact', 'CustomizeProduct', 'Donate', 'FindLocation', 'Schedule', 'StartTrial', 'SubmitApplication', 'Subscribe'];
+          details.eventCategory = fbStandardEvents.includes(eventName) ? 'standard' : 'custom';
+        }
         const pixelId = urlObj.searchParams.get('id');
         if (pixelId) details.pixelId = pixelId;
+        // URL destinazione (utile per click)
+        const dl = urlObj.searchParams.get('dl');
+        if (dl) details.destinationUrl = decodeURIComponent(dl);
+        // Contenuto custom data
+        const cd = urlObj.searchParams.get('cd');
+        if (cd) {
+          try {
+            details.customData = JSON.parse(decodeURIComponent(cd));
+          } catch (e) {}
+        }
       }
 
       // LinkedIn Insight: estrai evento
       if (trackerName === 'LinkedIn Insight') {
-        // LinkedIn usa il parametro "event" o traccia conversioni
         const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('conversionId');
-        if (eventName) details.event = eventName;
-        else details.event = 'PageView'; // Default per LinkedIn
+        if (eventName) {
+          details.event = eventName;
+          details.eventCategory = 'conversion';
+        } else {
+          details.event = 'PageView';
+          details.eventCategory = 'standard';
+        }
       }
 
       // TikTok Pixel: estrai evento
       if (trackerName === 'TikTok Pixel') {
         const eventName = urlObj.searchParams.get('event');
-        if (eventName) details.event = eventName;
+        if (eventName) {
+          details.event = eventName;
+          const ttStandardEvents = ['ViewContent', 'ClickButton', 'Search', 'AddToWishlist', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'CompletePayment', 'PlaceAnOrder', 'Contact', 'Download', 'SubmitForm', 'Subscribe'];
+          details.eventCategory = ttStandardEvents.includes(eventName) ? 'standard' : 'custom';
+        }
       }
 
       // Pinterest: estrai evento
       if (trackerName === 'Pinterest') {
         const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('ed');
-        if (eventName) details.event = eventName;
+        if (eventName) {
+          details.event = eventName;
+          details.eventCategory = 'custom';
+        }
       }
 
       // Twitter/X: estrai evento
       if (trackerName === 'Twitter/X') {
         const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('txn_id');
-        if (eventName) details.event = eventName;
-        else details.event = 'PageView';
+        if (eventName) {
+          details.event = eventName;
+          details.eventCategory = 'conversion';
+        } else {
+          details.event = 'PageView';
+          details.eventCategory = 'standard';
+        }
       }
 
       // Hotjar: identifica tipo di tracciamento
       if (trackerName === 'Hotjar') {
         details.event = 'Recording';
+        details.eventCategory = 'session';
       }
 
       // Clarity: identifica tipo di tracciamento
       if (trackerName === 'Clarity') {
         details.event = 'Recording';
+        details.eventCategory = 'session';
       }
 
       // Google: estrai consent state
       if (trackerName?.startsWith('GA') || trackerName?.startsWith('Google')) {
         const gcs = urlObj.searchParams.get('gcs');
         if (gcs) {
+          details.gcsRaw = gcs; // Codice originale (es. G101)
           details.consentMode = GOOGLE_CONSENT_PATTERNS.gcs[gcs] || gcs;
         }
         const gcd = urlObj.searchParams.get('gcd');
@@ -231,15 +266,40 @@ class CookieAuditScanner {
         if (en) {
           details.event = en;
           details.isStandardEvent = GA4_STANDARD_EVENTS.includes(en);
+          // Categorizza evento
+          if (GA4_STANDARD_EVENTS.includes(en)) {
+            details.eventCategory = 'standard';
+          } else if (en.startsWith('click_') || en.startsWith('cta_')) {
+            details.eventCategory = 'click';
+          } else {
+            details.eventCategory = 'custom';
+          }
         }
+
+        // Parametri evento (ep.*)
+        const eventParams = {};
+        for (const [key, value] of urlObj.searchParams) {
+          if (key.startsWith('ep.')) {
+            eventParams[key.replace('ep.', '')] = value;
+          } else if (key.startsWith('epn.')) {
+            eventParams[key.replace('epn.', '')] = parseFloat(value);
+          }
+        }
+        if (Object.keys(eventParams).length > 0) {
+          details.params = eventParams;
+        }
+
         // Parametri ecommerce
-        const ep_item_name = urlObj.searchParams.get('ep.item_name');
-        if (ep_item_name) details.itemName = ep_item_name;
         const pr1_nm = urlObj.searchParams.get('pr1.nm');
-        if (pr1_nm) details.productName = pr1_nm;
-        // Valore transazione
-        const epn_value = urlObj.searchParams.get('epn.value');
-        if (epn_value) details.value = epn_value;
+        if (pr1_nm) details.productName = decodeURIComponent(pr1_nm);
+        const pr1_pr = urlObj.searchParams.get('pr1.pr');
+        if (pr1_pr) details.productPrice = pr1_pr;
+
+        // Page info
+        const dt = urlObj.searchParams.get('dt');
+        if (dt) details.pageTitle = decodeURIComponent(dt);
+        const dl = urlObj.searchParams.get('dl');
+        if (dl) details.pageUrl = decodeURIComponent(dl);
       }
 
     } catch (e) {
@@ -285,12 +345,26 @@ class CookieAuditScanner {
     const eventData = {
       tracker: details.tracker || 'unknown',
       event: details.event || 'unknown',
+      eventCategory: details.eventCategory || 'unknown',
       consentMode: details.consentMode || null,
       timestamp: new Date().toISOString(),
       phase: phase,
       isStandard: details.isStandardEvent || false,
-      pixelId: details.pixelId || null
+      pixelId: details.pixelId || null,
+      // Parametri aggiuntivi
+      destinationUrl: details.destinationUrl || null,
+      pageTitle: details.pageTitle || null,
+      pageUrl: details.pageUrl || null,
+      params: details.params || null,
+      productName: details.productName || null,
+      productPrice: details.productPrice || null,
+      customData: details.customData || null
     };
+
+    // Rimuovi campi null per pulizia
+    Object.keys(eventData).forEach(key => {
+      if (eventData[key] === null) delete eventData[key];
+    });
 
     if (phase === 'PRE_CONSENT') {
       this.report.events.preConsent.push(eventData);
@@ -332,7 +406,19 @@ class CookieAuditScanner {
       // GA4: può avere eventi multipli nel body POST
       if (trackerName === 'GA4' && details.events && details.events.length > 0) {
         for (const eventName of details.events) {
-          const eventDetails = { ...details, event: eventName, isStandardEvent: GA4_STANDARD_EVENTS.includes(eventName) };
+          // Ricalcola categoria per ogni evento
+          let eventCategory = 'custom';
+          if (GA4_STANDARD_EVENTS.includes(eventName)) {
+            eventCategory = 'standard';
+          } else if (eventName.startsWith('click_') || eventName.startsWith('cta_')) {
+            eventCategory = 'click';
+          }
+          const eventDetails = {
+            ...details,
+            event: eventName,
+            isStandardEvent: GA4_STANDARD_EVENTS.includes(eventName),
+            eventCategory: eventCategory
+          };
           this.trackEvent(eventDetails, this.phase);
           this.log(`   [EVENT] ${trackerName}: ${eventName} (${details.consentMode || 'N/A'})`);
         }
@@ -403,25 +489,71 @@ class CookieAuditScanner {
     });
   }
 
-  // Verifica stato Cookiebot
-  async checkCookiebotState() {
+  // Verifica stato CMP (Cookiebot, iubenda, OneTrust, etc.)
+  async checkCMPState() {
     return await this.page.evaluate(() => {
+      // Cookiebot
       const cb = window.Cookiebot;
-      if (!cb) return { detected: false };
+      if (cb) {
+        return {
+          detected: true,
+          type: 'Cookiebot',
+          loaded: true,
+          consent: cb.consent ? {
+            necessary: cb.consent.necessary,
+            preferences: cb.consent.preferences,
+            statistics: cb.consent.statistics,
+            marketing: cb.consent.marketing
+          } : null,
+          hasResponse: cb.hasResponse
+        };
+      }
 
-      return {
-        detected: true,
-        loaded: true,
-        consent: cb.consent ? {
-          necessary: cb.consent.necessary,
-          preferences: cb.consent.preferences,
-          statistics: cb.consent.statistics,
-          marketing: cb.consent.marketing
-        } : null,
-        hasResponse: cb.hasResponse,
-        doNotTrack: cb.doNotTrack,
-        regulations: cb.regulations
-      };
+      // iubenda
+      const iub = window._iub;
+      if (iub && iub.cs) {
+        const cs = iub.cs;
+        // iubenda consent state
+        const consent = cs.consent || {};
+        return {
+          detected: true,
+          type: 'iubenda',
+          loaded: true,
+          consent: {
+            necessary: true, // sempre true
+            preferences: consent.purposes ? consent.purposes['2'] === true : null,
+            statistics: consent.purposes ? consent.purposes['4'] === true : null,
+            marketing: consent.purposes ? consent.purposes['5'] === true : null
+          },
+          hasResponse: cs.consent !== undefined
+        };
+      }
+
+      // OneTrust
+      const ot = window.OneTrust || window.Optanon;
+      if (ot) {
+        return {
+          detected: true,
+          type: 'OneTrust',
+          loaded: true,
+          consent: null, // OneTrust ha struttura diversa
+          hasResponse: true
+        };
+      }
+
+      // Didomi
+      const didomi = window.Didomi;
+      if (didomi) {
+        return {
+          detected: true,
+          type: 'Didomi',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      return { detected: false, type: null };
     });
   }
 
@@ -444,11 +576,18 @@ class CookieAuditScanner {
       '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll',
       '#CybotCookiebotDialogBodyButtonAccept',
       '[data-cookiebanner="accept_button"]',
+      // iubenda
+      '.iubenda-cs-accept-btn',
+      '.iubenda-cs-btn-primary',
+      '#iubenda-cs-banner .iubenda-cs-accept-btn',
+      'button.iub-btn-consent',
+      '[data-iub-action="accept"]',
       // OneTrust
       '#onetrust-accept-btn-handler',
       '.onetrust-close-btn-handler',
-      // iubenda
-      '.iubenda-cs-accept-btn',
+      // Didomi
+      '#didomi-notice-agree-button',
+      '[data-testid="notice-accept-button"]',
       // Generici
       '[data-action="accept"]',
       'button[aria-label*="Accept"]',
@@ -786,16 +925,16 @@ class CookieAuditScanner {
       this.report.preConsent.localStorage = preStorage.localStorage;
       this.report.preConsent.sessionStorage = preStorage.sessionStorage;
 
-      // Verifica Cookiebot
-      const cbState = await this.checkCookiebotState();
-      this.report.cookiebot = { ...this.report.cookiebot, ...cbState };
+      // Verifica CMP (Cookiebot, iubenda, OneTrust, etc.)
+      const cmpState = await this.checkCMPState();
+      this.report.cmp = { ...this.report.cmp, ...cmpState };
 
-      if (cbState.detected) {
-        this.log('Cookiebot rilevato');
-        this.report.cookiebot.blockedScripts = await this.checkBlockedScripts();
-        this.log(`Script bloccati (type="text/plain"): ${this.report.cookiebot.blockedScripts.length}`);
+      if (cmpState.detected) {
+        this.log(`CMP rilevato: ${cmpState.type}`);
+        this.report.cmp.blockedScripts = await this.checkBlockedScripts();
+        this.log(`Script bloccati (type="text/plain"): ${this.report.cmp.blockedScripts.length}`);
       } else {
-        this.log('Cookiebot NON rilevato - cercando altri CMP...', 'warn');
+        this.log('Nessun CMP rilevato', 'warn');
       }
 
       // === FASE 2: ACCETTAZIONE ===
@@ -817,11 +956,11 @@ class CookieAuditScanner {
       this.report.postConsent.localStorage = postStorage.localStorage;
       this.report.postConsent.sessionStorage = postStorage.sessionStorage;
 
-      // Verifica stato Cookiebot dopo accettazione
-      if (cbState.detected) {
-        const cbStatePost = await this.checkCookiebotState();
-        this.report.cookiebot.consentState = cbStatePost.consent;
-        this.log(`Stato consenso Cookiebot: ${JSON.stringify(cbStatePost.consent)}`);
+      // Verifica stato CMP dopo accettazione
+      if (cmpState.detected) {
+        const cmpStatePost = await this.checkCMPState();
+        this.report.cmp.consentState = cmpStatePost.consent;
+        this.log(`Stato consenso ${cmpState.type}: ${JSON.stringify(cmpStatePost.consent)}`);
       }
 
       // === FASE 3: INTERAZIONI (per testare eventi GA4) ===
@@ -880,15 +1019,39 @@ class CookieAuditScanner {
       ...this.report.events.interactions
     ];
 
-    // Raggruppa eventi per tracker
+    // Raggruppa eventi per tracker con dettagli
     const eventsByTracker = {};
     allEvents.forEach(e => {
       if (!eventsByTracker[e.tracker]) {
-        eventsByTracker[e.tracker] = [];
+        eventsByTracker[e.tracker] = {
+          standard: [],
+          custom: [],
+          click: [],
+          session: [],
+          conversion: []
+        };
       }
-      if (!eventsByTracker[e.tracker].includes(e.event)) {
-        eventsByTracker[e.tracker].push(e.event);
+      const category = e.eventCategory || 'custom';
+      const eventInfo = {
+        name: e.event,
+        destinationUrl: e.destinationUrl,
+        params: e.params,
+        productName: e.productName
+      };
+      // Evita duplicati
+      const exists = eventsByTracker[e.tracker][category]?.some(ev => ev.name === e.event);
+      if (!exists && eventsByTracker[e.tracker][category]) {
+        eventsByTracker[e.tracker][category].push(eventInfo);
       }
+    });
+
+    // Pulisci categorie vuote
+    Object.keys(eventsByTracker).forEach(tracker => {
+      Object.keys(eventsByTracker[tracker]).forEach(cat => {
+        if (eventsByTracker[tracker][cat].length === 0) {
+          delete eventsByTracker[tracker][cat];
+        }
+      });
     });
 
     // Estrai eventi unici
@@ -901,10 +1064,10 @@ class CookieAuditScanner {
       cookiesPreConsent: this.report.preConsent.cookies.length,
       cookiesPostConsent: this.report.postConsent.cookies.length,
       newCookiesAfterConsent: newCookies.length,
-      cookiebotWorking: this.report.cookiebot.detected &&
+      cmpWorking: this.report.cmp.detected &&
                         this.report.violations.length === 0 &&
-                        this.report.cookiebot.consentState?.marketing === true,
-      blockedScriptsCount: this.report.cookiebot.blockedScripts?.length || 0,
+                        this.report.cmp.consentState?.marketing === true,
+      blockedScriptsCount: this.report.cmp.blockedScripts?.length || 0,
       // Events summary (tutti i tracker)
       events: {
         total: allEvents.length,
@@ -926,12 +1089,13 @@ class CookieAuditScanner {
     console.log('         RISULTATO AUDIT');
     console.log('========================================\n');
 
-    // Cookiebot status
-    console.log('COOKIEBOT STATUS:');
-    console.log(`  Rilevato: ${this.report.cookiebot.detected ? 'Si' : 'NO'}`);
-    if (this.report.cookiebot.detected) {
+    // CMP status
+    console.log('CMP STATUS:');
+    console.log(`  Rilevato: ${this.report.cmp.detected ? 'Si' : 'NO'}`);
+    if (this.report.cmp.detected) {
+      console.log(`  Tipo: ${this.report.cmp.type}`);
       console.log(`  Script bloccati: ${this.report.summary.blockedScriptsCount}`);
-      console.log(`  Consenso post-click: ${JSON.stringify(this.report.cookiebot.consentState)}`);
+      console.log(`  Consenso post-click: ${JSON.stringify(this.report.cmp.consentState)}`);
     }
 
     // Violazioni
@@ -940,7 +1104,12 @@ class CookieAuditScanner {
       console.log('  Nessuna violazione rilevata');
     } else {
       this.report.violations.forEach(v => {
-        console.log(`  - ${v.tracker}: ${v.details.event || v.details.url.substring(0, 80)}`);
+        let info = v.details.event || v.details.url.substring(0, 80);
+        // Aggiungi stato consenso cookie per GA4/Google
+        if (v.details.gcsRaw) {
+          info += ` (Consent State: ${v.details.gcsRaw})`;
+        }
+        console.log(`  - ${v.tracker}: ${info}`);
       });
     }
 
@@ -967,10 +1136,14 @@ class CookieAuditScanner {
     console.log(`  Pre-consenso: ${this.report.summary.events?.preConsent || 0}`);
     console.log(`  Post-consenso: ${this.report.summary.events?.postConsent || 0}`);
     console.log(`  Da interazioni: ${this.report.summary.events?.interactions || 0}`);
-    // Mostra eventi per tracker
+    // Mostra eventi per tracker e categoria
     const byTracker = this.report.summary.events?.byTracker || {};
-    Object.entries(byTracker).forEach(([tracker, events]) => {
-      console.log(`  ${tracker}: ${events.join(', ')}`);
+    Object.entries(byTracker).forEach(([tracker, categories]) => {
+      console.log(`\n  ${tracker}:`);
+      Object.entries(categories).forEach(([category, events]) => {
+        const eventNames = events.map(e => e.name).join(', ');
+        console.log(`    [${category}] ${eventNames}`);
+      });
     });
 
     // Form
@@ -982,12 +1155,12 @@ class CookieAuditScanner {
 
     // Verdetto
     console.log('\n========================================');
-    if (this.report.summary.violations === 0 && this.report.cookiebot.detected) {
-      console.log('VERDETTO: CONFORME - Cookiebot funziona correttamente');
+    if (this.report.summary.violations === 0 && this.report.cmp.detected) {
+      console.log(`VERDETTO: CONFORME - ${this.report.cmp.type} funziona correttamente`);
     } else if (this.report.summary.violations > 0) {
       console.log(`VERDETTO: NON CONFORME - ${this.report.summary.violations} violazioni`);
     } else {
-      console.log('VERDETTO: DA VERIFICARE - CMP non standard rilevato');
+      console.log('VERDETTO: DA VERIFICARE - Nessun CMP rilevato');
     }
     console.log('========================================\n');
   }
