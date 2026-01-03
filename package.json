@@ -1,12 +1,16 @@
 {
-  "name": "audittrackingtool",
+  "name": "cookie-audit-scanner",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GDPR compliance tool for cookie and tracking verification",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "scan": "node scanner.js"
   },
-  "keywords": [],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["gdpr", "cookie", "tracking", "audit", "compliance"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",

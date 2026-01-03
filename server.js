@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { CookieAuditScanner } = require('./scanner');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Store dei report in memoria (in produzione usare database)
 const reports = new Map();
