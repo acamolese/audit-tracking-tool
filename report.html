@@ -480,7 +480,7 @@
 <body>
   <header class="header">
     <div class="header-content">
-      <a href="/" class="logo">Cookie<span>Audit</span></a>
+      <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
       <div class="header-actions">
         <button onclick="downloadJson()" class="btn-header btn-outline">Scarica JSON</button>
         <a href="/" class="btn-header btn-accent">Nuova Scansione</a>
@@ -601,6 +601,10 @@
             <div class="stat-value" id="eventsInteractions">0</div>
             <div class="stat-label">Da Interazioni</div>
           </div>
+          <div class="stat-item" id="eventsFormTestContainer" style="display:none;">
+            <div class="stat-value" id="eventsFormTest" style="color:var(--accent);">0</div>
+            <div class="stat-label">Test Form</div>
+          </div>
         </div>
 
         <div class="collapsible-header" onclick="toggleCollapsible(this)">
@@ -627,12 +631,38 @@
             <span class="icon green">&#128221;</span>
             Form
           </h3>
-          <span id="formBadge" class="badge badge-neutral"></span>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span id="formBadge" class="badge badge-neutral"></span>
+            <button id="testFormBtn" class="btn btn-secondary" style="display:none;padding:8px 16px;font-size:13px;" onclick="openFormTest()">
+              Testa Form
+            </button>
+          </div>
         </div>
         <ul id="formsList" class="item-list"></ul>
         <div id="formsEmpty" class="empty-state" style="display:none;">
           <div class="icon">&#128196;</div>
           <p>Nessun form valido trovato</p>
+        </div>
+
+        <!-- Risultati test form -->
+        <div id="formTestResults" style="display:none;">
+          <div class="collapsible-header" onclick="toggleCollapsible(this)">
+            <h4>Risultati Test Form</h4>
+            <span class="arrow">&#9660;</span>
+          </div>
+          <div class="collapsible-content">
+            <div class="stats-grid" style="margin-top:12px;">
+              <div class="stat-item">
+                <div class="stat-value" id="testFormSubmit">0</div>
+                <div class="stat-label">form_submit</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="testGenerateLead">0</div>
+                <div class="stat-label">generate_lead</div>
+              </div>
+            </div>
+            <div id="formTestVerdict" style="margin-top:16px;padding:16px;border-radius:8px;"></div>
+          </div>
         </div>
       </div>
 
@@ -688,6 +718,10 @@
           &#128269; Nuova Scansione
         </a>
       </div>
+
+      <footer style="text-align:center;padding:24px;color:var(--text-light);font-size:14px;">
+        AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank" style="color:inherit;text-decoration:underline;">Andrea Camolese</a>
+      </footer>
 
     </div>
   </main>
@@ -913,6 +947,14 @@
       document.getElementById('eventsPre').textContent = eventsSummary.preConsent || 0;
       document.getElementById('eventsPost').textContent = eventsSummary.postConsent || 0;
       document.getElementById('eventsInteractions').textContent = eventsSummary.interactions || 0;
+
+      // Mostra eventi form test se presenti
+      const formTestEventsCount = report.events?.formTest?.length || 0;
+      if (formTestEventsCount > 0) {
+        document.getElementById('eventsFormTestContainer').style.display = 'block';
+        document.getElementById('eventsFormTest').textContent = formTestEventsCount;
+      }
+
       document.getElementById('eventsBadge').textContent = (eventsSummary.total || 0) + ' eventi';
 
       // Eventi per tracker (organizzati per categoria)
@@ -991,7 +1033,8 @@
       const allEvents = [
         ...(report.events?.preConsent || []).map(e => ({...e, phase: 'Pre'})),
         ...(report.events?.postConsent || []).map(e => ({...e, phase: 'Post'})),
-        ...(report.events?.interactions || []).map(e => ({...e, phase: 'Interaction'}))
+        ...(report.events?.interactions || []).map(e => ({...e, phase: 'Interaction'})),
+        ...(report.events?.formTest || []).map(e => ({...e, phase: 'Form Test'}))
       ];
 
       if (allEvents.length === 0) {
@@ -999,7 +1042,10 @@
       } else {
         allEvents.forEach(e => {
           const li = document.createElement('li');
-          const dotColor = e.phase === 'Pre' ? 'gray' : 'green';
+          let dotColor = 'gray';
+          if (e.phase === 'Post') dotColor = 'green';
+          else if (e.phase === 'Interaction') dotColor = 'blue';
+          else if (e.phase === 'Form Test') dotColor = 'orange';
           li.innerHTML = `
             <span class="dot ${dotColor}"></span>
             <span class="tracker-name">${e.tracker}: ${e.event}</span>
@@ -1033,8 +1079,42 @@
           `;
           formsList.appendChild(li);
         });
+
+        // Mostra pulsante test form
+        document.getElementById('testFormBtn').style.display = 'inline-block';
       }
 
+      // Mostra risultati test form se presenti
+      if (report.formTest) {
+        const ft = report.formTest;
+        document.getElementById('formTestResults').style.display = 'block';
+        document.getElementById('testFormSubmit').textContent = ft.formEventCounts?.form_submit || 0;
+        document.getElementById('testFormSubmit').style.color = (ft.formEventCounts?.form_submit > 0) ? 'var(--success)' : 'var(--text)';
+        document.getElementById('testGenerateLead').textContent = ft.formEventCounts?.generate_lead || 0;
+        document.getElementById('testGenerateLead').style.color = (ft.formEventCounts?.generate_lead > 0) ? 'var(--success)' : 'var(--text)';
+
+        const verdict = document.getElementById('formTestVerdict');
+        if (ft.success) {
+          verdict.style.background = 'rgba(6, 232, 159, 0.15)';
+          verdict.innerHTML = '<strong style="color:var(--success);">Tracking Form OK</strong><br><span style="font-size:13px;color:var(--text-light);">Gli eventi form vengono tracciati correttamente</span>';
+        } else {
+          verdict.style.background = 'rgba(255, 79, 80, 0.15)';
+          verdict.innerHTML = '<strong style="color:var(--danger);">Tracking Form Mancante</strong><br><span style="font-size:13px;color:var(--text-light);">Non sono stati rilevati eventi form_submit o generate_lead</span>';
+        }
+      }
+
+    }
+
+    // Apri pagina test form
+    function openFormTest() {
+      const params = new URLSearchParams(window.location.search);
+      const reportId = params.get('id');
+      const url = reportData?.url;
+
+      if (!url) return;
+
+      const testUrl = `/form-test.html?url=${encodeURIComponent(url)}&reportId=${reportId}`;
+      window.open(testUrl, 'formTest', 'width=1400,height=900');
     }
 
     function downloadJson() {

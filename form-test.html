@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Form - AuditTrackingTool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1c3738;
+      --accent: #06e89f;
+      --danger: #ff4f50;
+      --warning: #ffb84d;
+      --success: #06e89f;
+      --bg: #f3f1ee;
+      --white: #ffffff;
+      --text: #111d0c;
+      --text-light: #5a6a5c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header h1 {
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .header .url-display {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: var(--white);
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-accent:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Iframe container */
+    .iframe-container {
+      flex: 1;
+      background: var(--white);
+      position: relative;
+    }
+
+    .iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .iframe-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .iframe-loading .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--bg);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .iframe-error {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: var(--danger);
+    }
+
+    /* Event monitor panel */
+    .monitor-panel {
+      width: 400px;
+      background: var(--white);
+      border-left: 1px solid #e5e5e5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .monitor-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .monitor-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .monitor-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ccc;
+    }
+
+    .status-dot.connected {
+      background: var(--success);
+    }
+
+    .status-dot.waiting {
+      background: var(--warning);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Tabs */
+    .monitor-tabs {
+      display: flex;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .monitor-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .monitor-tab:hover {
+      color: var(--primary);
+    }
+
+    .monitor-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--accent);
+    }
+
+    .monitor-tab .count {
+      display: inline-block;
+      min-width: 20px;
+      padding: 2px 6px;
+      background: var(--bg);
+      border-radius: 10px;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    .monitor-tab.active .count {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    /* Event list */
+    .event-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .event-item {
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .event-item.highlight {
+      background: rgba(6, 232, 159, 0.15);
+      border-left: 3px solid var(--success);
+    }
+
+    .event-item.warning {
+      background: rgba(255, 184, 77, 0.15);
+      border-left: 3px solid var(--warning);
+    }
+
+    .event-item .event-type {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .event-item .event-tracker {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 4px;
+      font-size: 11px;
+      margin-right: 8px;
+    }
+
+    .event-item .event-time {
+      color: var(--text-light);
+      font-size: 11px;
+    }
+
+    .event-item .event-detail {
+      color: var(--text-light);
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+
+    /* Summary panel */
+    .summary-panel {
+      padding: 16px 20px;
+      border-top: 1px solid #e5e5e5;
+      background: var(--bg);
+    }
+
+    .summary-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .summary-item {
+      background: var(--white);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .summary-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .summary-value.success {
+      color: var(--success);
+    }
+
+    .summary-value.danger {
+      color: var(--danger);
+    }
+
+    .summary-label {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* Form detection alert */
+    .form-alert {
+      padding: 12px 16px;
+      background: rgba(6, 232, 159, 0.15);
+      border-left: 3px solid var(--success);
+      margin: 12px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .form-alert.warning {
+      background: rgba(255, 79, 80, 0.15);
+      border-left-color: var(--danger);
+    }
+
+    .form-alert-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .form-alert-text {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Test Form Tracking</h1>
+    <div class="url-display" id="urlDisplay">Caricamento...</div>
+    <button class="btn btn-outline" onclick="clearEvents()">Pulisci</button>
+    <button class="btn btn-accent" onclick="saveResults()">Salva Risultati</button>
+  </header>
+
+  <main class="main">
+    <!-- Iframe con il sito -->
+    <div class="iframe-container">
+      <div class="iframe-loading" id="iframeLoading">
+        <div class="spinner"></div>
+        <p>Caricamento sito in corso...</p>
+      </div>
+      <div class="iframe-error" id="iframeError" style="display:none;">
+        <p>Impossibile caricare il sito</p>
+        <p style="font-size:13px;margin-top:8px;">Il sito potrebbe bloccare l'embedding in iframe</p>
+      </div>
+      <iframe id="siteFrame" style="display:none;"></iframe>
+    </div>
+
+    <!-- Pannello monitor eventi -->
+    <div class="monitor-panel">
+      <div class="monitor-header">
+        <h2>Monitor Eventi</h2>
+        <div class="monitor-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">In attesa...</span>
+        </div>
+      </div>
+
+      <div class="monitor-tabs">
+        <div class="monitor-tab active" data-tab="all" onclick="switchTab('all')">
+          Tutti <span class="count" id="countAll">0</span>
+        </div>
+        <div class="monitor-tab" data-tab="dataLayer" onclick="switchTab('dataLayer')">
+          DataLayer <span class="count" id="countDataLayer">0</span>
+        </div>
+        <div class="monitor-tab" data-tab="network" onclick="switchTab('network')">
+          Network <span class="count" id="countNetwork">0</span>
+        </div>
+      </div>
+
+      <!-- Alert form detection -->
+      <div id="formAlert" style="display:none;"></div>
+
+      <div class="event-list" id="eventList">
+        <div class="empty-state">
+          <p>In attesa di eventi...</p>
+          <p style="font-size:12px;margin-top:8px;">Interagisci con il form nel sito</p>
+        </div>
+      </div>
+
+      <div class="summary-panel">
+        <div class="summary-title">Riepilogo Test Form</div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-value" id="formSubmitCount">0</div>
+            <div class="summary-label">form_submit</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="generateLeadCount">0</div>
+            <div class="summary-label">generate_lead</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="formStartCount">0</div>
+            <div class="summary-label">form_start</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="purchaseCount">0</div>
+            <div class="summary-label">purchase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Stato
+    let events = [];
+    let currentTab = 'all';
+    let monitorConnected = false;
+    let targetUrl = '';
+    let reportId = '';
+
+    // Contatori eventi form
+    const formEventCounts = {
+      form_submit: 0,
+      generate_lead: 0,
+      form_start: 0,
+      purchase: 0
+    };
+
+    // Eventi form da monitorare
+    const FORM_EVENTS = ['form_submit', 'generate_lead', 'form_start', 'purchase', 'Lead', 'CompleteRegistration', 'Contact', 'SubmitApplication'];
+
+    // Init
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      targetUrl = params.get('url');
+      reportId = params.get('reportId');
+
+      if (!targetUrl) {
+        document.getElementById('urlDisplay').textContent = 'URL mancante';
+        document.getElementById('iframeLoading').style.display = 'none';
+        document.getElementById('iframeError').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('urlDisplay').textContent = targetUrl;
+
+      // Carica iframe tramite proxy
+      loadIframe(targetUrl);
+
+      // Ascolta messaggi dall'iframe
+      window.addEventListener('message', handleMessage);
+    }
+
+    // Carica iframe
+    function loadIframe(url) {
+      const iframe = document.getElementById('siteFrame');
+      const proxyUrl = `/proxy?url=${encodeURIComponent(url)}`;
+
+      iframe.onload = () => {
+        document.getElementById('iframeLoading').style.display = 'none';
+        iframe.style.display = 'block';
+      };
+
+      iframe.onerror = () => {
+        document.getElementById('iframeLoading').style.display = 'none';
+        document.getElementById('iframeError').style.display = 'block';
+      };
+
+      // Timeout per errore
+      setTimeout(() => {
+        if (!monitorConnected) {
+          document.getElementById('statusDot').className = 'status-dot waiting';
+          document.getElementById('statusText').textContent = 'Connessione lenta...';
+        }
+      }, 5000);
+
+      iframe.src = proxyUrl;
+    }
+
+    // Gestisce messaggi dall'iframe
+    function handleMessage(event) {
+      const { type, data, timestamp } = event.data || {};
+
+      if (!type) return;
+
+      if (type === 'monitor_ready') {
+        monitorConnected = true;
+        document.getElementById('statusDot').className = 'status-dot connected';
+        document.getElementById('statusText').textContent = 'Connesso';
+        return;
+      }
+
+      // Aggiungi evento
+      const eventObj = {
+        type,
+        data,
+        timestamp: timestamp || Date.now(),
+        id: events.length
+      };
+
+      events.push(eventObj);
+
+      // Controlla eventi form
+      checkFormEvent(eventObj);
+
+      // Aggiorna UI
+      updateEventList();
+      updateCounts();
+    }
+
+    // Controlla se è un evento form
+    function checkFormEvent(eventObj) {
+      let eventName = null;
+
+      if (eventObj.type === 'dataLayer' && eventObj.data?.event) {
+        eventName = eventObj.data.event;
+      } else if (eventObj.type === 'network' && eventObj.data?.event) {
+        eventName = eventObj.data.event;
+      } else if (eventObj.type === 'form_submit') {
+        eventName = 'form_submit';
+        showFormAlert('Form Inviato', 'Rilevato submit del form. Verifica che vengano inviati eventi di tracking.');
+      }
+
+      if (eventName) {
+        const normalizedName = eventName.toLowerCase();
+
+        if (normalizedName === 'form_submit' || normalizedName.includes('form_submit')) {
+          formEventCounts.form_submit++;
+          showFormAlert('form_submit Rilevato!', 'Evento form_submit inviato al tracking.', true);
+        }
+        if (normalizedName === 'generate_lead' || normalizedName.includes('generate_lead') || normalizedName === 'lead') {
+          formEventCounts.generate_lead++;
+          showFormAlert('generate_lead Rilevato!', 'Evento generate_lead/Lead inviato al tracking.', true);
+        }
+        if (normalizedName === 'form_start' || normalizedName.includes('form_start')) {
+          formEventCounts.form_start++;
+        }
+        if (normalizedName === 'purchase' || normalizedName.includes('purchase')) {
+          formEventCounts.purchase++;
+          showFormAlert('purchase Rilevato!', 'Evento purchase inviato al tracking.', true);
+        }
+
+        updateSummary();
+      }
+    }
+
+    // Mostra alert form
+    function showFormAlert(title, text, success = false) {
+      const alertDiv = document.getElementById('formAlert');
+      alertDiv.className = 'form-alert' + (success ? '' : ' warning');
+      alertDiv.innerHTML = `
+        <div class="form-alert-title">${title}</div>
+        <div class="form-alert-text">${text}</div>
+      `;
+      alertDiv.style.display = 'block';
+
+      // Nascondi dopo 5 secondi
+      setTimeout(() => {
+        alertDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    // Aggiorna lista eventi
+    function updateEventList() {
+      const list = document.getElementById('eventList');
+      const filteredEvents = currentTab === 'all'
+        ? events
+        : events.filter(e => e.type === currentTab);
+
+      if (filteredEvents.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <p>Nessun evento</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filteredEvents.slice().reverse().map(e => {
+        const isFormEvent = FORM_EVENTS.some(fe =>
+          e.data?.event?.toLowerCase().includes(fe.toLowerCase())
+        ) || e.type === 'form_submit';
+
+        let content = '';
+
+        if (e.type === 'dataLayer') {
+          content = `
+            <div class="event-type">${e.data.event}</div>
+            <div class="event-detail">${JSON.stringify(e.data.data).substring(0, 150)}...</div>
+          `;
+        } else if (e.type === 'network') {
+          content = `
+            <span class="event-tracker">${e.data.tracker}</span>
+            <span class="event-type">${e.data.event || 'request'}</span>
+            <div class="event-detail">${e.data.url}</div>
+          `;
+        } else if (e.type === 'form_submit') {
+          content = `
+            <div class="event-type">Form Submit</div>
+            <div class="event-detail">ID: ${e.data.formId || '-'}, Action: ${e.data.formAction || '-'}</div>
+          `;
+        }
+
+        const time = new Date(e.timestamp).toLocaleTimeString('it-IT');
+
+        return `
+          <div class="event-item ${isFormEvent ? 'highlight' : ''}">
+            ${content}
+            <div class="event-time">${time}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Aggiorna contatori tab
+    function updateCounts() {
+      document.getElementById('countAll').textContent = events.length;
+      document.getElementById('countDataLayer').textContent = events.filter(e => e.type === 'dataLayer').length;
+      document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
+    }
+
+    // Aggiorna summary
+    function updateSummary() {
+      document.getElementById('formSubmitCount').textContent = formEventCounts.form_submit;
+      document.getElementById('formSubmitCount').className = 'summary-value' + (formEventCounts.form_submit > 0 ? ' success' : '');
+
+      document.getElementById('generateLeadCount').textContent = formEventCounts.generate_lead;
+      document.getElementById('generateLeadCount').className = 'summary-value' + (formEventCounts.generate_lead > 0 ? ' success' : '');
+
+      document.getElementById('formStartCount').textContent = formEventCounts.form_start;
+      document.getElementById('formStartCount').className = 'summary-value' + (formEventCounts.form_start > 0 ? ' success' : '');
+
+      document.getElementById('purchaseCount').textContent = formEventCounts.purchase;
+      document.getElementById('purchaseCount').className = 'summary-value' + (formEventCounts.purchase > 0 ? ' success' : '');
+    }
+
+    // Switch tab
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.monitor-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tab);
+      });
+      updateEventList();
+    }
+
+    // Pulisci eventi
+    function clearEvents() {
+      events = [];
+      Object.keys(formEventCounts).forEach(k => formEventCounts[k] = 0);
+      updateEventList();
+      updateCounts();
+      updateSummary();
+    }
+
+    // Salva risultati
+    async function saveResults() {
+      const results = {
+        url: targetUrl,
+        timestamp: new Date().toISOString(),
+        events: events,
+        formEventCounts: formEventCounts,
+        success: formEventCounts.form_submit > 0 || formEventCounts.generate_lead > 0
+      };
+
+      // Se abbiamo un reportId, aggiorna il report
+      if (reportId) {
+        try {
+          const response = await fetch(`/api/report/${reportId}/form-test`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(results)
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Notifica la finestra parent di ricaricare il report
+            if (window.opener && !window.opener.closed) {
+              window.opener.postMessage({ type: 'formTestComplete', reportId, eventsAdded: data.eventsAdded }, '*');
+              window.opener.location.reload();
+            }
+            alert(`Risultati salvati! ${data.eventsAdded} eventi aggiunti al report.`);
+            window.close();
+            return;
+          } else {
+            alert('Errore nel salvataggio: ' + (data.error || 'Errore sconosciuto'));
+          }
+        } catch (e) {
+          console.error('Error saving:', e);
+          alert('Errore di connessione: ' + e.message);
+        }
+      }
+
+      // Fallback: download JSON
+      const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `form-test-${Date.now()}.json`;
+      a.click();
+    }
+
+    // Avvia
+    init();
+  </script>
+</body>
+</html>
