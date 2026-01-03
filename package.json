@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "scan": "node scanner.js"
+    "scan": "node scanner.js",
+    "postinstall": "npx playwright install chromium"
   },
   "engines": {
     "node": ">=18.0.0"

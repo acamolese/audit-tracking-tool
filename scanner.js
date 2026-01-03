@@ -711,7 +711,18 @@ class CookieAuditScanner {
 
     try {
       // Avvia browser con configurazione anti bot-detection
-      this.browser = await chromium.launch({ headless: this.options.headless });
+      // Args necessari per ambiente cloud/container (Render, Docker, etc.)
+      this.browser = await chromium.launch({
+        headless: this.options.headless,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--single-process',
+          '--no-zygote'
+        ]
+      });
       const context = await this.browser.newContext(BROWSER_CONFIG);
       this.page = await context.newPage();
 

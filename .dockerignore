@@ -1,0 +1,8 @@
+node_modules
+*.har
+*.log
+.git
+.gitignore
+.claude
+.DS_Store
+report*.json
