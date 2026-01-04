@@ -366,6 +366,24 @@
       font-size: 13px;
       color: var(--text-light);
     }
+
+    /* Tracking status */
+    .tracking-status {
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .tracking-status.success {
+      background: rgba(6, 232, 159, 0.15);
+      color: #0a7a52;
+    }
+
+    .tracking-status.warning {
+      background: rgba(255, 184, 77, 0.15);
+      color: #8a6d2b;
+    }
   </style>
 </head>
 <body>
@@ -424,18 +442,19 @@
 
       <div class="summary-panel">
         <div class="summary-title">Riepilogo Test Form</div>
+        <div id="trackingStatus" class="tracking-status" style="display:none;"></div>
         <div class="summary-grid">
           <div class="summary-item">
-            <div class="summary-value" id="formSubmitCount">0</div>
-            <div class="summary-label">form_submit</div>
+            <div class="summary-value" id="formSubmitDomCount">0</div>
+            <div class="summary-label">Form Inviati</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="formSubmitGa4Count">0</div>
+            <div class="summary-label">Tracking GA4</div>
           </div>
           <div class="summary-item">
             <div class="summary-value" id="generateLeadCount">0</div>
             <div class="summary-label">generate_lead</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value" id="formStartCount">0</div>
-            <div class="summary-label">form_start</div>
           </div>
           <div class="summary-item">
             <div class="summary-value" id="purchaseCount">0</div>
@@ -456,7 +475,8 @@
 
     // Contatori eventi form
     const formEventCounts = {
-      form_submit: 0,
+      form_submit_dom: 0,      // Azione utente (submit del form)
+      form_submit_ga4: 0,      // Tracking GA4 inviato
       generate_lead: 0,
       form_start: 0,
       purchase: 0
@@ -526,6 +546,17 @@
         return;
       }
 
+      // Gestisci navigazione interna - ricarica iframe con nuovo URL
+      if (type === 'navigate' && data?.url) {
+        console.log('[Form Test] Navigazione a:', data.url);
+        document.getElementById('urlDisplay').textContent = data.url;
+        document.getElementById('statusDot').className = 'status-dot waiting';
+        document.getElementById('statusText').textContent = 'Navigazione...';
+        monitorConnected = false;
+        loadIframe(data.url);
+        return;
+      }
+
       // Aggiungi evento
       const eventObj = {
         type,
@@ -546,34 +577,52 @@
 
     // Controlla se è un evento form
     function checkFormEvent(eventObj) {
+      // Evento DOM: l'utente ha inviato il form
+      if (eventObj.type === 'form_submit') {
+        formEventCounts.form_submit_dom++;
+        showFormAlert(
+          '📝 Form Inviato (Azione Utente)',
+          `L'utente ha inviato il form "${eventObj.data.formId || 'senza ID'}". In attesa del tracking GA4...`,
+          false
+        );
+        updateSummary();
+        return;
+      }
+
+      // Evento di tracking (dataLayer o network)
       let eventName = null;
+      let source = '';
 
       if (eventObj.type === 'dataLayer' && eventObj.data?.event) {
         eventName = eventObj.data.event;
+        source = 'dataLayer';
       } else if (eventObj.type === 'network' && eventObj.data?.event) {
         eventName = eventObj.data.event;
-      } else if (eventObj.type === 'form_submit') {
-        eventName = 'form_submit';
-        showFormAlert('Form Inviato', 'Rilevato submit del form. Verifica che vengano inviati eventi di tracking.');
+        source = eventObj.data.tracker || 'Network';
       }
 
       if (eventName) {
         const normalizedName = eventName.toLowerCase();
 
         if (normalizedName === 'form_submit' || normalizedName.includes('form_submit')) {
-          formEventCounts.form_submit++;
-          showFormAlert('form_submit Rilevato!', 'Evento form_submit inviato al tracking.', true);
+          formEventCounts.form_submit_ga4++;
+          const isCorrect = formEventCounts.form_submit_dom > 0;
+          showFormAlert(
+            '✅ Tracking form_submit Inviato!',
+            `${source} ha inviato l'evento "form_submit" a GA4. ${isCorrect ? 'Il tracking funziona correttamente!' : ''}`,
+            true
+          );
         }
         if (normalizedName === 'generate_lead' || normalizedName.includes('generate_lead') || normalizedName === 'lead') {
           formEventCounts.generate_lead++;
-          showFormAlert('generate_lead Rilevato!', 'Evento generate_lead/Lead inviato al tracking.', true);
+          showFormAlert('✅ generate_lead Rilevato!', `${source} ha inviato l'evento generate_lead/Lead al tracking.`, true);
         }
         if (normalizedName === 'form_start' || normalizedName.includes('form_start')) {
           formEventCounts.form_start++;
         }
         if (normalizedName === 'purchase' || normalizedName.includes('purchase')) {
           formEventCounts.purchase++;
-          showFormAlert('purchase Rilevato!', 'Evento purchase inviato al tracking.', true);
+          showFormAlert('✅ purchase Rilevato!', `${source} ha inviato l'evento purchase al tracking.`, true);
         }
 
         updateSummary();
@@ -618,33 +667,79 @@
         ) || e.type === 'form_submit';
 
         let content = '';
+        let description = '';
 
         if (e.type === 'dataLayer') {
-          content = `
-            <div class="event-type">${e.data.event}</div>
-            <div class="event-detail">${JSON.stringify(e.data.data).substring(0, 150)}...</div>
-          `;
+          const eventName = e.data.event;
+          // Descrizioni più parlanti per eventi comuni
+          if (eventName === 'gtm.js') {
+            description = 'GTM inizializzato';
+          } else if (eventName === 'gtm.dom') {
+            description = 'DOM pronto per GTM';
+          } else if (eventName === 'gtm.load') {
+            description = 'Pagina completamente caricata';
+          } else if (eventName === 'gtm.click') {
+            const classes = e.data.data?.['gtm.elementClasses'] || '';
+            description = 'Click rilevato' + (classes ? ' (' + classes.substring(0, 30) + ')' : '');
+          } else if (eventName === 'gtm.scrollDepth') {
+            const threshold = e.data.data?.['gtm.scrollThreshold'] || '';
+            description = 'Scroll al ' + threshold + '%';
+          } else if (eventName === 'gtm.linkClick') {
+            description = 'Click su link';
+          } else {
+            description = JSON.stringify(e.data.data).substring(0, 100);
+          }
+          content = '<div class="event-type">📊 ' + eventName + '</div>' +
+            '<div class="event-detail">' + description + '</div>';
         } else if (e.type === 'network') {
-          content = `
-            <span class="event-tracker">${e.data.tracker}</span>
-            <span class="event-type">${e.data.event || 'request'}</span>
-            <div class="event-detail">${e.data.url}</div>
-          `;
+          const tracker = e.data.tracker;
+          const eventName = e.data.event;
+          let icon = '🌐';
+          let desc = '';
+
+          if (tracker === 'GA4') {
+            icon = '📈';
+            if (eventName === 'page_view') {
+              desc = 'Visualizzazione pagina inviata a GA4';
+            } else if (eventName?.includes('form_submit')) {
+              desc = '✅ Evento form_submit inviato correttamente a GA4';
+            } else if (eventName?.includes('scroll')) {
+              desc = 'Evento scroll inviato a GA4';
+            } else if (eventName?.includes('click')) {
+              desc = 'Evento click inviato a GA4';
+            } else {
+              desc = 'Evento "' + (eventName || 'request') + '" inviato a GA4';
+            }
+          } else if (tracker === 'GTM') {
+            icon = '🏷️';
+            desc = 'Caricamento script GTM';
+          } else if (tracker === 'Facebook') {
+            icon = '📘';
+            desc = 'Evento Facebook Pixel';
+          } else {
+            desc = e.data.url?.substring(0, 80) || '';
+          }
+
+          content = '<span class="event-tracker">' + tracker + '</span>' +
+            '<span class="event-type">' + icon + ' ' + (eventName || 'request') + '</span>' +
+            '<div class="event-detail">' + desc + '</div>';
         } else if (e.type === 'form_submit') {
-          content = `
-            <div class="event-type">Form Submit</div>
-            <div class="event-detail">ID: ${e.data.formId || '-'}, Action: ${e.data.formAction || '-'}</div>
-          `;
+          content = '<div class="event-type">📝 Form Inviato (Azione Utente)</div>' +
+            '<div class="event-detail">L\'utente ha cliccato submit sul form "' + (e.data.formId || 'senza ID') + '"</div>';
+        } else if (e.type === 'anchor_click') {
+          content = '<div class="event-type">🔗 Click Ancora</div>' +
+            '<div class="event-detail">Navigazione a ' + e.data.hash + '</div>';
+        } else {
+          content = '<div class="event-type">' + e.type + '</div>' +
+            '<div class="event-detail">' + JSON.stringify(e.data).substring(0, 100) + '</div>';
         }
 
         const time = new Date(e.timestamp).toLocaleTimeString('it-IT');
 
-        return `
-          <div class="event-item ${isFormEvent ? 'highlight' : ''}">
-            ${content}
-            <div class="event-time">${time}</div>
-          </div>
-        `;
+        return '<div class="event-item ' + (isFormEvent ? 'highlight' : '') + '">' +
+          content +
+          '<div class="event-time">' + time + '</div>' +
+          '</div>';
       }).join('');
     }
 
@@ -657,17 +752,34 @@
 
     // Aggiorna summary
     function updateSummary() {
-      document.getElementById('formSubmitCount').textContent = formEventCounts.form_submit;
-      document.getElementById('formSubmitCount').className = 'summary-value' + (formEventCounts.form_submit > 0 ? ' success' : '');
+      const domCount = formEventCounts.form_submit_dom;
+      const ga4Count = formEventCounts.form_submit_ga4;
+
+      document.getElementById('formSubmitDomCount').textContent = domCount;
+      document.getElementById('formSubmitDomCount').className = 'summary-value' + (domCount > 0 ? ' success' : '');
+
+      document.getElementById('formSubmitGa4Count').textContent = ga4Count;
+      document.getElementById('formSubmitGa4Count').className = 'summary-value' + (ga4Count > 0 ? ' success' : '');
 
       document.getElementById('generateLeadCount').textContent = formEventCounts.generate_lead;
       document.getElementById('generateLeadCount').className = 'summary-value' + (formEventCounts.generate_lead > 0 ? ' success' : '');
 
-      document.getElementById('formStartCount').textContent = formEventCounts.form_start;
-      document.getElementById('formStartCount').className = 'summary-value' + (formEventCounts.form_start > 0 ? ' success' : '');
-
       document.getElementById('purchaseCount').textContent = formEventCounts.purchase;
       document.getElementById('purchaseCount').className = 'summary-value' + (formEventCounts.purchase > 0 ? ' success' : '');
+
+      // Mostra stato tracking
+      const statusDiv = document.getElementById('trackingStatus');
+      if (domCount > 0 && ga4Count > 0) {
+        statusDiv.innerHTML = '✅ <strong>Tracking Corretto:</strong> Il form invia correttamente gli eventi a GA4';
+        statusDiv.className = 'tracking-status success';
+        statusDiv.style.display = 'block';
+      } else if (domCount > 0 && ga4Count === 0) {
+        statusDiv.innerHTML = '⚠️ <strong>In Attesa:</strong> Form inviato, attendo conferma tracking GA4...';
+        statusDiv.className = 'tracking-status warning';
+        statusDiv.style.display = 'block';
+      } else {
+        statusDiv.style.display = 'none';
+      }
     }
 
     // Switch tab
@@ -683,6 +795,7 @@
     function clearEvents() {
       events = [];
       Object.keys(formEventCounts).forEach(k => formEventCounts[k] = 0);
+      document.getElementById('trackingStatus').style.display = 'none';
       updateEventList();
       updateCounts();
       updateSummary();

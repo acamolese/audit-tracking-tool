@@ -306,13 +306,6 @@
             >
           </div>
 
-          <div class="form-group">
-            <label class="checkbox-group">
-              <input type="checkbox" id="visible" name="visible">
-              <span>Mostra browser durante la scansione</span>
-            </label>
-          </div>
-
           <button type="submit" id="submitBtn" class="btn btn-primary">
             Avvia Scansione
           </button>
@@ -337,7 +330,6 @@
 
       const url = document.getElementById('url').value;
       const timeout = document.getElementById('timeout').value;
-      const visible = document.getElementById('visible').checked;
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Scansione in corso...';
@@ -348,7 +340,7 @@
         const response = await fetch('/scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url, timeout: parseInt(timeout), visible })
+          body: JSON.stringify({ url, timeout: parseInt(timeout) })
         });
 
         const result = await response.json();

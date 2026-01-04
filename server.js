@@ -11,70 +11,210 @@ const MONITOR_SCRIPT = `
 <script>
 (function() {
   const PARENT_ORIGIN = '*';
-  const events = [];
 
   // Funzione per inviare eventi al parent
   function sendToParent(type, data) {
-    window.parent.postMessage({ type, data, timestamp: Date.now() }, PARENT_ORIGIN);
+    // Sanitizza i dati rimuovendo elementi DOM e oggetti non serializzabili
+    function sanitize(obj, depth = 0) {
+      if (depth > 5) return '[max depth]';
+      if (obj === null || obj === undefined) return obj;
+      if (typeof obj !== 'object') return obj;
+      if (obj instanceof Element || obj instanceof Node) return '[DOM Element]';
+      if (obj instanceof Event) return '[Event]';
+      if (typeof obj.tagName === 'string') return '[DOM Element]';
+
+      if (Array.isArray(obj)) {
+        return obj.map(item => sanitize(item, depth + 1));
+      }
+
+      const sanitized = {};
+      for (const key in obj) {
+        try {
+          const val = obj[key];
+          if (typeof val === 'function') continue;
+          sanitized[key] = sanitize(val, depth + 1);
+        } catch(e) {
+          sanitized[key] = '[unserializable]';
+        }
+      }
+      return sanitized;
+    }
+
+    try {
+      const safeData = sanitize(data);
+      console.log('[ATT Monitor] sendToParent:', type, safeData);
+      window.parent.postMessage({ type, data: safeData, timestamp: Date.now() }, PARENT_ORIGIN);
+    } catch(e) {
+      console.error('[ATT Monitor] postMessage error:', e);
+    }
   }
 
-  // Monitora dataLayer
+  // Monitora dataLayer con polling diretto sull'array
   function setupDataLayerMonitor() {
-    window.dataLayer = window.dataLayer || [];
-    const originalPush = window.dataLayer.push.bind(window.dataLayer);
+    let lastLength = 0;
+    let lastDataLayer = null;
+    let pollCount = 0;
 
-    window.dataLayer.push = function(...args) {
-      args.forEach(item => {
-        if (item && typeof item === 'object') {
-          const eventName = item.event || item[0];
-          if (eventName) {
-            sendToParent('dataLayer', { event: eventName, data: item });
+    function checkDataLayer() {
+      try {
+        pollCount++;
+
+        // Log ogni 5 secondi (circa 166 poll a 30ms)
+        if (pollCount % 166 === 0) {
+          console.log('[ATT Monitor] Polling attivo, count:', pollCount, 'dataLayer length:', window.dataLayer ? window.dataLayer.length : 'N/A');
+        }
+
+        // Assicurati che dataLayer esista
+        if (!window.dataLayer) {
+          window.dataLayer = [];
+        }
+
+        // Se dataLayer è cambiato (nuovo array)
+        if (window.dataLayer !== lastDataLayer) {
+          lastDataLayer = window.dataLayer;
+          lastLength = 0;
+          console.log('[ATT Monitor] Nuovo dataLayer rilevato');
+        }
+
+        // Controlla se ci sono nuovi elementi
+        const currentLength = window.dataLayer.length;
+        if (currentLength > lastLength) {
+          // Processa i nuovi elementi
+          for (let i = lastLength; i < currentLength; i++) {
+            const item = window.dataLayer[i];
+            if (item && typeof item === 'object') {
+              const eventName = item.event || item[0];
+              if (eventName) {
+                console.log('[ATT Monitor] Nuovo evento dataLayer:', eventName);
+                sendToParent('dataLayer', { event: eventName, data: item });
+              }
+            }
           }
+          lastLength = currentLength;
+        }
+      } catch(e) {
+        console.error('[ATT Monitor] Errore in checkDataLayer:', e);
+      }
+    }
+
+    // Polling molto frequente (ogni 30ms)
+    setInterval(checkDataLayer, 30);
+
+    // Controlla subito
+    checkDataLayer();
+    console.log('[ATT Monitor] dataLayer polling attivato');
+  }
+
+  // Monitora richieste di rete con tutti i metodi possibili
+  function setupNetworkMonitor() {
+    // Set per deduplicazione (URL + timestamp arrotondato)
+    const processedRequests = new Set();
+
+    function isDuplicate(url) {
+      // Estrai il nome evento (en=...) per includerlo nella chiave
+      let eventName = '';
+      try {
+        const urlObj = new URL(url);
+        eventName = urlObj.searchParams.get('en') || '';
+      } catch(e) {
+        const match = url.match(/[&?]en=([^&]+)/);
+        if (match) eventName = match[1];
+      }
+
+      // Crea chiave basata su dominio + path + evento + timestamp
+      const urlBase = url.split('?')[0].substring(0, 100);
+      const timeKey = Math.floor(Date.now() / 500); // 500ms window
+      const key = urlBase + '|' + eventName + '|' + timeKey;
+
+      if (processedRequests.has(key)) {
+        return true;
+      }
+      processedRequests.add(key);
+
+      // Pulisci vecchie entry dopo 3 secondi
+      setTimeout(() => processedRequests.delete(key), 3000);
+      return false;
+    }
+
+    // 1. PerformanceObserver per catturare tutte le richieste completate
+    try {
+      const observer = new PerformanceObserver((list) => {
+        list.getEntries().forEach(entry => {
+          if (!isDuplicate(entry.name)) {
+            checkTrackingRequest(entry.name, null);
+          }
+        });
+      });
+      observer.observe({ entryTypes: ['resource'] });
+      // Cattura anche le richieste già fatte
+      performance.getEntriesByType('resource').forEach(entry => {
+        if (!isDuplicate(entry.name)) {
+          checkTrackingRequest(entry.name, null);
         }
       });
-      return originalPush(...args);
-    };
+      console.log('[ATT Monitor] PerformanceObserver attivato');
+    } catch(e) {
+      console.error('[ATT Monitor] PerformanceObserver errore:', e);
+    }
 
-    // Processa eventi già presenti
-    window.dataLayer.forEach(item => {
-      if (item && item.event) {
-        sendToParent('dataLayer', { event: item.event, data: item });
-      }
-    });
-  }
+    // 2. Intercetta sendBeacon (usato da GA4)
+    const originalBeacon = navigator.sendBeacon;
+    if (originalBeacon) {
+      navigator.sendBeacon = function(url, data) {
+        if (!isDuplicate(url)) {
+          let body = data;
+          if (typeof data === 'string') {
+            body = data;
+          }
+          checkTrackingRequest(url, body);
+        }
+        return originalBeacon.apply(this, arguments);
+      };
+    }
 
-  // Monitora richieste di rete (fetch e XHR)
-  function setupNetworkMonitor() {
-    // Intercetta fetch
+    // 3. Intercetta fetch (POST requests)
     const originalFetch = window.fetch;
     window.fetch = function(url, options) {
-      const urlStr = typeof url === 'string' ? url : url.url;
-      checkTrackingRequest(urlStr, options?.body);
+      const urlStr = typeof url === 'string' ? url : (url ? url.url : '');
+      if (!isDuplicate(urlStr)) {
+        checkTrackingRequest(urlStr, options?.body);
+      }
       return originalFetch.apply(this, arguments);
     };
 
-    // Intercetta XHR
+    // 4. Intercetta XHR
     const originalXHROpen = XMLHttpRequest.prototype.open;
     const originalXHRSend = XMLHttpRequest.prototype.send;
-
     XMLHttpRequest.prototype.open = function(method, url) {
       this._url = url;
       return originalXHROpen.apply(this, arguments);
     };
-
     XMLHttpRequest.prototype.send = function(body) {
-      checkTrackingRequest(this._url, body);
+      if (!isDuplicate(this._url)) {
+        checkTrackingRequest(this._url, body);
+      }
       return originalXHRSend.apply(this, arguments);
     };
 
-    // Monitora anche sendBeacon
-    const originalBeacon = navigator.sendBeacon;
-    if (originalBeacon) {
-      navigator.sendBeacon = function(url, data) {
-        checkTrackingRequest(url, data);
-        return originalBeacon.apply(this, arguments);
-      };
-    }
+    // 5. Intercetta Image (pixel tracking)
+    const OriginalImage = window.Image;
+    window.Image = function(w, h) {
+      const img = new OriginalImage(w, h);
+      const originalSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+      Object.defineProperty(img, 'src', {
+        set: function(val) {
+          if (!isDuplicate(val)) {
+            checkTrackingRequest(val, null);
+          }
+          return originalSrcDescriptor.set.call(this, val);
+        },
+        get: function() {
+          return originalSrcDescriptor.get.call(this);
+        }
+      });
+      return img;
+    };
+    window.Image.prototype = OriginalImage.prototype;
   }
 
   // Verifica se è una richiesta di tracking
@@ -91,26 +231,45 @@ const MONITOR_SCRIPT = `
 
     for (const [tracker, pattern] of Object.entries(trackingPatterns)) {
       if (pattern.test(url)) {
-        // Estrai evento
-        let eventName = null;
+        // Estrai evento/i
+        let eventNames = [];
         try {
           const urlObj = new URL(url);
-          eventName = urlObj.searchParams.get('en') || urlObj.searchParams.get('ev');
+          const urlEvent = urlObj.searchParams.get('en') || urlObj.searchParams.get('ev');
+          if (urlEvent) {
+            eventNames.push(urlEvent);
+          }
 
-          // Cerca nel body per GA4
-          if (!eventName && body && tracker === 'GA4') {
+          // Cerca nel body per GA4 (batch di eventi)
+          if (body && tracker === 'GA4') {
             const matches = body.match(/en=([^&\\r\\n]+)/g);
             if (matches) {
-              eventName = matches.map(m => m.replace('en=', '')).join(', ');
+              matches.forEach(m => {
+                const evName = m.replace('en=', '');
+                if (!eventNames.includes(evName)) {
+                  eventNames.push(evName);
+                }
+              });
             }
           }
         } catch(e) {}
 
-        sendToParent('network', {
-          tracker,
-          url: url.substring(0, 200),
-          event: eventName
-        });
+        // Invia un evento separato per ogni nome evento
+        if (eventNames.length === 0) {
+          sendToParent('network', {
+            tracker,
+            url: url.substring(0, 200),
+            event: null
+          });
+        } else {
+          eventNames.forEach(eventName => {
+            sendToParent('network', {
+              tracker,
+              url: url.substring(0, 200),
+              event: eventName
+            });
+          });
+        }
         break;
       }
     }
@@ -128,20 +287,128 @@ const MONITOR_SCRIPT = `
     }, true);
   }
 
-  // Notifica che il monitor è pronto
-  function init() {
-    setupDataLayerMonitor();
-    setupNetworkMonitor();
-    setupFormMonitor();
-    sendToParent('monitor_ready', { url: window.location.href });
+  // Intercetta navigazioni per mantenerle nel proxy
+  function setupNavigationInterceptor() {
+    // Ottieni l'URL base del sito originale dal proxy
+    const proxyUrl = new URL(window.location.href);
+    const originalUrl = proxyUrl.searchParams.get('url');
+    let originalOrigin = '';
+    try {
+      originalOrigin = new URL(originalUrl).origin;
+    } catch(e) {}
+
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a');
+      if (!link) return;
+
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      console.log('[ATT Monitor] Click su link:', href);
+
+      // Link anchor puro (#something) - gestisci manualmente lo scroll
+      // (necessario perché il tag <base> causa navigazione completa)
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('[ATT Monitor] Anchor puro, scroll manuale a:', href);
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Notifica l'evento di click al parent (per tracking)
+        sendToParent('anchor_click', { hash: href });
+        return;
+      }
+
+      // Costruisci URL completo
+      let fullUrl;
+      try {
+        if (href.startsWith('http')) {
+          fullUrl = new URL(href);
+        } else if (href.startsWith('/')) {
+          fullUrl = new URL(originalOrigin + href);
+        } else {
+          // URL relativo
+          fullUrl = new URL(href, originalUrl);
+        }
+      } catch(e) {
+        console.log('[ATT Monitor] URL non valido:', href);
+        return;
+      }
+
+      // Se è lo stesso dominio, reindirizza attraverso il proxy
+      if (fullUrl.origin === originalOrigin) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Se ha un hash, gestiamo lo scroll dopo il caricamento
+        const hash = fullUrl.hash;
+
+        // Controlla se è solo un cambio di hash sulla stessa pagina
+        const currentPath = new URL(originalUrl).pathname;
+        if (fullUrl.pathname === currentPath && hash) {
+          // Stesso path, solo hash diverso - fai scroll senza ricaricare
+          console.log('[ATT Monitor] Stesso path, scroll a:', hash);
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+          return;
+        }
+
+        // Pagina diversa - ricarica attraverso proxy
+        const newProxyUrl = '/proxy?url=' + encodeURIComponent(fullUrl.href);
+        console.log('[ATT Monitor] Redirect a proxy:', newProxyUrl);
+        window.location.href = newProxyUrl;
+      }
+      // Link esterni (altro dominio) - lascia passare normalmente
+    }, true);
+
+    console.log('[ATT Monitor] Navigation interceptor attivo');
   }
 
-  // Avvia quando il DOM è pronto
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  // Notifica che il monitor è pronto
+  function init() {
+    // DataLayer e Network monitoring devono partire SUBITO
+    // prima che GTM possa catturare i riferimenti originali
+    setupDataLayerMonitor();
+    setupNetworkMonitor();
+    console.log('[ATT Monitor] Network e DataLayer monitor attivati');
+
+    // DEBUG: Monitora eventi di navigazione
+    window.addEventListener('beforeunload', function(e) {
+      console.log('[ATT Monitor] !!! BEFOREUNLOAD - pagina sta per uscire');
+    });
+    window.addEventListener('unload', function(e) {
+      console.log('[ATT Monitor] !!! UNLOAD - pagina uscita');
+    });
+    window.addEventListener('hashchange', function(e) {
+      console.log('[ATT Monitor] HASHCHANGE:', e.oldURL, '->', e.newURL);
+      sendToParent('navigation', { type: 'hashchange', from: e.oldURL, to: e.newURL });
+    });
+    window.addEventListener('popstate', function(e) {
+      console.log('[ATT Monitor] POPSTATE:', e.state);
+      sendToParent('navigation', { type: 'popstate', state: e.state });
+    });
+
+    // Form monitor e navigation interceptor hanno bisogno del DOM
+    function setupFormWhenReady() {
+      setupFormMonitor();
+      setupNavigationInterceptor();
+      sendToParent('monitor_ready', { url: window.location.href });
+      console.log('[ATT Monitor] Form monitor attivato');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupFormWhenReady);
+    } else {
+      setupFormWhenReady();
+    }
   }
+
+  // ESEGUI SUBITO - non aspettare
+  init();
 })();
 </script>
 `;
