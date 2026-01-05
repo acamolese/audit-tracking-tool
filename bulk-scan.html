@@ -44,7 +44,10 @@
     /* Header */
     .header {
       background: var(--primary);
-      padding: 20px 32px;
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .header-content {
@@ -57,7 +60,7 @@
 
     .logo {
       font-family: 'DM Serif Display', serif;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--white);
       text-decoration: none;
     }
@@ -77,10 +80,34 @@
       font-size: 14px;
       opacity: 0.8;
       transition: opacity 0.2s;
+      padding: 8px 0;
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .nav-links a.active {
       opacity: 1;
+    }
+
+    .nav-links a.active {
+      border-bottom: 2px solid var(--accent);
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      margin: 5px 0;
+      transition: 0.3s;
     }
 
     /* Main */
@@ -531,15 +558,146 @@
       color: inherit;
       text-decoration: underline;
     }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .header {
+        padding: 14px 16px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .nav-links a.active {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .main {
+        padding: 24px 16px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .card {
+        padding: 24px 20px;
+      }
+
+      .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .stat-card {
+        padding: 12px;
+      }
+
+      .stat-value {
+        font-size: 24px;
+      }
+
+      /* Table responsive */
+      .table-container {
+        margin: 0 -20px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 10px 8px;
+      }
+
+      .url-cell {
+        max-width: 120px;
+      }
+
+      .tracker-badges {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+
+      /* Hide some columns on mobile */
+      th:nth-child(5), td:nth-child(5),
+      th:nth-child(7), td:nth-child(7) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Hide more columns on very small screens */
+      th:nth-child(6), td:nth-child(6) {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
   <header class="header">
     <div class="header-content">
       <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
-      <nav class="nav-links">
-        <a href="/">Scansione Singola</a>
-        <a href="/bulk-scan.html">Bulk Scan</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="/">Scansione</a>
+        <a href="/bulk-scan.html" class="active">Bulk Scan</a>
         <a href="/form-test.html">Form Test</a>
       </nav>
     </div>
@@ -1034,6 +1192,14 @@ https://esempio3.com"
       if (currentBatchId) {
         window.location.href = `/api/bulk-scan/${currentBatchId}/export?format=json`;
       }
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
     });
   </script>
 </body>

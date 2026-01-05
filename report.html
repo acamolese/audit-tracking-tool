@@ -42,7 +42,7 @@
     /* Header */
     .header {
       background: var(--primary);
-      padding: 20px 32px;
+      padding: 16px 24px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -58,13 +58,55 @@
 
     .logo {
       font-family: 'DM Serif Display', serif;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--white);
       text-decoration: none;
     }
 
     .logo span {
       color: var(--accent);
+    }
+
+    /* Navigation */
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      padding: 8px 0;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      opacity: 1;
+    }
+
+    .nav-links a.active {
+      border-bottom: 2px solid var(--accent);
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      margin: 5px 0;
+      transition: 0.3s;
     }
 
     .header-actions {
@@ -429,6 +471,52 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .header {
+        padding: 14px 16px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary);
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .nav-links a.active {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .header-actions {
+        display: none;
+      }
+
       .verdict-banner {
         flex-direction: column;
         text-align: center;
@@ -444,8 +532,12 @@
         gap: 12px;
       }
 
+      .main {
+        padding: 32px 16px 60px;
+      }
+
       .card {
-        padding: 24px;
+        padding: 24px 20px;
       }
 
       .stats-grid {
@@ -471,6 +563,20 @@
       }
     }
 
+    @media (max-width: 380px) {
+      .verdict-content h2 {
+        font-size: 20px;
+      }
+
+      .card {
+        padding: 20px 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media print {
       .header, .footer-actions { display: none; }
       .card { box-shadow: none; border: 1px solid #eee; }
@@ -481,10 +587,16 @@
   <header class="header">
     <div class="header-content">
       <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
-      <div class="header-actions">
-        <button onclick="downloadJson()" class="btn-header btn-outline">Scarica JSON</button>
-        <a href="/" class="btn-header btn-accent">Nuova Scansione</a>
-      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="/">Scansione</a>
+        <a href="/bulk-scan.html">Bulk Scan</a>
+        <a href="/form-test.html">Form Test</a>
+      </nav>
     </div>
   </header>
 
@@ -1127,6 +1239,14 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
 
     loadReport();
   </script>
