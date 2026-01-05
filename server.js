@@ -217,61 +217,122 @@ const MONITOR_SCRIPT = `
     window.Image.prototype = OriginalImage.prototype;
   }
 
-  // Verifica se è una richiesta di tracking
+  // Verifica se è una richiesta di tracking - approccio ampio
   function checkTrackingRequest(url, body) {
     if (!url) return;
 
-    const trackingPatterns = {
-      'GA4': /google-analytics\\.com\\/g\\/collect|analytics\\.google\\.com/i,
-      'GTM': /googletagmanager\\.com/i,
-      'Facebook': /facebook\\.com\\/tr/i,
-      'LinkedIn': /snap\\.licdn\\.com|linkedin\\.com\\/px/i,
-      'TikTok': /analytics\\.tiktok\\.com/i
-    };
+    // Classifica per dominio in modo ampio
+    // ORDINE IMPORTANTE: più specifici prima dei generici
+    function classifyTracker(url) {
+      const u = url.toLowerCase();
 
-    for (const [tracker, pattern] of Object.entries(trackingPatterns)) {
-      if (pattern.test(url)) {
-        // Estrai evento/i
-        let eventNames = [];
-        try {
-          const urlObj = new URL(url);
-          const urlEvent = urlObj.searchParams.get('en') || urlObj.searchParams.get('ev');
-          if (urlEvent) {
-            eventNames.push(urlEvent);
-          }
+      // GTM (solo il loader) - prima di tutto
+      if (u.includes('googletagmanager.com/gtm.js') ||
+          u.includes('googletagmanager.com/gtag/js')) {
+        return 'GTM';
+      }
 
-          // Cerca nel body per GA4 (batch di eventi)
-          if (body && tracker === 'GA4') {
-            const matches = body.match(/en=([^&\\r\\n]+)/g);
-            if (matches) {
-              matches.forEach(m => {
-                const evName = m.replace('en=', '');
-                if (!eventNames.includes(evName)) {
-                  eventNames.push(evName);
-                }
-              });
+      // Google Ads - PRIMA di GA4 perché googlesyndication può avere /collect
+      if (u.includes('googleadservices.com') ||
+          u.includes('googlesyndication.com') ||
+          u.includes('doubleclick.net') ||
+          u.includes('googleads.') ||
+          (u.includes('google.com') && u.includes('/pagead/'))) {
+        return 'Google Ads';
+      }
+
+      // GA4 - tutti gli endpoint possibili (incluso server-side)
+      if (u.includes('google-analytics.com') ||
+          u.includes('analytics.google.com') ||
+          u.includes('/g/collect') ||
+          u.includes('stape.net') ||
+          u.includes('stape.io') ||
+          u.includes('tagging-server') ||
+          u.includes('sgtm.')) {
+        return 'GA4';
+      }
+
+      // Facebook/Meta
+      if (u.includes('facebook.com/tr') ||
+          u.includes('facebook.net') ||
+          u.includes('fbq') ||
+          u.includes('connect.facebook')) {
+        return 'Facebook';
+      }
+
+      // LinkedIn
+      if (u.includes('linkedin.com') ||
+          u.includes('licdn.com') ||
+          u.includes('snap.licdn')) {
+        return 'LinkedIn';
+      }
+
+      // TikTok
+      if (u.includes('tiktok.com') && u.includes('analytics')) {
+        return 'TikTok';
+      }
+
+      // Hotjar
+      if (u.includes('hotjar.com') || u.includes('hotjar.io')) {
+        return 'Hotjar';
+      }
+
+      // Cookiebot/CMP
+      if (u.includes('cookiebot.com') || u.includes('consentcdn')) {
+        return 'Cookiebot';
+      }
+
+      return null;
+    }
+
+    const tracker = classifyTracker(url);
+    if (!tracker) return;
+
+    // Estrai eventi dal URL e body
+    let eventNames = [];
+    try {
+      const urlObj = new URL(url);
+
+      // Parametri comuni per eventi
+      const eventParams = ['en', 'ev', 'event', 'e', 'ea', 'ec'];
+      for (const param of eventParams) {
+        const val = urlObj.searchParams.get(param);
+        if (val && !eventNames.includes(val)) {
+          eventNames.push(val);
+        }
+      }
+
+      // Cerca nel body (GA4 usa POST con eventi multipli)
+      if (body && typeof body === 'string') {
+        const matches = body.match(/en=([^&\\r\\n]+)/g);
+        if (matches) {
+          matches.forEach(m => {
+            const evName = decodeURIComponent(m.replace('en=', ''));
+            if (!eventNames.includes(evName)) {
+              eventNames.push(evName);
             }
-          }
-        } catch(e) {}
-
-        // Invia un evento separato per ogni nome evento
-        if (eventNames.length === 0) {
-          sendToParent('network', {
-            tracker,
-            url: url.substring(0, 200),
-            event: null
-          });
-        } else {
-          eventNames.forEach(eventName => {
-            sendToParent('network', {
-              tracker,
-              url: url.substring(0, 200),
-              event: eventName
-            });
           });
         }
-        break;
       }
+    } catch(e) {
+      console.log('[ATT Monitor] Errore parsing URL:', e);
+    }
+
+    // Invia un evento separato per ogni nome evento trovato
+    if (eventNames.length === 0) {
+      sendToParent('network', {
+        tracker,
+        url: url.substring(0, 300),
+        event: null
+      });
+    } else {
+      eventNames.forEach(eventName => {
+        sendToParent('network', {
+          tracker,
+          url: url.substring(0, 300),
+          event: eventName
+        });
+      });
     }
   }
 
@@ -477,6 +538,9 @@ function processHtmlForProxy(html, baseUrl) {
 // Store dei report in memoria (in produzione usare database)
 const reports = new Map();
 
+// Store per bulk scans
+const bulkScans = new Map();
+
 // Genera ID univoco
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -495,6 +559,180 @@ async function parseBody(req) {
       }
     });
     req.on('error', reject);
+  });
+}
+
+// Esegue bulk scan con concorrenza limitata
+async function runBulkScan(batchId) {
+  const batch = bulkScans.get(batchId);
+  if (!batch) return;
+
+  const CONCURRENCY = 3; // Max scansioni parallele
+  let running = 0;
+  let index = 0;
+  const scanTimes = []; // Per calcolare media
+
+  function next() {
+    // Avvia nuove scansioni se possibile
+    while (running < CONCURRENCY && index < batch.results.length) {
+      const i = index++;
+      const result = batch.results[i];
+
+      running++;
+      result.status = 'running';
+      result.startTime = Date.now();
+
+      console.log(`[Bulk ${batchId}] Scansione ${i + 1}/${batch.total}: ${result.url}`);
+
+      // Notifica inizio via SSE
+      updateScanPhase(batch, i, 'starting', 'Avvio...');
+
+      scanSingleUrlWithPhases(batch, i, result)
+        .then(() => {
+          result.status = 'completed';
+          result.endTime = Date.now();
+          batch.completed++;
+
+          // Calcola tempo e aggiorna media
+          const scanTime = result.endTime - result.startTime;
+          scanTimes.push(scanTime);
+          batch.avgScanTime = Math.round(scanTimes.reduce((a, b) => a + b, 0) / scanTimes.length);
+
+          console.log(`[Bulk ${batchId}] Completata ${batch.completed}/${batch.total}: ${result.url} -> ${result.verdict} (${Math.round(scanTime/1000)}s)`);
+
+          // Notifica completamento via SSE
+          sendSSE(batch, 'complete', {
+            index: i,
+            result: result,
+            completed: batch.completed,
+            total: batch.total,
+            avgScanTime: batch.avgScanTime
+          });
+        })
+        .catch(err => {
+          result.status = 'error';
+          result.error = err.message;
+          result.endTime = Date.now();
+          batch.completed++;
+          console.error(`[Bulk ${batchId}] Errore ${batch.completed}/${batch.total}: ${result.url} -> ${err.message}`);
+
+          // Notifica errore via SSE
+          sendSSE(batch, 'error', {
+            index: i,
+            url: result.url,
+            error: err.message,
+            completed: batch.completed,
+            total: batch.total
+          });
+        })
+        .finally(() => {
+          running--;
+          next();
+        });
+    }
+
+    // Controlla se tutto è completato
+    if (running === 0 && batch.completed >= batch.total) {
+      batch.status = 'completed';
+      batch.endTime = Date.now();
+      console.log(`[Bulk ${batchId}] Batch completato in ${(batch.endTime - batch.startTime) / 1000}s`);
+
+      // Notifica fine batch via SSE
+      sendSSE(batch, 'done', {
+        batchId: batch.batchId,
+        totalTime: batch.endTime - batch.startTime,
+        avgScanTime: batch.avgScanTime
+      });
+    }
+  }
+
+  // Inizia
+  next();
+}
+
+// Scansiona singolo URL con aggiornamento fasi via SSE
+async function scanSingleUrlWithPhases(batch, index, result) {
+  // Callback per aggiornamento fasi
+  const onPhase = (phase, label) => {
+    updateScanPhase(batch, index, phase, label);
+  };
+
+  onPhase('loading', 'Caricamento pagina...');
+
+  const scanner = new CookieAuditScanner(result.url, {
+    headless: true,
+    timeout: 10000,
+    onPhase: onPhase // Passa callback al scanner
+  });
+
+  const report = await scanner.run();
+  const reportId = generateId();
+  reports.set(reportId, report);
+
+  // Estrai dati riassuntivi dal report
+  result.reportId = reportId;
+  result.cmp = report.cmp?.type || null;
+  result.violations = report.violations?.length || 0;
+
+  // Calcola verdetto basato su violazioni
+  if (result.violations > 0) {
+    result.verdict = 'NON CONFORME';
+  } else if (report.cmp?.detected) {
+    result.verdict = 'CONFORME';
+  } else {
+    result.verdict = 'DA VERIFICARE';
+  }
+
+  // Estrai lista tracker unici (da events.byTracker)
+  const trackers = new Set();
+  if (report.summary?.events?.byTracker) {
+    Object.keys(report.summary.events.byTracker).forEach(t => {
+      // Semplifica nomi tracker
+      if (t.includes('GA4') || t.includes('Google Analytics')) trackers.add('GA4');
+      else if (t.includes('Facebook') || t.includes('Meta')) trackers.add('Facebook');
+      else if (t.includes('LinkedIn')) trackers.add('LinkedIn');
+      else if (t.includes('TikTok')) trackers.add('TikTok');
+      else if (t.includes('Hotjar')) trackers.add('Hotjar');
+      else if (t.includes('Google Ads')) trackers.add('Google Ads');
+      else if (!t.includes('GTM') && !t.includes('Cookiebot') && !t.includes('OneTrust') && !t.includes('iubenda')) {
+        trackers.add(t);
+      }
+    });
+  }
+  result.trackers = Array.from(trackers);
+
+  onPhase('done', 'Completato');
+}
+
+// Invia evento SSE a tutti i client connessi per un batch
+function sendSSE(batch, eventType, data) {
+  if (!batch.sseClients || batch.sseClients.length === 0) return;
+
+  const message = `event: ${eventType}\ndata: ${JSON.stringify(data)}\n\n`;
+
+  batch.sseClients = batch.sseClients.filter(client => {
+    try {
+      client.write(message);
+      return true;
+    } catch (e) {
+      return false; // Rimuovi client disconnessi
+    }
+  });
+}
+
+// Aggiorna fase di una scansione e notifica via SSE
+function updateScanPhase(batch, index, phase, phaseLabel) {
+  const result = batch.results[index];
+  result.phase = phase;
+  result.phaseLabel = phaseLabel;
+
+  sendSSE(batch, 'phase', {
+    index,
+    url: result.url,
+    phase,
+    phaseLabel,
+    completed: batch.completed,
+    total: batch.total
   });
 }
 
@@ -543,6 +781,9 @@ async function handleRequest(req, res) {
   }
   else if (url.pathname === '/form-test.html') {
     serveStatic(res, path.join(__dirname, 'form-test.html'));
+  }
+  else if (url.pathname === '/bulk-scan.html') {
+    serveStatic(res, path.join(__dirname, 'bulk-scan.html'));
   }
   else if (url.pathname === '/proxy') {
     // Proxy per iframe con script injection
@@ -715,6 +956,165 @@ async function handleRequest(req, res) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ success: false, error: 'Report non trovato' }));
     }
+  }
+  // === BULK SCAN API ===
+  else if (url.pathname === '/api/bulk-scan' && req.method === 'POST') {
+    // Avvia bulk scan
+    try {
+      const body = await parseBody(req);
+      const { urls } = body;
+
+      if (!urls || !Array.isArray(urls) || urls.length === 0) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'Lista URL richiesta' }));
+        return;
+      }
+
+      // Limita a 50 URL per batch
+      const limitedUrls = urls.slice(0, 50);
+
+      const batchId = generateId();
+      const batch = {
+        batchId,
+        status: 'running',
+        total: limitedUrls.length,
+        completed: 0,
+        startTime: Date.now(),
+        avgScanTime: null, // Media tempo scansione per stima
+        sseClients: [], // Client SSE connessi
+        results: limitedUrls.map(u => ({
+          url: u,
+          status: 'pending',
+          phase: null, // Fase corrente: 'loading', 'pre_consent', 'consent', 'post_consent', 'interactions'
+          phaseLabel: null, // Label leggibile
+          startTime: null,
+          endTime: null,
+          reportId: null,
+          verdict: null,
+          cmp: null,
+          violations: null,
+          trackers: [],
+          error: null
+        }))
+      };
+
+      bulkScans.set(batchId, batch);
+
+      console.log(`Bulk scan avviato: ${batchId} con ${limitedUrls.length} URL`);
+
+      // Avvia scansioni in background
+      runBulkScan(batchId);
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, batchId, total: limitedUrls.length }));
+    } catch (err) {
+      console.error('Errore avvio bulk scan:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+    }
+  }
+  else if (url.pathname.match(/^\/api\/bulk-scan\/[^/]+\/export$/) && req.method === 'GET') {
+    // Export risultati bulk scan
+    const batchId = url.pathname.split('/')[3];
+    const format = url.searchParams.get('format') || 'json';
+    const batch = bulkScans.get(batchId);
+
+    if (!batch) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Batch non trovato' }));
+      return;
+    }
+
+    const filename = `bulk-scan-${batchId}-${new Date().toISOString().split('T')[0]}`;
+
+    if (format === 'csv') {
+      // Export CSV
+      const headers = ['#', 'URL', 'Status', 'Verdetto', 'CMP', 'Violazioni', 'Tracker'];
+      const rows = batch.results.map((r, i) => [
+        i + 1,
+        `"${r.url}"`,
+        r.status,
+        r.verdict || '',
+        r.cmp || '',
+        r.violations !== null ? r.violations : '',
+        `"${(r.trackers || []).join(', ')}"`
+      ]);
+
+      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+
+      res.writeHead(200, {
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename="${filename}.csv"`
+      });
+      res.end(csv);
+    } else {
+      // Export JSON
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Content-Disposition': `attachment; filename="${filename}.json"`
+      });
+      res.end(JSON.stringify(batch, null, 2));
+    }
+  }
+  else if (url.pathname.match(/^\/api\/bulk-scan\/[^/]+\/stream$/) && req.method === 'GET') {
+    // SSE stream per aggiornamenti real-time
+    const batchId = url.pathname.split('/')[3];
+    const batch = bulkScans.get(batchId);
+
+    if (!batch) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Batch non trovato' }));
+      return;
+    }
+
+    // Setup SSE
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*'
+    });
+
+    // Invia stato iniziale
+    res.write(`event: init\ndata: ${JSON.stringify({
+      batchId: batch.batchId,
+      status: batch.status,
+      total: batch.total,
+      completed: batch.completed,
+      avgScanTime: batch.avgScanTime,
+      results: batch.results
+    })}\n\n`);
+
+    // Aggiungi client alla lista
+    batch.sseClients.push(res);
+
+    // Rimuovi client quando si disconnette
+    req.on('close', () => {
+      const idx = batch.sseClients.indexOf(res);
+      if (idx > -1) batch.sseClients.splice(idx, 1);
+    });
+  }
+  else if (url.pathname.match(/^\/api\/bulk-scan\/[^/]+$/) && req.method === 'GET') {
+    // Stato bulk scan
+    const batchId = url.pathname.split('/').pop();
+    const batch = bulkScans.get(batchId);
+
+    if (!batch) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Batch non trovato' }));
+      return;
+    }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      batchId: batch.batchId,
+      status: batch.status,
+      total: batch.total,
+      completed: batch.completed,
+      avgScanTime: batch.avgScanTime,
+      results: batch.results
+    }));
   }
   else {
     res.writeHead(404);

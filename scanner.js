@@ -13,23 +13,28 @@ const BROWSER_CONFIG = {
 };
 
 // === CONFIGURAZIONE TRACKER ===
+// ORDINE IMPORTANTE: pattern più specifici prima dei generici
 const TRACKER_PATTERNS = {
-  // Google (inclusi sottodomini regionali come region1.google-analytics.com)
-  'GA4': /google-analytics\.com\/g\/collect|analytics\.google\.com\/g\/collect/i,
-  'Google Ads': /googleadservices\.com|googlesyndication\.com|googleads\.g\.doubleclick\.net/i,
+  // GTM - prima di tutto
   'GTM Container': /googletagmanager\.com\/gtm\.js/i,
-  'GTM Collect': /googletagmanager\.com\/.*collect/i,
+  'GTM Collect': /googletagmanager\.com\/gtag\/js/i,
 
-  // Meta/Facebook
+  // Google Ads - PRIMA di GA4 perché googlesyndication può avere /collect
+  'Google Ads': /googleadservices\.com|googlesyndication\.com|doubleclick\.net|googleads\./i,
+
+  // GA4 - pattern ampi (incluso server-side tagging)
+  'GA4': /google-analytics\.com|analytics\.google\.com|\/g\/collect|stape\.net|stape\.io|sgtm\./i,
+
+  // Meta/Facebook - pattern ampi
   'Facebook Pixel': /facebook\.com\/tr/i,
-  'Facebook SDK': /connect\.facebook\.net/i,
+  'Facebook SDK': /connect\.facebook\.net|facebook\.net/i,
 
   // Microsoft
   'Clarity': /clarity\.ms/i,
   'Bing Ads': /bat\.bing\.com/i,
 
-  // LinkedIn
-  'LinkedIn Insight': /snap\.licdn\.com|linkedin\.com\/px/i,
+  // LinkedIn - pattern ampi
+  'LinkedIn Insight': /snap\.licdn\.com|linkedin\.com\/px|licdn\.com|px\.ads\.linkedin/i,
 
   // TikTok
   'TikTok Pixel': /analytics\.tiktok\.com|tiktok\.com\/i18n\/pixel/i,
@@ -57,6 +62,10 @@ const TRACKER_PATTERNS = {
   'Cookiebot': /cookiebot\.com|consentcdn\.cookiebot\.com/i,
   'OneTrust': /onetrust\.com|cdn\.cookielaw\.org/i,
   'iubenda': /iubenda\.com/i,
+  'Commanders Act': /tagcommander\.com|commander1\.com|tC\.cmp/i,
+  'Didomi': /didomi\.io|sdk\.privacy-center\.org/i,
+  'Axeptio': /axeptio\.eu|client\.axept\.io/i,
+  'Usercentrics': /usercentrics\.eu|app\.usercentrics\.eu/i,
   'Quantcast': /quantcast\.com|quantserve\.com/i,
 };
 
@@ -99,7 +108,15 @@ class CookieAuditScanner {
       timeout: options.timeout || 10000,
       outputFile: options.outputFile || null,
       verbose: options.verbose || false,
+      onPhase: options.onPhase || null, // Callback per aggiornamento fasi
       ...options
+    };
+
+    // Helper per notificare cambio fase
+    this.notifyPhase = (phase, label) => {
+      if (this.options.onPhase) {
+        this.options.onPhase(phase, label);
+      }
     };
 
     this.report = {
@@ -398,7 +415,13 @@ class CookieAuditScanner {
     // Ottieni POST body
     const postData = request.postData();
     const details = this.extractRequestDetails(url, trackerName, postData);
-    const isLibraryLoad = ['GTM Container', 'Facebook SDK', 'Cookiebot', 'OneTrust', 'iubenda'].includes(trackerName);
+    // GTM Container e GTM Collect (gtag/js) sono solo loader, non inviano dati
+    // Include tutti i CMP come caricamenti tecnici
+    const isLibraryLoad = [
+      'GTM Container', 'GTM Collect', 'Facebook SDK',
+      'Cookiebot', 'OneTrust', 'iubenda', 'Commanders Act',
+      'Didomi', 'Axeptio', 'Usercentrics', 'Quantcast'
+    ].includes(trackerName);
     const isGoogleDenied = this.isGoogleDeniedMode(url);
 
     // Traccia eventi da tutti i tracker (GA4, Facebook, LinkedIn, ecc.)
@@ -553,17 +576,165 @@ class CookieAuditScanner {
         };
       }
 
+      // Commanders Act (TrustCommander) - usato da BRT, ecc.
+      const tC = window.tC;
+      if (tC && (tC.privacyCenter || tC.privacy)) {
+        return {
+          detected: true,
+          type: 'Commanders Act',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Quantcast Choice
+      const qc = window.__tcfapi || window.quantserve;
+      if (qc) {
+        return {
+          detected: true,
+          type: 'Quantcast Choice',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Axeptio
+      const axeptio = window.axeptio || window._axcb;
+      if (axeptio) {
+        return {
+          detected: true,
+          type: 'Axeptio',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Complianz (WordPress)
+      const cmplz = window.cmplz || window.complianz;
+      if (cmplz) {
+        return {
+          detected: true,
+          type: 'Complianz',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Klaro
+      const klaro = window.klaro || window.klaroConfig;
+      if (klaro) {
+        return {
+          detected: true,
+          type: 'Klaro',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Osano
+      const osano = window.Osano;
+      if (osano) {
+        return {
+          detected: true,
+          type: 'Osano',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Usercentrics
+      const uc = window.UC_UI || window.usercentrics;
+      if (uc) {
+        return {
+          detected: true,
+          type: 'Usercentrics',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Civic Cookie Control
+      const civic = window.CookieControl;
+      if (civic) {
+        return {
+          detected: true,
+          type: 'Civic Cookie Control',
+          loaded: true,
+          consent: null,
+          hasResponse: true
+        };
+      }
+
+      // Rilevamento generico - cerca banner cookie nel DOM
+      const genericBanners = [
+        '#cookie-banner', '#cookie-notice', '#cookie-consent',
+        '.cookie-banner', '.cookie-notice', '.cookie-consent',
+        '[class*="cookie-banner"]', '[class*="cookie-consent"]',
+        '[id*="cookie-banner"]', '[id*="cookie-consent"]',
+        '#gdpr-banner', '.gdpr-banner', '#privacy-banner',
+        '[class*="gdpr"]', '[class*="privacy-banner"]',
+        '#cc-main', '.cc-banner', // Cookie Consent by Insites
+        '.cli-modal', '#cookie-law-info-bar' // GDPR Cookie Consent WordPress
+      ];
+
+      for (const selector of genericBanners) {
+        const el = document.querySelector(selector);
+        if (el && el.offsetParent !== null) { // visibile
+          return {
+            detected: true,
+            type: 'Banner Generico',
+            loaded: true,
+            consent: null,
+            hasResponse: false
+          };
+        }
+      }
+
+      // Cerca script bloccati come indicatore CMP
+      const blockedScripts = document.querySelectorAll(
+        'script[type="text/plain"], script[type="text/tc_privacy"], script[data-cookieconsent]'
+      );
+      if (blockedScripts.length > 0) {
+        return {
+          detected: true,
+          type: 'CMP Rilevato (script bloccati)',
+          loaded: true,
+          consent: null,
+          hasResponse: false
+        };
+      }
+
       return { detected: false, type: null };
     });
   }
 
-  // Verifica script bloccati (type="text/plain")
+  // Verifica script bloccati (type="text/plain", "text/tc_privacy", ecc.)
   async checkBlockedScripts() {
     return await this.page.evaluate(() => {
-      const scripts = document.querySelectorAll('script[type="text/plain"]');
+      // Selettori per script bloccati da vari CMP
+      const blockedSelectors = [
+        'script[type="text/plain"]',           // Generico / Cookiebot
+        'script[type="text/tc_privacy"]',      // Commanders Act
+        'script[data-cookieconsent]',          // Cookiebot
+        'script[data-category]',               // Commanders Act / Generici
+        'script[data-consent]',                // Generici
+        'script[data-requires-consent]',       // Generici
+        'script.cmplz-blocked',                // Complianz
+        'script[data-cmplz-src]'               // Complianz
+      ];
+
+      const scripts = document.querySelectorAll(blockedSelectors.join(','));
       return Array.from(scripts).map(s => ({
-        src: s.src || '(inline)',
-        dataCookieconsent: s.getAttribute('data-cookieconsent')
+        src: s.src || s.getAttribute('data-src') || s.getAttribute('data-cmplz-src') || '(inline)',
+        type: s.type,
+        category: s.getAttribute('data-category') || s.getAttribute('data-cookieconsent') || null
       }));
     });
   }
@@ -588,14 +759,54 @@ class CookieAuditScanner {
       // Didomi
       '#didomi-notice-agree-button',
       '[data-testid="notice-accept-button"]',
+      // Commanders Act (TrustCommander)
+      '#privacy-cp-wall-accept',
+      '.privacy-cp-btn-accept',
+      '[data-tc-privacy-accept]',
+      '#tc-privacy-button-accept',
+      // Quantcast Choice
+      '.qc-cmp2-summary-buttons button:first-child',
+      '.qc-cmp-button[mode="primary"]',
+      // Axeptio
+      '.axeptio_btn_acceptAll',
+      '[data-axeptio-action="acceptAll"]',
+      // Complianz
+      '.cmplz-accept',
+      '#cmplz-accept',
+      '.cmplz-btn.cmplz-accept',
+      // Klaro
+      '.klaro .cm-btn-success',
+      '.klaro button[data-consent="accept"]',
+      // Usercentrics
+      '#uc-btn-accept-banner',
+      '.uc-accept-all',
+      // Osano
+      '.osano-cm-accept-all',
+      '.osano-cm-button--type_accept',
+      // Civic Cookie Control
+      '#ccc-notify-accept',
+      '#ccc-module-close',
+      // GDPR Cookie Consent WordPress
+      '#cookie_action_close_header',
+      '.cli_action_button.wt-cli-accept-all-btn',
+      // Cookie Consent by Insites
+      '.cc-btn.cc-allow',
+      '.cc-compliance .cc-allow',
       // Generici
       '[data-action="accept"]',
+      '[data-action="accept-all"]',
       'button[aria-label*="Accept"]',
       'button[aria-label*="Accetta"]',
       '.cookie-accept',
       '#cookie-accept',
+      '.accept-cookies',
+      '#accept-cookies',
+      '[class*="accept-all"]',
+      '[class*="accept-cookies"]',
       'button:has-text("Accetta tutti")',
       'button:has-text("Accept all")',
+      'button:has-text("Accetto")',
+      'button:has-text("OK")',
     ];
 
     for (const selector of selectors) {
@@ -910,6 +1121,7 @@ class CookieAuditScanner {
       // === FASE 1: PRE-CONSENSO ===
       console.log('--- FASE 1: Analisi PRE-CONSENSO ---');
       this.phase = 'PRE_CONSENT';
+      this.notifyPhase('pre_consent', 'Analisi pre-consenso...');
 
       await this.page.goto(this.url, {
         waitUntil: 'networkidle',
@@ -940,6 +1152,7 @@ class CookieAuditScanner {
       // === FASE 2: ACCETTAZIONE ===
       console.log('\n--- FASE 2: Accettazione Consenso ---');
       this.phase = 'POST_CONSENT';
+      this.notifyPhase('consent', 'Accettazione consenso...');
 
       const accepted = await this.acceptCookies();
       if (!accepted) {
@@ -951,6 +1164,7 @@ class CookieAuditScanner {
       await this.page.waitForTimeout(8000);
 
       // Raccogli dati post-consenso
+      this.notifyPhase('post_consent', 'Verifica post-consenso...');
       this.report.postConsent.cookies = await this.collectCookies();
       const postStorage = await this.collectStorage();
       this.report.postConsent.localStorage = postStorage.localStorage;
@@ -966,6 +1180,7 @@ class CookieAuditScanner {
       // === FASE 3: INTERAZIONI (per testare eventi GA4) ===
       console.log('\n--- FASE 3: Test Interazioni ---');
       this.phase = 'INTERACTION';
+      this.notifyPhase('interactions', 'Test interazioni...');
 
       // Trova form nella pagina
       await this.findForms();
@@ -994,6 +1209,7 @@ class CookieAuditScanner {
     }
 
     // === GENERA SUMMARY (fuori dal try per garantire esecuzione) ===
+    this.notifyPhase('finalizing', 'Generazione report...');
     this.generateSummary();
 
     // Output

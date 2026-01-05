@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Scan - AuditTrackingTool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1c3738;
+      --primary-light: #2a4a4b;
+      --accent: #06e89f;
+      --accent-hover: #05c989;
+      --danger: #ff4f50;
+      --warning: #ffb84d;
+      --success: #06e89f;
+      --bg: #f3f1ee;
+      --bg-dark: #1c3738;
+      --text: #111d0c;
+      --text-light: #5a6a5c;
+      --white: #ffffff;
+      --border-radius: 16px;
+      --shadow: 0 4px 24px rgba(28, 55, 56, 0.08);
+      --shadow-lg: 0 8px 40px rgba(28, 55, 56, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      padding: 20px 32px;
+    }
+
+    .header-content {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 40px 24px;
+      max-width: 1320px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: var(--text-light);
+    }
+
+    /* Layout */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card */
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 16px;
+      font-size: 14px;
+      font-family: 'DM Sans', monospace;
+      border: 2px solid #e5e5e5;
+      border-radius: 12px;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      transition: all 0.2s ease;
+    }
+
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--white);
+    }
+
+    .form-group textarea::placeholder {
+      color: #aaa;
+    }
+
+    .url-count {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    /* Button */
+    .btn {
+      padding: 16px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(6, 232, 159, 0.3);
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-sm {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    /* Progress */
+    .progress-container {
+      margin-top: 24px;
+      display: none;
+    }
+
+    .progress-container.active {
+      display: block;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e5e5e5;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* Export buttons */
+    .export-buttons {
+      display: none;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .export-buttons.active {
+      display: flex;
+    }
+
+    /* Results Table */
+    .results-card {
+      display: none;
+    }
+
+    .results-card.active {
+      display: block;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--bg);
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e5e5e5;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: #fafafa;
+    }
+
+    /* Row colors */
+    tr.status-conforme {
+      background: rgba(6, 232, 159, 0.08);
+    }
+
+    tr.status-conforme:hover {
+      background: rgba(6, 232, 159, 0.12);
+    }
+
+    tr.status-non-conforme {
+      background: rgba(255, 79, 80, 0.08);
+    }
+
+    tr.status-non-conforme:hover {
+      background: rgba(255, 79, 80, 0.12);
+    }
+
+    tr.status-running {
+      background: rgba(255, 184, 77, 0.08);
+    }
+
+    tr.status-error {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .status-icon {
+      font-size: 16px;
+    }
+
+    /* Verdict badge */
+    .verdict {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .verdict-conforme {
+      background: rgba(6, 232, 159, 0.15);
+      color: #059669;
+    }
+
+    .verdict-non-conforme {
+      background: rgba(255, 79, 80, 0.15);
+      color: #dc2626;
+    }
+
+    .verdict-da-verificare {
+      background: rgba(255, 184, 77, 0.15);
+      color: #d97706;
+    }
+
+    /* Tracker badges */
+    .tracker-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tracker-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .tracker-badge.ga4 { background: #4285f4; }
+    .tracker-badge.facebook { background: #1877f2; }
+    .tracker-badge.linkedin { background: #0a66c2; }
+    .tracker-badge.tiktok { background: #000000; }
+    .tracker-badge.hotjar { background: #fd3a5c; }
+
+    /* Violations count */
+    .violations-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .violations-count.zero {
+      background: rgba(6, 232, 159, 0.15);
+      color: #059669;
+    }
+
+    .violations-count.has-violations {
+      background: rgba(255, 79, 80, 0.15);
+      color: #dc2626;
+    }
+
+    /* URL cell */
+    .url-cell {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Action button */
+    .action-btn {
+      padding: 6px 12px;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background: var(--primary-light);
+    }
+
+    .action-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    /* Summary stats */
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .stat-card.success .stat-value { color: #059669; }
+    .stat-card.danger .stat-value { color: #dc2626; }
+    .stat-card.warning .stat-value { color: #d97706; }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ddd;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
+      <nav class="nav-links">
+        <a href="/">Scansione Singola</a>
+        <a href="/bulk-scan.html">Bulk Scan</a>
+        <a href="/form-test.html">Form Test</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="hero">
+      <h1>Bulk Scan</h1>
+      <p>Scansiona piu siti contemporaneamente e ottieni una panoramica della compliance</p>
+    </div>
+
+    <div class="content-grid">
+      <!-- Input Panel -->
+      <div class="card">
+        <h2>Lista URL</h2>
+        <form id="bulkForm">
+          <div class="form-group">
+            <label for="urls">Inserisci gli URL (uno per riga)</label>
+            <textarea
+              id="urls"
+              name="urls"
+              placeholder="https://esempio1.com
+https://esempio2.com
+https://esempio3.com"
+            ></textarea>
+            <div class="url-count">
+              <span id="urlCount">0</span> URL inseriti
+            </div>
+          </div>
+
+          <button type="submit" id="startBtn" class="btn btn-primary" disabled>
+            Avvia Scansione Bulk
+          </button>
+        </form>
+
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-header">
+            <span class="progress-text" id="progressText">0 / 0 completate</span>
+            <span class="progress-text" id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="export-buttons" id="exportButtons">
+          <button class="btn btn-secondary btn-sm" id="exportCsv">Esporta CSV</button>
+          <button class="btn btn-secondary btn-sm" id="exportJson">Esporta JSON</button>
+        </div>
+      </div>
+
+      <!-- Results Panel -->
+      <div class="card results-card" id="resultsCard">
+        <h2>Risultati</h2>
+
+        <!-- Summary Stats -->
+        <div class="summary-stats" id="summaryStats">
+          <div class="stat-card">
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">Totale</div>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-value" id="statConforme">0</div>
+            <div class="stat-label">Conformi</div>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-value" id="statNonConforme">0</div>
+            <div class="stat-label">Non Conformi</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-label">In Corso</div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>URL</th>
+                <th>Status</th>
+                <th>Verdetto</th>
+                <th>CMP</th>
+                <th>Violazioni</th>
+                <th>Tracker</th>
+                <th>Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <!-- Results will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank">Andrea Camolese</a>
+  </footer>
+
+  <script>
+    // State
+    let currentBatchId = null;
+    let eventSource = null;
+    let scanStartTime = null;
+
+    // DOM Elements
+    const urlsTextarea = document.getElementById('urls');
+    const urlCountSpan = document.getElementById('urlCount');
+    const startBtn = document.getElementById('startBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressText = document.getElementById('progressText');
+    const progressPercent = document.getElementById('progressPercent');
+    const progressFill = document.getElementById('progressFill');
+    const exportButtons = document.getElementById('exportButtons');
+    const resultsCard = document.getElementById('resultsCard');
+    const resultsBody = document.getElementById('resultsBody');
+
+    // Stats
+    const statTotal = document.getElementById('statTotal');
+    const statConforme = document.getElementById('statConforme');
+    const statNonConforme = document.getElementById('statNonConforme');
+    const statPending = document.getElementById('statPending');
+
+    // Parse URLs from textarea
+    function parseUrls() {
+      const text = urlsTextarea.value.trim();
+      if (!text) return [];
+
+      return text.split('\n')
+        .map(line => line.trim())
+        .filter(line => {
+          try {
+            new URL(line);
+            return true;
+          } catch {
+            return false;
+          }
+        });
+    }
+
+    // Update URL count
+    urlsTextarea.addEventListener('input', () => {
+      const urls = parseUrls();
+      urlCountSpan.textContent = urls.length;
+      startBtn.disabled = urls.length === 0;
+    });
+
+    // Start bulk scan
+    document.getElementById('bulkForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const urls = parseUrls();
+      if (urls.length === 0) return;
+
+      // Update UI
+      startBtn.disabled = true;
+      startBtn.innerHTML = '<span class="spinner"></span> Avvio...';
+      progressContainer.classList.add('active');
+      resultsCard.classList.add('active');
+      exportButtons.classList.remove('active');
+
+      // Initialize results table
+      resultsBody.innerHTML = urls.map((url, i) => createResultRow(i + 1, url, 'pending')).join('');
+      updateStats({ total: urls.length, completed: 0, results: urls.map(url => ({ url, status: 'pending' })) });
+
+      try {
+        const response = await fetch('/api/bulk-scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          currentBatchId = result.batchId;
+          scanStartTime = Date.now();
+          connectSSE();
+        } else {
+          alert('Errore: ' + result.error);
+          resetUI();
+        }
+      } catch (err) {
+        alert('Errore di connessione: ' + err.message);
+        resetUI();
+      }
+    });
+
+    // Connetti a SSE per aggiornamenti real-time
+    function connectSSE() {
+      if (eventSource) eventSource.close();
+
+      eventSource = new EventSource(`/api/bulk-scan/${currentBatchId}/stream`);
+
+      eventSource.addEventListener('init', (e) => {
+        const data = JSON.parse(e.data);
+        updateResults(data);
+      });
+
+      eventSource.addEventListener('phase', (e) => {
+        const data = JSON.parse(e.data);
+        updateRowPhase(data.index, data.phaseLabel);
+        updateProgress(data.completed, data.total, null);
+      });
+
+      eventSource.addEventListener('complete', (e) => {
+        const data = JSON.parse(e.data);
+        updateSingleResult(data.index, data.result);
+        updateProgress(data.completed, data.total, data.avgScanTime);
+      });
+
+      eventSource.addEventListener('error', (e) => {
+        if (e.data) {
+          const data = JSON.parse(e.data);
+          updateRowError(data.index, data.error);
+          updateProgress(data.completed, data.total, null);
+        }
+      });
+
+      eventSource.addEventListener('done', (e) => {
+        const data = JSON.parse(e.data);
+        disconnectSSE();
+        onScanComplete(data.totalTime);
+      });
+
+      eventSource.onerror = () => {
+        console.error('SSE connection error');
+        // Fallback a polling se SSE fallisce
+        disconnectSSE();
+        startPollingFallback();
+      };
+    }
+
+    function disconnectSSE() {
+      if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+      }
+    }
+
+    // Fallback polling se SSE non funziona
+    function startPollingFallback() {
+      const poll = async () => {
+        try {
+          const response = await fetch(`/api/bulk-scan/${currentBatchId}`);
+          const data = await response.json();
+          if (data.success) {
+            updateResults(data);
+            if (data.status === 'completed') {
+              onScanComplete();
+            } else {
+              setTimeout(poll, 2000);
+            }
+          }
+        } catch (err) {
+          console.error('Polling error:', err);
+          setTimeout(poll, 2000);
+        }
+      };
+      poll();
+    }
+
+    // Aggiorna fase di una singola riga
+    function updateRowPhase(index, phaseLabel) {
+      const row = resultsBody.children[index];
+      if (row) {
+        const statusCell = row.querySelector('.status-badge');
+        if (statusCell) {
+          statusCell.innerHTML = `<span class="spinner"></span> ${phaseLabel}`;
+        }
+      }
+    }
+
+    // Aggiorna singolo risultato
+    function updateSingleResult(index, result) {
+      const row = resultsBody.children[index];
+      if (row) {
+        row.outerHTML = createResultRow(index + 1, result.url, result.status, result);
+      }
+      // Aggiorna stats
+      updateStatsFromResults();
+    }
+
+    // Aggiorna riga con errore
+    function updateRowError(index, error) {
+      const row = resultsBody.children[index];
+      if (row) {
+        row.className = 'status-error';
+        const statusCell = row.querySelector('.status-badge');
+        if (statusCell) {
+          statusCell.innerHTML = `<span class="status-icon">&#10007;</span> Errore`;
+        }
+      }
+    }
+
+    // Aggiorna progress bar con tempo stimato
+    function updateProgress(completed, total, avgScanTime) {
+      const percent = Math.round((completed / total) * 100);
+      progressFill.style.width = `${percent}%`;
+      progressPercent.textContent = `${percent}%`;
+
+      // Calcola tempo stimato rimanente
+      let timeEstimate = '';
+      if (avgScanTime && completed < total) {
+        const remaining = total - completed;
+        const estimatedMs = (remaining / 3) * avgScanTime; // 3 = concorrenza
+        const estimatedSec = Math.round(estimatedMs / 1000);
+        if (estimatedSec > 60) {
+          timeEstimate = ` • ~${Math.round(estimatedSec / 60)} min rimanenti`;
+        } else if (estimatedSec > 0) {
+          timeEstimate = ` • ~${estimatedSec}s rimanenti`;
+        }
+      }
+
+      progressText.textContent = `${completed} / ${total} completate${timeEstimate}`;
+    }
+
+    // Aggiorna stats dai risultati correnti
+    function updateStatsFromResults() {
+      const rows = resultsBody.querySelectorAll('tr');
+      let total = rows.length;
+      let conforme = 0, nonConforme = 0, pending = 0;
+
+      rows.forEach(row => {
+        if (row.classList.contains('status-conforme')) conforme++;
+        else if (row.classList.contains('status-non-conforme')) nonConforme++;
+        else if (row.classList.contains('status-running')) pending++;
+      });
+
+      statTotal.textContent = total;
+      statConforme.textContent = conforme;
+      statNonConforme.textContent = nonConforme;
+      statPending.textContent = pending;
+    }
+
+    // Update results table
+    function updateResults(data) {
+      const { total, completed, results } = data;
+
+      // Update progress
+      const percent = Math.round((completed / total) * 100);
+      progressText.textContent = `${completed} / ${total} completate`;
+      progressPercent.textContent = `${percent}%`;
+      progressFill.style.width = `${percent}%`;
+
+      // Update table
+      results.forEach((result, i) => {
+        const row = resultsBody.children[i];
+        if (row) {
+          row.outerHTML = createResultRow(i + 1, result.url, result.status, result);
+        }
+      });
+
+      // Update stats
+      updateStats(data);
+    }
+
+    // Create result row HTML
+    function createResultRow(num, url, status, result = null) {
+      let statusIcon, statusText, rowClass = '';
+
+      switch (status) {
+        case 'pending':
+          statusIcon = '...';
+          statusText = 'In attesa';
+          break;
+        case 'running':
+          statusIcon = '<span class="spinner"></span>';
+          statusText = 'In corso';
+          rowClass = 'status-running';
+          break;
+        case 'completed':
+          statusIcon = '&#10003;';
+          statusText = 'Completato';
+          if (result?.verdict === 'CONFORME') rowClass = 'status-conforme';
+          else if (result?.verdict === 'DA VERIFICARE') rowClass = 'status-running';
+          else rowClass = 'status-non-conforme';
+          break;
+        case 'error':
+          statusIcon = '&#10007;';
+          statusText = 'Errore';
+          rowClass = 'status-error';
+          break;
+      }
+
+      let verdictClass = 'non-conforme';
+      if (result?.verdict === 'CONFORME') verdictClass = 'conforme';
+      else if (result?.verdict === 'DA VERIFICARE') verdictClass = 'da-verificare';
+
+      const verdict = result?.verdict
+        ? `<span class="verdict verdict-${verdictClass}">${result.verdict}</span>`
+        : '-';
+
+      const cmp = result?.cmp || '-';
+
+      const violations = result?.violations !== undefined
+        ? `<span class="violations-count ${result.violations === 0 ? 'zero' : 'has-violations'}">${result.violations}</span>`
+        : '-';
+
+      const trackers = result?.trackers?.length > 0
+        ? result.trackers.map(t => `<span class="tracker-badge ${getTrackerClass(t)}">${t}</span>`).join('')
+        : '-';
+
+      const action = result?.reportId
+        ? `<a href="/report.html?id=${result.reportId}" class="action-btn" target="_blank">Dettagli</a>`
+        : `<button class="action-btn" disabled>-</button>`;
+
+      return `
+        <tr class="${rowClass}">
+          <td>${num}</td>
+          <td class="url-cell" title="${url}">${url}</td>
+          <td><span class="status-badge"><span class="status-icon">${statusIcon}</span> ${statusText}</span></td>
+          <td>${verdict}</td>
+          <td>${cmp}</td>
+          <td>${violations}</td>
+          <td><div class="tracker-badges">${trackers}</div></td>
+          <td>${action}</td>
+        </tr>
+      `;
+    }
+
+    // Get tracker badge class
+    function getTrackerClass(tracker) {
+      const t = tracker.toLowerCase();
+      if (t.includes('ga4') || t.includes('google analytics')) return 'ga4';
+      if (t.includes('facebook') || t.includes('meta')) return 'facebook';
+      if (t.includes('linkedin')) return 'linkedin';
+      if (t.includes('tiktok')) return 'tiktok';
+      if (t.includes('hotjar')) return 'hotjar';
+      return '';
+    }
+
+    // Update stats
+    function updateStats(data) {
+      const { total, results } = data;
+
+      let conforme = 0, nonConforme = 0, pending = 0, daVerificare = 0;
+
+      results.forEach(r => {
+        if (r.status === 'completed') {
+          if (r.verdict === 'CONFORME') conforme++;
+          else if (r.verdict === 'DA VERIFICARE') daVerificare++;
+          else nonConforme++;
+        } else if (r.status !== 'error') {
+          pending++;
+        }
+      });
+
+      statTotal.textContent = total;
+      statConforme.textContent = conforme;
+      statNonConforme.textContent = nonConforme;
+      statPending.textContent = pending + daVerificare; // mostra da verificare come "in corso"
+    }
+
+    // Scan complete
+    function onScanComplete(totalTime = null) {
+      disconnectSSE();
+      startBtn.disabled = false;
+      startBtn.innerHTML = 'Avvia Nuova Scansione';
+      exportButtons.classList.add('active');
+
+      // Mostra tempo totale
+      if (totalTime) {
+        const totalSec = Math.round(totalTime / 1000);
+        if (totalSec > 60) {
+          progressText.textContent += ` (completato in ${Math.round(totalSec / 60)}m ${totalSec % 60}s)`;
+        } else {
+          progressText.textContent += ` (completato in ${totalSec}s)`;
+        }
+      }
+    }
+
+    // Reset UI
+    function resetUI() {
+      disconnectSSE();
+      startBtn.disabled = false;
+      startBtn.innerHTML = 'Avvia Scansione Bulk';
+      progressContainer.classList.remove('active');
+    }
+
+    // Export handlers
+    document.getElementById('exportCsv').addEventListener('click', () => {
+      if (currentBatchId) {
+        window.location.href = `/api/bulk-scan/${currentBatchId}/export?format=csv`;
+      }
+    });
+
+    document.getElementById('exportJson').addEventListener('click', () => {
+      if (currentBatchId) {
+        window.location.href = `/api/bulk-scan/${currentBatchId}/export?format=json`;
+      }
+    });
+  </script>
+</body>
+</html>

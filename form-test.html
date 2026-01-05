@@ -663,14 +663,14 @@
 
       list.innerHTML = filteredEvents.slice().reverse().map(e => {
         const isFormEvent = FORM_EVENTS.some(fe =>
-          e.data?.event?.toLowerCase().includes(fe.toLowerCase())
+          e.data?.event?.toLowerCase()?.includes(fe.toLowerCase())
         ) || e.type === 'form_submit';
 
         let content = '';
         let description = '';
 
-        if (e.type === 'dataLayer') {
-          const eventName = e.data.event;
+        if (e.type === 'dataLayer' && e.data) {
+          const eventName = e.data.event || 'unknown';
           // Descrizioni più parlanti per eventi comuni
           if (eventName === 'gtm.js') {
             description = 'GTM inizializzato';
@@ -687,12 +687,13 @@
           } else if (eventName === 'gtm.linkClick') {
             description = 'Click su link';
           } else {
-            description = JSON.stringify(e.data.data).substring(0, 100);
+            const dataStr = e.data.data ? JSON.stringify(e.data.data) : '';
+            description = dataStr ? dataStr.substring(0, 100) : eventName;
           }
           content = '<div class="event-type">📊 ' + eventName + '</div>' +
             '<div class="event-detail">' + description + '</div>';
-        } else if (e.type === 'network') {
-          const tracker = e.data.tracker;
+        } else if (e.type === 'network' && e.data) {
+          const tracker = e.data.tracker || 'Unknown';
           const eventName = e.data.event;
           let icon = '🌐';
           let desc = '';
@@ -717,7 +718,7 @@
             icon = '📘';
             desc = 'Evento Facebook Pixel';
           } else {
-            desc = e.data.url?.substring(0, 80) || '';
+            desc = e.data.url ? e.data.url.substring(0, 80) : '';
           }
 
           content = '<span class="event-tracker">' + tracker + '</span>' +
@@ -725,13 +726,14 @@
             '<div class="event-detail">' + desc + '</div>';
         } else if (e.type === 'form_submit') {
           content = '<div class="event-type">📝 Form Inviato (Azione Utente)</div>' +
-            '<div class="event-detail">L\'utente ha cliccato submit sul form "' + (e.data.formId || 'senza ID') + '"</div>';
+            '<div class="event-detail">L\'utente ha cliccato submit sul form "' + (e.data?.formId || 'senza ID') + '"</div>';
         } else if (e.type === 'anchor_click') {
           content = '<div class="event-type">🔗 Click Ancora</div>' +
-            '<div class="event-detail">Navigazione a ' + e.data.hash + '</div>';
+            '<div class="event-detail">Navigazione a ' + (e.data?.hash || '') + '</div>';
         } else {
-          content = '<div class="event-type">' + e.type + '</div>' +
-            '<div class="event-detail">' + JSON.stringify(e.data).substring(0, 100) + '</div>';
+          const dataStr = e.data ? JSON.stringify(e.data) : '';
+          content = '<div class="event-type">' + (e.type || 'event') + '</div>' +
+            '<div class="event-detail">' + (dataStr ? dataStr.substring(0, 100) : '-') + '</div>';
         }
 
         const time = new Date(e.timestamp).toLocaleTimeString('it-IT');
