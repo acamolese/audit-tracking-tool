@@ -678,6 +678,24 @@
 
     // Event Source per SSE
     let eventSource = null;
+    let progressInterval = null;
+    let timeoutId = null;
+
+    // Funzione per pulire gli intervalli
+    function cleanupIntervals() {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+      }
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -696,6 +714,9 @@
       status.textContent = 'Avvio scansione...';
       progressContainer.style.display = 'block';
       resetProgress();
+
+      // Pulisci eventuali intervalli precedenti
+      cleanupIntervals();
 
       try {
         // Prima avvia la scansione
@@ -720,13 +741,13 @@
           if (result.reportId) {
             // Simula progresso per ora (SSE richiederebbe endpoint dedicato)
             let currentStep = 1;
-            const progressInterval = setInterval(() => {
+            progressInterval = setInterval(() => {
               currentStep++;
               if (currentStep <= 6) {
                 const phases = ['starting', 'loading', 'pre_consent', 'consent', 'post_consento', 'interactions', 'finalizing'];
                 updateProgress(phases[currentStep - 1]);
               } else {
-                clearInterval(progressInterval);
+                cleanupIntervals();
                 // Vai al report
                 window.location.href = `/report.html?id=${result.reportId}`;
               }
@@ -734,8 +755,8 @@
 
             // Dopo il tempo stimato, vai al report
             const estimatedTime = fastMode ? 12000 : 25000;
-            setTimeout(() => {
-              clearInterval(progressInterval);
+            timeoutId = setTimeout(() => {
+              cleanupIntervals();
               updateProgress('done', 'Scansione completata!');
               setTimeout(() => {
                 window.location.href = `/report.html?id=${result.reportId}`;
@@ -743,7 +764,8 @@
             }, estimatedTime);
           } else {
             // Fallback se non c'è reportId
-            setTimeout(() => {
+            timeoutId = setTimeout(() => {
+              cleanupIntervals();
               window.location.href = `/report.html?id=${result.reportId}`;
             }, 2000);
           }
@@ -753,6 +775,7 @@
           progressContainer.style.display = 'none';
           submitBtn.disabled = false;
           submitBtn.textContent = 'Avvia Scansione';
+          cleanupIntervals();
         }
       } catch (err) {
         status.className = 'status error';
@@ -760,6 +783,7 @@
         progressContainer.style.display = 'none';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Avvia Scansione';
+        cleanupIntervals();
       }
     });
   </script>
