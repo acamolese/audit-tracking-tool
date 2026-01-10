@@ -1395,18 +1395,29 @@ class CookieAuditScanner {
           timeout: optimizedTimeout
         });
 
-        // Ottimizzazione: attesa minima
-        await this.page.waitForTimeout(this.options.fastMode ? 500 : 1000);
+        // Ottimizzazione: attesa per caricamento dinamico CMP
+        // Aumentato da 500ms a 2000ms per garantire che CMP caricato dinamicamente sia visibile
+        await this.page.waitForTimeout(this.options.fastMode ? 2000 : 3000);
 
-        // Raccogli dati pre-consenso
+        // Verifica CMP con retry
+        let cmpState = await this.checkCMPState();
+        let retryCount = 0;
+        
+        // Se non rilevato, aspetta ancora e riprova (max 2 retry)
+        while (!cmpState.detected && retryCount < 2) {
+          this.logger.log(`CMP non rilevato, retry ${retryCount + 1}...`);
+          await this.page.waitForTimeout(1500);
+          cmpState = await this.checkCMPState();
+          retryCount++;
+        }
+
+        this.report.cmp = { ...this.report.cmp, ...cmpState };
+
+        // Raccogli dati pre-consenso DOPO aver verificato CMP
         this.report.preConsent.cookies = await this.collectCookies();
         const preStorage = await this.collectStorage();
         this.report.preConsent.localStorage = preStorage.localStorage;
         this.report.preConsent.sessionStorage = preStorage.sessionStorage;
-
-        // Verifica CMP
-        const cmpState = await this.checkCMPState();
-        this.report.cmp = { ...this.report.cmp, ...cmpState };
 
         if (cmpState.detected) {
           this.logger.log(`CMP rilevato: ${cmpState.type}`);
