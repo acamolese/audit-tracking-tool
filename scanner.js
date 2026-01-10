@@ -1309,18 +1309,23 @@ class CookieAuditScanner {
         // Registra handler richieste
         this.page.on('request', (req) => this.handleRequest(req));
 
-        // === MONITORAGGIO DATA LAYER (SOSTITUZIONE COMPLETA) ===
+        // === MONITORAGGIO DATA LAYER ===
         await this.page.addInitScript(() => {
           window.__dataLayerEvents = [];
           window.__auditPhase = 'UNKNOWN';
 
-          // Salva dataLayer originale se esiste
-          const originalDataLayer = window.dataLayer || [];
+          // Intercetta dataLayer.push senza sovrascrivere l'array
+          // GTM richiede che dataLayer sia un array, non un oggetto
+          const setupDataLayerMonitoring = () => {
+            if (!window.dataLayer) {
+              window.dataLayer = [];
+            }
 
-          // Crea wrapper completo per dataLayer
-          window.dataLayer = {
-            ...originalDataLayer,
-            push: function(...args) {
+            // Se già monitorato, esci
+            if (window.dataLayer.__auditMonitored) return;
+
+            const originalPush = window.dataLayer.push.bind(window.dataLayer);
+            window.dataLayer.push = function(...args) {
               args.forEach(item => {
                 if (item && typeof item === 'object') {
                   const eventName = item.event || item[0];
@@ -1332,58 +1337,56 @@ class CookieAuditScanner {
                       phase: window.__auditPhase,
                       source: 'dataLayer'
                     });
-                    console.log(`[AUDIT] DataLayer event: ${eventName}`, item);
                   }
                 }
               });
-              // Esegui push originale
-              return Array.prototype.push.apply(this, args);
+              return originalPush(...args);
+            };
+            window.dataLayer.__auditMonitored = true;
+          };
+
+          // Setup iniziale
+          setupDataLayerMonitoring();
+
+          // Re-setup se dataLayer viene ricreato (es. da GTM)
+          let dataLayerCheck = window.dataLayer;
+          Object.defineProperty(window, 'dataLayer', {
+            get: () => dataLayerCheck,
+            set: (val) => {
+              dataLayerCheck = val;
+              if (Array.isArray(val) && !val.__auditMonitored) {
+                setTimeout(setupDataLayerMonitoring, 0);
+              }
+            },
+            configurable: true
+          });
+
+          // Monitora gtag se presente
+          const setupGtagMonitoring = () => {
+            if (window.gtag && !window.gtag.__auditMonitored) {
+              const originalGtag = window.gtag;
+              window.gtag = function(...args) {
+                const command = args[0];
+                if (command === 'event') {
+                  const eventName = args[1];
+                  const params = args[2] || {};
+                  window.__dataLayerEvents.push({
+                    event: eventName,
+                    data: params,
+                    timestamp: Date.now(),
+                    phase: window.__auditPhase,
+                    source: 'gtag'
+                  });
+                }
+                return originalGtag.apply(window, args);
+              };
+              window.gtag.__auditMonitored = true;
             }
           };
 
-          // Monitora gtag se presente
-          if (window.gtag) {
-            const originalGtag = window.gtag;
-            window.gtag = function(...args) {
-              const command = args[0];
-              if (command === 'event') {
-                const eventName = args[1];
-                const params = args[2] || {};
-                window.__dataLayerEvents.push({
-                  event: eventName,
-                  data: params,
-                  timestamp: Date.now(),
-                  phase: window.__auditPhase,
-                  source: 'gtag'
-                });
-                console.log(`[AUDIT] gtag event: ${eventName}`, params);
-              }
-              return originalGtag.apply(window, args);
-            };
-          }
-
-          // Monitora dataLayer.push globale
-          if (originalDataLayer.push) {
-            const originalPush = originalDataLayer.push;
-            originalDataLayer.push = function(...args) {
-              args.forEach(item => {
-                if (item && typeof item === 'object') {
-                  const eventName = item.event || item[0];
-                  if (eventName) {
-                    window.__dataLayerEvents.push({
-                      event: eventName,
-                      data: item,
-                      timestamp: Date.now(),
-                      phase: window.__auditPhase,
-                      source: 'dataLayer_original'
-                    });
-                    console.log(`[AUDIT] Original DataLayer event: ${eventName}`, item);
-                  }
-                }
-              });
-              return originalPush.apply(originalDataLayer, args);
-            };
-          }
+          setupGtagMonitoring();
+          // Riprova dopo un po' per gtag caricato dinamicamente
+          setTimeout(setupGtagMonitoring, 1000);
         });
 
         // === FASE 1: PRE-CONSENSO ===
