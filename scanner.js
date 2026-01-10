@@ -607,6 +607,21 @@ class CookieAuditScanner {
       'Didomi', 'Axeptio', 'Usercentrics', 'Quantcast'
     ].includes(trackerName);
 
+    // GA4: analytics.js e gtag.js sono librerie, non tracking reale
+    const isGA4LibraryLoad = trackerName === 'GA4' && (
+      url.includes('/analytics.js') ||
+      url.includes('/gtag.js') ||
+      url.includes('/gtag/js')
+    );
+
+    // GA4: eventi di configurazione consent mode (set, consent) non sono tracking
+    const isGA4ConsentConfig = trackerName === 'GA4' && details.event && (
+      details.event === 'set' ||
+      details.event === 'consent' ||
+      details.event === 'js' ||
+      (details.events && details.events.every(e => ['set', 'consent', 'js'].includes(e)))
+    );
+
     const isGoogleDenied = this.isGoogleDeniedMode(url);
 
     // Traccia eventi
@@ -638,17 +653,27 @@ class CookieAuditScanner {
       if (isGoogleDenied) {
         this.report.technicalPings.push({ ...details, reason: 'Google Consent Mode Denied' });
         this.logger.log(`   [TECNICO] ${trackerName} (Consent Mode: denied)`);
-      } else if (isLibraryLoad) {
+      } else if (isLibraryLoad || isGA4LibraryLoad) {
         this.report.technicalPings.push({ ...details, reason: 'Library/CMP Load' });
         this.logger.log(`   [TECNICO] Caricamento: ${trackerName}`);
+      } else if (isGA4ConsentConfig) {
+        this.report.technicalPings.push({ ...details, reason: 'GA4 Consent Configuration' });
+        this.logger.log(`   [TECNICO] ${trackerName} config: ${details.event}`);
       } else {
         this.report.preConsent.requests.push(details);
-        this.report.violations.push({
-          type: 'tracking_before_consent',
-          tracker: trackerName,
-          details: details
-        });
-        this.logger.log(`   [VIOLAZIONE] ${trackerName} attivo SENZA consenso!`, 'warn');
+
+        // Deduplicazione violazioni: conta 1 sola violazione per tracker
+        const existingViolation = this.report.violations.find(v => v.tracker === trackerName);
+        if (!existingViolation) {
+          this.report.violations.push({
+            type: 'tracking_before_consent',
+            tracker: trackerName,
+            details: details
+          });
+          this.logger.log(`   [VIOLAZIONE] ${trackerName} attivo SENZA consenso!`, 'warn');
+        } else {
+          this.logger.log(`   [DEDUPLICATO] Violazione ${trackerName} già registrata`);
+        }
       }
     } else {
       this.report.postConsent.requests.push(details);
