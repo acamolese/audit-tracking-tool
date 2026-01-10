@@ -969,7 +969,7 @@
       }
     }
 
-    // Aggiorna dettagli avanzati degli eventi
+    // Aggiorna dettagli avanzati degli eventi con deduplicazione
     function updateEventDetails() {
       const detailsDiv = document.getElementById('eventDetails');
       
@@ -978,61 +978,148 @@
         return;
       }
 
-      // Analizza eventi per dettagli
-      const dataLayerEvents = events.filter(e => e.type === 'dataLayer');
-      const networkEvents = events.filter(e => e.type === 'network');
+      // === DEDUPLICAZIONE AVANZATA ===
+      
+      // 1. Filtra eventi di sistema poco utili
+      const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load', 'gtm.scrollDepth', 'gtm.click', 'gtm.linkClick'];
+      const IGNORED_EVENTS = ['scroll', 'click', 'mouseover', 'mouseenter', 'mouseleave'];
+      
+      // 2. Eventi form submit (DOM)
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
+      
+      // 3. Eventi GA4 deduplicati
+      const ga4Events = events.filter(e => 
+        e.type === 'network' && 
+        e.data?.tracker === 'GA4' && 
+        e.data?.event && 
+        !SYSTEM_EVENTS.includes(e.data.event) &&
+        !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
+      );
+      
+      // 4. DataLayer events deduplicati (solo eventi significativi)
+      const dataLayerEvents = events.filter(e => 
+        e.type === 'dataLayer' && 
+        e.data?.event && 
+        !SYSTEM_EVENTS.includes(e.data.event) &&
+        !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
+      );
 
+      // 5. Raggruppamento intelligente per evitare duplicati
+      const uniqueGa4Events = {};
+      ga4Events.forEach(e => {
+        const name = e.data.event;
+        const paramsStr = e.data.params ? JSON.stringify(e.data.params) : '';
+        
+        // Chiave unica: nome + parametri significativi
+        const key = name + '|' + paramsStr.substring(0, 50);
+        
+        if (!uniqueGa4Events[key]) {
+          uniqueGa4Events[key] = {
+            name: name,
+            count: 0,
+            params: e.data.params,
+            timestamp: e.timestamp
+          };
+        }
+        uniqueGa4Events[key].count++;
+      });
+
+      const uniqueDataLayerEvents = {};
+      dataLayerEvents.forEach(e => {
+        const name = e.data.event;
+        const dataStr = e.data.data ? JSON.stringify(e.data.data) : '';
+        
+        // Chiave unica: nome + dati parziali
+        const key = name + '|' + dataStr.substring(0, 30);
+        
+        if (!uniqueDataLayerEvents[key]) {
+          uniqueDataLayerEvents[key] = {
+            name: name,
+            count: 0,
+            data: e.data.data,
+            timestamp: e.timestamp
+          };
+        }
+        uniqueDataLayerEvents[key].count++;
+      });
+
+      // === GENERAZIONE HTML CON DEDUPLICAZIONE ===
       let detailsHTML = '';
 
       // Dettagli form submit
       if (formSubmitEvents.length > 0) {
         detailsHTML += `<div style="margin-bottom: 8px;"><strong>📝 Form Submit (DOM):</strong> ${formSubmitEvents.length} invii</div>`;
+        
+        // Raggruppa per formId
+        const formGroups = {};
         formSubmitEvents.forEach(e => {
           const formId = e.data?.formId || 'senza ID';
-          const action = e.data?.formAction || 'N/A';
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• ID: <strong>${formId}</strong> | Action: ${action}</div>`;
+          if (!formGroups[formId]) formGroups[formId] = { count: 0, actions: new Set() };
+          formGroups[formId].count++;
+          if (e.data?.formAction) formGroups[formId].actions.add(e.data.formAction);
+        });
+
+        Object.keys(formGroups).forEach(formId => {
+          const group = formGroups[formId];
+          const actions = Array.from(group.actions).join(', ') || 'N/A';
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${formId}</strong>: ${group.count} invii | Actions: ${actions}</div>`;
         });
       }
 
-      // Dettagli GA4
-      const ga4Events = networkEvents.filter(e => e.data?.tracker === 'GA4');
-      if (ga4Events.length > 0) {
-        detailsHTML += `<div style="margin: 8px 0;"><strong>📈 GA4 Events:</strong> ${ga4Events.length} invii</div>`;
+      // Dettagli GA4 (con deduplicazione)
+      const ga4Count = Object.keys(uniqueGa4Events).length;
+      if (ga4Count > 0) {
+        detailsHTML += `<div style="margin: 8px 0;"><strong>📈 GA4 Events:</strong> ${ga4Count} tipi unici</div>`;
         
-        // Raggruppa per nome evento
-        const eventGroups = {};
-        ga4Events.forEach(e => {
-          const name = e.data?.event || 'unknown';
-          if (!eventGroups[name]) eventGroups[name] = [];
-          eventGroups[name].push(e);
-        });
-
-        Object.keys(eventGroups).forEach(eventName => {
-          const count = eventGroups[eventName].length;
-          const firstEvent = eventGroups[eventName][0];
-          const params = firstEvent.data?.params ? JSON.stringify(firstEvent.data.params) : 'Nessun parametro';
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${eventName}</strong>: ${count} volte | Params: ${params.substring(0, 80)}${params.length > 80 ? '...' : ''}</div>`;
-        });
-      }
-
-      // Dettagli DataLayer
-      if (dataLayerEvents.length > 0) {
-        detailsHTML += `<div style="margin: 8px 0;"><strong>📊 DataLayer Events:</strong> ${dataLayerEvents.length}</div>`;
+        // Ordina per count decrescente
+        const sortedGa4 = Object.values(uniqueGa4Events).sort((a, b) => b.count - a.count);
         
-        // Mostra ultimi 3 eventi
-        dataLayerEvents.slice(-3).forEach(e => {
-          const name = e.data?.event || 'unknown';
-          const data = e.data?.data ? JSON.stringify(e.data.data) : 'N/A';
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${name}</strong>: ${data.substring(0, 80)}${data.length > 80 ? '...' : ''}</div>`;
+        sortedGa4.forEach(event => {
+          const params = event.params ? JSON.stringify(event.params) : 'Nessun parametro';
+          const paramsDisplay = params.length > 60 ? params.substring(0, 60) + '...' : params;
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${event.name}</strong>: ${event.count} volte | Params: ${paramsDisplay}</div>`;
         });
       }
 
-      // Stato finale
-      if (formSubmitEvents.length > 0 && ga4Events.length === 0) {
-        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ Form inviato ma nessun evento GA4 ancora rilevato</div>`;
-      } else if (formSubmitEvents.length > 0 && ga4Events.length > 0) {
-        detailsHTML += `<div style="margin-top: 8px; color: #0a7a52;">✅ Tracking completo rilevato!</div>`;
+      // Dettagli DataLayer (con deduplicazione)
+      const dlCount = Object.keys(uniqueDataLayerEvents).length;
+      if (dlCount > 0) {
+        detailsHTML += `<div style="margin: 8px 0;"><strong>📊 DataLayer Events:</strong> ${dlCount} tipi unici</div>`;
+        
+        // Mostra solo i più recenti (massimo 5)
+        const sortedDL = Object.values(uniqueDataLayerEvents)
+          .sort((a, b) => b.timestamp - a.timestamp)
+          .slice(0, 5);
+        
+        sortedDL.forEach(event => {
+          const data = event.data ? JSON.stringify(event.data) : 'N/A';
+          const dataDisplay = data.length > 60 ? data.substring(0, 60) + '...' : data;
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${event.name}</strong>: ${event.count} volte | Data: ${dataDisplay}</div>`;
+        });
+      }
+
+      // Stato finale con logica avanzata
+      const hasFormSubmit = formSubmitEvents.length > 0;
+      const hasGa4Tracking = ga4Count > 0;
+      const hasDataLayer = dlCount > 0;
+
+      if (hasFormSubmit && hasGa4Tracking) {
+        // Verifica se i form submit GA4 corrispondono a quelli DOM
+        const formSubmitGa4 = Object.keys(uniqueGa4Events).filter(k => k.includes('form_submit')).length;
+        if (formSubmitGa4 > 0) {
+          detailsHTML += `<div style="margin-top: 8px; color: #0a7a52;">✅ <strong>Tracking Completo:</strong> ${formSubmitGa4} eventi form_submit rilevati in GA4</div>`;
+        } else {
+          detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ <strong>Parziale:</strong> Form inviati ma eventi GA4 diversi</div>`;
+        }
+      } else if (hasFormSubmit && !hasGa4Tracking) {
+        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ <strong>In Attesa:</strong> Form inviati ma nessun evento GA4 form_submit</div>`;
+      } else if (!hasFormSubmit && hasGa4Tracking) {
+        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">ℹ️ <strong>Info:</strong> Eventi GA4 rilevati ma nessun form submit DOM</div>`;
+      }
+
+      // Aggiungi suggerimenti
+      if (hasFormSubmit && hasGa4Tracking) {
+        detailsHTML += `<div style="margin-top: 8px; font-size: 10px; color: var(--text-light);">💡 <strong>Consiglio:</strong> Verifica che i parametri GA4 includano form_id e form_location</div>`;
       }
 
       detailsDiv.innerHTML = detailsHTML || 'Nessun dettaglio disponibile';
