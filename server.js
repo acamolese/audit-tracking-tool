@@ -932,7 +932,7 @@ async function handleRequest(req, res, reportStore, bulkStore) {
 
       const scanner = new CookieAuditScanner(targetUrl, {
         headless: !visible,
-        timeout: timeout || 10000,
+        timeout: timeout || 25000, // Aumentato da 10s a 25s per garantire rilevamento CMP
         fastMode: body.fastMode !== undefined ? body.fastMode : true,
         skipInteractions: body.skipInteractions !== undefined ? body.skipInteractions : true
       });

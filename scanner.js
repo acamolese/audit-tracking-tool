@@ -1249,7 +1249,8 @@ class CookieAuditScanner {
     this.logger.log(`Timestamp: ${this.report.timestamp}\n`);
 
     // Ottimizzazione: riduci timeout per pagine semplici ma aumenta per pagine lente
-    const optimizedTimeout = this.options.fastMode ? 15000 : this.options.timeout;
+    // Aumentato timeout per fast mode da 15s a 25s per garantire rilevamento CMP
+    const optimizedTimeout = this.options.fastMode ? 25000 : this.options.timeout;
     
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
       try {
@@ -1280,7 +1281,9 @@ class CookieAuditScanner {
             '--no-default-browser-check',
             '--disable-infobars',
             '--window-size=1920,1080',
-            '--start-maximized'
+            '--start-maximized',
+            '--disable-web-security', // Permette cross-origin
+            '--disable-features=IsolateOrigins,site-per-process' // Disabilita isolamento
           ]
         });
 
