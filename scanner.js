@@ -1409,14 +1409,56 @@ class CookieAuditScanner {
         // Aumentato da 500ms a 2000ms per garantire che CMP caricato dinamicamente sia visibile
         await this.page.waitForTimeout(this.options.fastMode ? 2000 : 3000);
 
-        // Verifica CMP con retry
+        // Verifica CMP con retry aumentato per ambiente Railway
         let cmpState = await this.checkCMPState();
         let retryCount = 0;
+        const maxRetries = 4; // Aumentato da 2 a 4 per Railway
         
-        // Se non rilevato, aspetta ancora e riprova (max 2 retry)
-        while (!cmpState.detected && retryCount < 2) {
-          this.logger.log(`CMP non rilevato, retry ${retryCount + 1}...`);
-          await this.page.waitForTimeout(1500);
+        // Se non rilevato, aspetta ancora e riprova
+        while (!cmpState.detected && retryCount < maxRetries) {
+          this.logger.log(`CMP non rilevato, retry ${retryCount + 1}/${maxRetries}...`);
+          
+          // Attesa progressiva: 1.5s, 2s, 2.5s, 3s
+          const waitTime = 1500 + (retryCount * 500);
+          await this.page.waitForTimeout(waitTime);
+          
+          // Verifica anche script tag per Cookiebot
+          if (retryCount >= 2) {
+            const scriptCMP = await this.page.evaluate(() => {
+              // Cerca script Cookiebot
+              const scripts = Array.from(document.querySelectorAll('script[src*="cookiebot"]'));
+              if (scripts.length > 0) {
+                return {
+                  detected: true,
+                  type: 'Cookiebot (script)',
+                  loaded: false,
+                  consent: null,
+                  hasResponse: false
+                };
+              }
+              
+              // Cerca script OneTrust
+              const otScripts = Array.from(document.querySelectorAll('script[src*="onetrust"], script[src*="optanon"]'));
+              if (otScripts.length > 0) {
+                return {
+                  detected: true,
+                  type: 'OneTrust (script)',
+                  loaded: false,
+                  consent: null,
+                  hasResponse: false
+                };
+              }
+              
+              return null;
+            });
+            
+            if (scriptCMP) {
+              this.logger.log(`CMP rilevato via script: ${scriptCMP.type}`);
+              cmpState = scriptCMP;
+              break;
+            }
+          }
+          
           cmpState = await this.checkCMPState();
           retryCount++;
         }
