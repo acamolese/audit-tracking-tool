@@ -616,12 +616,12 @@
       </div>
 
       <div class="summary-panel">
-        <div class="summary-title">Riepilogo Test Form</div>
+        <div class="summary-title">📊 RIEPILOGO NUMERICO</div>
         <div id="trackingStatus" class="tracking-status" style="display:none;"></div>
         <div class="summary-grid">
           <div class="summary-item">
             <div class="summary-value" id="formSubmitDomCount">0</div>
-            <div class="summary-label">Form Inviati</div>
+            <div class="summary-label">Form Inviati (DOM)</div>
           </div>
           <div class="summary-item">
             <div class="summary-value" id="formSubmitGa4Count">0</div>
@@ -634,6 +634,13 @@
           <div class="summary-item">
             <div class="summary-value" id="purchaseCount">0</div>
             <div class="summary-label">purchase</div>
+          </div>
+        </div>
+        <!-- Dettagli avanzati -->
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e5e5;">
+          <div style="font-size: 12px; color: var(--text-light); margin-bottom: 8px;">📈 DETTAGLI EVENTI</div>
+          <div id="eventDetails" style="font-size: 11px; line-height: 1.6; color: var(--text-light);">
+            In attesa di eventi...
           </div>
         </div>
       </div>
@@ -944,6 +951,9 @@
       document.getElementById('purchaseCount').textContent = formEventCounts.purchase;
       document.getElementById('purchaseCount').className = 'summary-value' + (formEventCounts.purchase > 0 ? ' success' : '');
 
+      // Aggiorna dettagli avanzati
+      updateEventDetails();
+
       // Mostra stato tracking
       const statusDiv = document.getElementById('trackingStatus');
       if (domCount > 0 && ga4Count > 0) {
@@ -957,6 +967,75 @@
       } else {
         statusDiv.style.display = 'none';
       }
+    }
+
+    // Aggiorna dettagli avanzati degli eventi
+    function updateEventDetails() {
+      const detailsDiv = document.getElementById('eventDetails');
+      
+      if (events.length === 0) {
+        detailsDiv.innerHTML = 'In attesa di eventi...';
+        return;
+      }
+
+      // Analizza eventi per dettagli
+      const dataLayerEvents = events.filter(e => e.type === 'dataLayer');
+      const networkEvents = events.filter(e => e.type === 'network');
+      const formSubmitEvents = events.filter(e => e.type === 'form_submit');
+
+      let detailsHTML = '';
+
+      // Dettagli form submit
+      if (formSubmitEvents.length > 0) {
+        detailsHTML += `<div style="margin-bottom: 8px;"><strong>📝 Form Submit (DOM):</strong> ${formSubmitEvents.length} invii</div>`;
+        formSubmitEvents.forEach(e => {
+          const formId = e.data?.formId || 'senza ID';
+          const action = e.data?.formAction || 'N/A';
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• ID: <strong>${formId}</strong> | Action: ${action}</div>`;
+        });
+      }
+
+      // Dettagli GA4
+      const ga4Events = networkEvents.filter(e => e.data?.tracker === 'GA4');
+      if (ga4Events.length > 0) {
+        detailsHTML += `<div style="margin: 8px 0;"><strong>📈 GA4 Events:</strong> ${ga4Events.length} invii</div>`;
+        
+        // Raggruppa per nome evento
+        const eventGroups = {};
+        ga4Events.forEach(e => {
+          const name = e.data?.event || 'unknown';
+          if (!eventGroups[name]) eventGroups[name] = [];
+          eventGroups[name].push(e);
+        });
+
+        Object.keys(eventGroups).forEach(eventName => {
+          const count = eventGroups[eventName].length;
+          const firstEvent = eventGroups[eventName][0];
+          const params = firstEvent.data?.params ? JSON.stringify(firstEvent.data.params) : 'Nessun parametro';
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${eventName}</strong>: ${count} volte | Params: ${params.substring(0, 80)}${params.length > 80 ? '...' : ''}</div>`;
+        });
+      }
+
+      // Dettagli DataLayer
+      if (dataLayerEvents.length > 0) {
+        detailsHTML += `<div style="margin: 8px 0;"><strong>📊 DataLayer Events:</strong> ${dataLayerEvents.length}</div>`;
+        
+        // Mostra ultimi 3 eventi
+        dataLayerEvents.slice(-3).forEach(e => {
+          const name = e.data?.event || 'unknown';
+          const data = e.data?.data ? JSON.stringify(e.data.data) : 'N/A';
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${name}</strong>: ${data.substring(0, 80)}${data.length > 80 ? '...' : ''}</div>`;
+        });
+      }
+
+      // Stato finale
+      if (formSubmitEvents.length > 0 && ga4Events.length === 0) {
+        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ Form inviato ma nessun evento GA4 ancora rilevato</div>`;
+      } else if (formSubmitEvents.length > 0 && ga4Events.length > 0) {
+        detailsHTML += `<div style="margin-top: 8px; color: #0a7a52;">✅ Tracking completo rilevato!</div>`;
+      }
+
+      detailsDiv.innerHTML = detailsHTML || 'Nessun dettaglio disponibile';
     }
 
     // Switch tab
