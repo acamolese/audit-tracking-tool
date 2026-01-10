@@ -705,41 +705,6 @@ class BulkScanStore {
   }
 }
 
-// === RATE LIMITER ===
-class RateLimiter {
-  constructor(maxRequests = 10, windowMs = 60000) {
-    this.requests = new Map();
-    this.maxRequests = maxRequests;
-    this.windowMs = windowMs;
-  }
-
-  check(ip) {
-    const now = Date.now();
-    const window = this.requests.get(ip) || [];
-    const clean = window.filter(t => now - t < this.windowMs);
-    
-    if (clean.length >= this.maxRequests) {
-      return false;
-    }
-    
-    clean.push(now);
-    this.requests.set(ip, clean);
-    return true;
-  }
-
-  cleanup() {
-    const now = Date.now();
-    for (const [ip, window] of this.requests) {
-      const clean = window.filter(t => now - t < this.windowMs);
-      if (clean.length === 0) {
-        this.requests.delete(ip);
-      } else {
-        this.requests.set(ip, clean);
-      }
-    }
-  }
-}
-
 // Genera ID univoco
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -899,16 +864,7 @@ function serveStatic(res, filePath) {
 }
 
 // Handler principale
-async function handleRequest(req, res, reportStore, bulkStore, rateLimiter) {
-  const clientIp = req.socket.remoteAddress;
-  
-  // Rate limiting
-  if (!rateLimiter.check(clientIp)) {
-    res.writeHead(429, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ success: false, error: 'Rate limit exceeded' }));
-    return;
-  }
-
+async function handleRequest(req, res, reportStore, bulkStore) {
   const url = new URL(req.url, `http://localhost:${PORT}`);
 
   // CORS headers
@@ -1216,7 +1172,7 @@ async function handleRequest(req, res, reportStore, bulkStore, rateLimiter) {
 }
 
 // === GRACEFUL SHUTDOWN ===
-function setupGracefulShutdown(server, reportStore, bulkStore, rateLimiter) {
+function setupGracefulShutdown(server, reportStore, bulkStore) {
   const shutdown = async (signal) => {
     console.log(`\n${signal} ricevuto, shutdown in corso...`);
 
@@ -1236,9 +1192,6 @@ function setupGracefulShutdown(server, reportStore, bulkStore, rateLimiter) {
           } catch (e) {}
         });
       }
-    }
-    if (rateLimiter) {
-      clearInterval(rateLimiter.cleanupInterval);
     }
 
     // Attendi 5 secondi per operazioni in corso
@@ -1264,23 +1217,19 @@ function setupGracefulShutdown(server, reportStore, bulkStore, rateLimiter) {
 async function main() {
   const reportStore = new ReportStore();
   const bulkStore = new BulkScanStore();
-  const rateLimiter = new RateLimiter(10, 60000); // 10 richieste/minuto per IP
-
-  // Cleanup rate limiter ogni 5 minuti
-  setInterval(() => rateLimiter.cleanup(), 300000);
 
   const server = http.createServer((req, res) => {
-    handleRequest(req, res, reportStore, bulkStore, rateLimiter);
+    handleRequest(req, res, reportStore, bulkStore);
   });
 
-  setupGracefulShutdown(server, reportStore, bulkStore, rateLimiter);
+  setupGracefulShutdown(server, reportStore, bulkStore);
 
   server.listen(PORT, () => {
     console.log(`\n=== AUDIT TRACKING TOOL SERVER ===`);
     console.log(`Server avviato: http://localhost:${PORT}`);
     console.log(`Timestamp: ${new Date().toISOString()}`);
     console.log(`Report TTL: 1 ora`);
-    console.log(`Rate Limit: 10 req/min per IP`);
+    console.log(`Rate Limit: RIMOSSO (nessun limite)`);
     console.log(`Max Bulk URLs: 50`);
     console.log(`=================================\n`);
   });
@@ -1293,4 +1242,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ReportStore, BulkScanStore, RateLimiter };
+module.exports = { ReportStore, BulkScanStore };
