@@ -1250,7 +1250,10 @@ class CookieAuditScanner {
 
     // Ottimizzazione: riduci timeout per pagine semplici ma aumenta per pagine lente
     // Aumentato timeout per fast mode da 15s a 25s per garantire rilevamento CMP
-    const optimizedTimeout = this.options.fastMode ? 25000 : this.options.timeout;
+    // Aumentato ulteriormente per ambiente Railway (container più lento)
+    const baseTimeout = this.options.fastMode ? 25000 : this.options.timeout;
+    const optimizedTimeout = baseTimeout + 10000; // Aggiungi 10s extra per Railway
+    this.logger.log(`Timeout configurato: ${optimizedTimeout}ms`);
     
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
       try {
@@ -1390,10 +1393,17 @@ class CookieAuditScanner {
         this.notifyPhase('pre_consent', 'Analisi pre-consenso...');
 
         // Ottimizzazione: timeout ridotto e waitUntil più veloce
+        // Per ambiente Railway, usa 'load' invece di 'domcontentloaded' per maggiore stabilità
+        const waitUntilMode = this.options.fastMode ? 'load' : 'networkidle';
+        this.logger.log(`Navigazione con waitUntil: ${waitUntilMode}, timeout: ${optimizedTimeout}ms`);
+        
         await this.page.goto(this.url, {
-          waitUntil: this.options.fastMode ? 'domcontentloaded' : 'networkidle',
+          waitUntil: waitUntilMode,
           timeout: optimizedTimeout
         });
+        
+        // Log aggiuntivo per debug ambiente
+        this.logger.log(`Pagina caricata, URL finale: ${this.page.url()}`);
 
         // Ottimizzazione: attesa per caricamento dinamico CMP
         // Aumentato da 500ms a 2000ms per garantire che CMP caricato dinamicamente sia visibile
