@@ -1,0 +1,203 @@
+{
+  "url": "https://adhoccasa.it",
+  "timestamp": "2026-01-04T10:59:25.848Z",
+  "events": [
+    {
+      "type": "mkdjegdakgimmckobdnfiimhgmabbido:content:wxt:content-script-started",
+      "timestamp": 1767524225897,
+      "id": 0
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.js",
+        "data": {
+          "gtm.start": 1767524225576,
+          "event": "gtm.js"
+        }
+      },
+      "timestamp": 1767524225897,
+      "id": 1
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GTM",
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-5TNHZGND",
+        "event": null
+      },
+      "timestamp": 1767524225929,
+      "id": 2
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.dom",
+        "data": {
+          "event": "gtm.dom",
+          "gtm.uniqueEventId": 10
+        }
+      },
+      "timestamp": 1767524226099,
+      "id": 3
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "set",
+        "data": {
+          "0": "set",
+          "1": "developer_id.dMWZhNz",
+          "2": true
+        }
+      },
+      "timestamp": 1767524226161,
+      "id": 4
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GTM",
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-TEBV9QHYC5&cx=c&gtm=4e5ca1",
+        "event": null
+      },
+      "timestamp": 1767524226194,
+      "id": 5
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GA4",
+        "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-TEBV9QHYC5&gtm=45je5ca1v9222601593z89222169600za20gzb9222169600zd9222169600&_p=1767524225576&gcs=G100&gcd=13p3p3p2p7l1&npa=1&dma_cps=-&dma=1&gd",
+        "event": "page_view"
+      },
+      "timestamp": 1767524226220,
+      "id": 6
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.load",
+        "data": {
+          "event": "gtm.load",
+          "gtm.uniqueEventId": 12
+        }
+      },
+      "timestamp": 1767524226683,
+      "id": 7
+    },
+    {
+      "type": "anchor_click",
+      "data": {
+        "hash": "#contatti"
+      },
+      "timestamp": 1767524230500,
+      "id": 8
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.click",
+        "data": {
+          "event": "gtm.click",
+          "gtm.element": "[DOM Element]",
+          "gtm.elementClasses": "btn btn-outline-light ms-auto",
+          "gtm.elementId": "",
+          "gtm.elementTarget": "",
+          "gtm.triggers": "4,5,6,7,8,9",
+          "gtm.elementUrl": "https://adhoccasa.it/#contatti",
+          "gtm.uniqueEventId": 13
+        }
+      },
+      "timestamp": 1767524230522,
+      "id": 9
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.scrollDepth",
+        "data": {
+          "event": "gtm.scrollDepth",
+          "gtm.scrollThreshold": 50,
+          "gtm.scrollUnits": "percent",
+          "gtm.scrollDirection": "vertical",
+          "gtm.triggers": "222169600_3",
+          "gtm.uniqueEventId": 14
+        }
+      },
+      "timestamp": 1767524232053,
+      "id": 10
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.scrollDepth",
+        "data": {
+          "event": "gtm.scrollDepth",
+          "gtm.scrollThreshold": 75,
+          "gtm.scrollUnits": "percent",
+          "gtm.scrollDirection": "vertical",
+          "gtm.triggers": "222169600_3",
+          "gtm.uniqueEventId": 15
+        }
+      },
+      "timestamp": 1767524234902,
+      "id": 11
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GA4",
+        "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-TEBV9QHYC5&gtm=45je5ca1v9222601593z89222169600za20gzb9222169600zd9222169600&_p=1767524225576&gcs=G100&gcd=13p3p3p2p7l1&npa=1&dma_cps=-&dma=1&gd",
+        "event": "click_vieni_trovarci, scroll, scroll"
+      },
+      "timestamp": 1767524235512,
+      "id": 12
+    },
+    {
+      "type": "form_submit",
+      "data": {
+        "formId": "sib-form",
+        "formAction": "https://9afdcf04.sibforms.com/serve/MUIFAPd1XHIi4mhNtuE2wRyUC8-XPyZbTEvkPyNJ3eGLuDdLS5Txri961vFe331vO-RF94fUbTNH8jDHTvHTmblmXzGF0I8ojDCyJzTFCPqLPStoG2oaDs9j98Y1Xrds5fTUC6FiTVIZ0quxVTJchKo0MODhCcBbxeGCWP6yeDHZHJ8ccIfzwR8Om5-mPInitZBKYxzyHIefktVM",
+        "formMethod": "post"
+      },
+      "timestamp": 1767524240514,
+      "id": 13
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.click",
+        "data": {
+          "event": "gtm.click",
+          "gtm.element": "[DOM Element]",
+          "gtm.elementClasses": "fa-solid fa-arrow-right",
+          "gtm.elementId": "",
+          "gtm.elementTarget": "",
+          "gtm.triggers": "4,5,6,7,8,9",
+          "gtm.elementUrl": "",
+          "gtm.uniqueEventId": 16
+        }
+      },
+      "timestamp": 1767524240519,
+      "id": 14
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GA4",
+        "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-TEBV9QHYC5&gtm=45je5ca1v9222601593z89222169600za20gzb9222169600zd9222169600&_p=1767524225576&gcs=G100&gcd=13p3p3p2p7l1&npa=1&dma_cps=-&dma=1&gd",
+        "event": "form_submit"
+      },
+      "timestamp": 1767524245513,
+      "id": 15
+    }
+  ],
+  "formEventCounts": {
+    "form_submit": 2,
+    "generate_lead": 0,
+    "form_start": 0,
+    "purchase": 0
+  },
+  "success": true
+}

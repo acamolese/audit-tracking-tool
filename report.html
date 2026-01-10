@@ -595,7 +595,6 @@
       <nav class="nav-links" id="navLinks">
         <a href="/">Scansione</a>
         <a href="/bulk-scan.html">Bulk Scan</a>
-        <a href="/form-test.html">Form Test</a>
       </nav>
     </div>
   </header>
@@ -710,8 +709,12 @@
             <div class="stat-label">Post-Consenso</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" id="eventsInteractions">0</div>
-            <div class="stat-label">Da Interazioni</div>
+            <div class="stat-value" id="eventsAutomatic">0</div>
+            <div class="stat-label">Eventi Automatici</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="eventsSimulated">0</div>
+            <div class="stat-label">Eventi Simulati</div>
           </div>
           <div class="stat-item" id="eventsFormTestContainer" style="display:none;">
             <div class="stat-value" id="eventsFormTest" style="color:var(--accent);">0</div>
@@ -1058,7 +1061,20 @@
       const eventsSummary = report.summary?.events || {};
       document.getElementById('eventsPre').textContent = eventsSummary.preConsent || 0;
       document.getElementById('eventsPost').textContent = eventsSummary.postConsent || 0;
-      document.getElementById('eventsInteractions').textContent = eventsSummary.interactions || 0;
+      
+      // Calcola eventi automatici e simulati
+      const allEventsCombined = [
+        ...(report.events?.preConsent || []),
+        ...(report.events?.postConsent || []),
+        ...(report.events?.interactions || []),
+        ...(report.events?.formTest || [])
+      ];
+      
+      const automaticEvents = allEventsCombined.filter(e => e.source === 'automatic').length;
+      const simulatedEvents = allEventsCombined.filter(e => e.source === 'simulated').length;
+      
+      document.getElementById('eventsAutomatic').textContent = automaticEvents;
+      document.getElementById('eventsSimulated').textContent = simulatedEvents;
 
       // Mostra eventi form test se presenti
       const formTestEventsCount = report.events?.formTest?.length || 0;

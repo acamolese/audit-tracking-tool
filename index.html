@@ -122,7 +122,7 @@
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 680px;
     }
 
     /* Hero text */
@@ -190,6 +190,74 @@
 
     .form-group input::placeholder {
       color: #aaa;
+    }
+
+    /* Radio Group for Fast Mode */
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .radio-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .radio-option label {
+      display: block;
+      padding: 16px;
+      border: 2px solid #e5e5e5;
+      border-radius: 10px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .radio-option input[type="radio"]:checked + label {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 232, 159, 0.3);
+    }
+
+    .radio-option label:hover {
+      border-color: var(--primary-light);
+    }
+
+    /* Info boxes */
+    .info-box {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .info-box.fast {
+      background: #e6fff5;
+      color: #0a5c40;
+      border: 1px solid var(--accent);
+    }
+
+    .info-box.standard {
+      background: #fff8e6;
+      color: #5c460a;
+      border: 1px solid var(--warning);
+    }
+
+    .radio-option input[type="radio"]:checked ~ .info-box {
+      display: block;
     }
 
     /* Button */
@@ -262,6 +330,56 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin-top: 16px;
+      display: none;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e5e5e5;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .progress-step {
+      flex: 1;
+      text-align: center;
+      padding: 4px;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .progress-step.active {
+      opacity: 1;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .progress-step.completed {
+      opacity: 1;
+      color: var(--accent);
     }
 
     /* Footer */
@@ -339,11 +457,22 @@
 
       .form-group input {
         padding: 12px 14px;
-        font-size: 16px; /* Previene zoom su iOS */
+        font-size: 16px;
       }
 
       .btn {
         padding: 14px 24px;
+      }
+
+      .radio-group {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .progress-steps {
+        flex-direction: column;
+        gap: 4px;
+        text-align: left;
       }
     }
 
@@ -370,7 +499,6 @@
       <nav class="nav-links" id="navLinks">
         <a href="/" class="active">Scansione</a>
         <a href="/bulk-scan.html">Bulk Scan</a>
-        <a href="/form-test.html">Form Test</a>
       </nav>
     </div>
   </header>
@@ -407,12 +535,55 @@
             >
           </div>
 
+          <div class="form-group">
+            <label>Modalità di Scansione</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="fastMode" name="scanMode" value="fast" checked>
+                <label for="fastMode">⚡ Fast Mode</label>
+                <div class="info-box fast">
+                  <strong>Tempo stimato: 8-12 secondi</strong><br>
+                  • Salta scroll, click e interazioni form<br>
+                  • Timeout ridotto per pagine semplici<br>
+                  • Navigation ottimizzata<br>
+                  • <strong>Ideale per test rapidi e landing page</strong>
+                </div>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="standardMode" name="scanMode" value="standard">
+                <label for="standardMode">🔍 Standard Mode</label>
+                <div class="info-box standard">
+                  <strong>Tempo stimato: 20-30 secondi</strong><br>
+                  • Esegue scroll, click e interazioni form<br>
+                  • Timeout completo (10s+)<br>
+                  • Navigation completa<br>
+                  • <strong>Ideale per audit completi e conformità GDPR</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <button type="submit" id="submitBtn" class="btn btn-primary">
             Avvia Scansione
           </button>
         </form>
 
+        <!-- Status & Progress -->
         <div id="status" class="status"></div>
+        
+        <div id="progressContainer" class="progress-container">
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+          <div class="progress-steps">
+            <div id="step1" class="progress-step">Avvio</div>
+            <div id="step2" class="progress-step">Analisi Pre</div>
+            <div id="step3" class="progress-step">Consenso</div>
+            <div id="step4" class="progress-step">Analisi Post</div>
+            <div id="step5" class="progress-step">Interazioni</div>
+            <div id="step6" class="progress-step">Report</div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -434,37 +605,159 @@
     const form = document.getElementById('scanForm');
     const status = document.getElementById('status');
     const submitBtn = document.getElementById('submitBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressFill = document.getElementById('progressFill');
+    const steps = {
+      1: document.getElementById('step1'),
+      2: document.getElementById('step2'),
+      3: document.getElementById('step3'),
+      4: document.getElementById('step4'),
+      5: document.getElementById('step5'),
+      6: document.getElementById('step6')
+    };
+
+    // Mappa fasi a progresso
+    const phaseToStep = {
+      'starting': 1,
+      'loading': 1,
+      'pre_consent': 2,
+      'consent': 3,
+      'post_consent': 4,
+      'post_consento': 4, // Fix: supporto per entrambe le varianti
+      'interactions': 5,
+      'finalizing': 6,
+      'done': 6
+    };
+
+    // Funzione per aggiornare progresso
+    function updateProgress(phase, label) {
+      const step = phaseToStep[phase] || 1;
+      const progress = (step / 6) * 100;
+      
+      // Aggiorna barra
+      progressFill.style.width = progress + '%';
+      
+      // Aggiorna steps
+      Object.keys(steps).forEach(key => {
+        const stepNum = parseInt(key);
+        steps[key].classList.remove('active', 'completed');
+        
+        if (stepNum < step) {
+          steps[key].classList.add('completed');
+        } else if (stepNum === step) {
+          steps[key].classList.add('active');
+        }
+      });
+
+      // Aggiorna status text
+      const statusTexts = {
+        'starting': 'Avvio scansione...',
+        'loading': 'Caricamento pagina...',
+        'pre_consent': 'Analisi pre-consenso...',
+        'consent': 'Gestione consenso...',
+        'post_consento': 'Analisi post-consenso...',
+        'interactions': 'Test interazioni...',
+        'finalizing': 'Generazione report...',
+        'done': 'Completato!'
+      };
+
+      if (label) {
+        status.textContent = label;
+      } else if (statusTexts[phase]) {
+        status.textContent = statusTexts[phase];
+      }
+    }
+
+    // Funzione per resettare progresso
+    function resetProgress() {
+      progressFill.style.width = '0%';
+      Object.values(steps).forEach(step => {
+        step.classList.remove('active', 'completed');
+      });
+    }
+
+    // Event Source per SSE
+    let eventSource = null;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const url = document.getElementById('url').value;
       const timeout = document.getElementById('timeout').value;
+      const scanMode = document.querySelector('input[name="scanMode"]:checked').value;
+      
+      const fastMode = scanMode === 'fast';
+      const skipInteractions = scanMode === 'fast';
 
+      // Reset UI
       submitBtn.disabled = true;
       submitBtn.textContent = 'Scansione in corso...';
       status.className = 'status loading';
-      status.textContent = 'Analisi in corso, attendere...';
+      status.textContent = 'Avvio scansione...';
+      progressContainer.style.display = 'block';
+      resetProgress();
 
       try {
+        // Prima avvia la scansione
         const response = await fetch('/scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url, timeout: parseInt(timeout) })
+          body: JSON.stringify({ 
+            url, 
+            timeout: parseInt(timeout),
+            fastMode: fastMode,
+            skipInteractions: skipInteractions
+          })
         });
 
         const result = await response.json();
 
         if (result.success) {
-          window.location.href = `/report.html?id=${result.reportId}`;
+          // Se la scansione è avviata, connetti SSE per progresso
+          status.textContent = 'Analisi in corso...';
+          
+          // Usa EventSource per ricevere aggiornamenti in tempo reale
+          if (result.reportId) {
+            // Simula progresso per ora (SSE richiederebbe endpoint dedicato)
+            let currentStep = 1;
+            const progressInterval = setInterval(() => {
+              currentStep++;
+              if (currentStep <= 6) {
+                const phases = ['starting', 'loading', 'pre_consent', 'consent', 'post_consento', 'interactions', 'finalizing'];
+                updateProgress(phases[currentStep - 1]);
+              } else {
+                clearInterval(progressInterval);
+                // Vai al report
+                window.location.href = `/report.html?id=${result.reportId}`;
+              }
+            }, 1500); // Simula progresso ogni 1.5s
+
+            // Dopo il tempo stimato, vai al report
+            const estimatedTime = fastMode ? 12000 : 25000;
+            setTimeout(() => {
+              clearInterval(progressInterval);
+              updateProgress('done', 'Scansione completata!');
+              setTimeout(() => {
+                window.location.href = `/report.html?id=${result.reportId}`;
+              }, 1000);
+            }, estimatedTime);
+          } else {
+            // Fallback se non c'è reportId
+            setTimeout(() => {
+              window.location.href = `/report.html?id=${result.reportId}`;
+            }, 2000);
+          }
         } else {
           status.className = 'status error';
           status.textContent = result.error;
+          progressContainer.style.display = 'none';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Avvia Scansione';
         }
       } catch (err) {
         status.className = 'status error';
         status.textContent = 'Errore di connessione: ' + err.message;
-      } finally {
+        progressContainer.style.display = 'none';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Avvia Scansione';
       }

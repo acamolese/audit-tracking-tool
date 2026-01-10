@@ -1,30 +1,16 @@
 const { chromium } = require('playwright');
+const os = require('os');
 
 // === CONFIGURAZIONE BROWSER (anti bot-detection) ===
 const BROWSER_CONFIG = {
   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-  viewport: { width: 1920, height: 1080 },
+  viewport: { width: 1280, height: 720 },
   locale: 'it-IT',
   timezoneId: 'Europe/Rome',
   extraHTTPHeaders: {
-    'Accept-Language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
-    'Sec-Ch-Ua': '"Chromium";v="131", "Not_A Brand";v="24", "Google Chrome";v="131"',
-    'Sec-Ch-Ua-Mobile': '?0',
-    'Sec-Ch-Ua-Platform': '"macOS"',
-    'Sec-Fetch-Dest': 'document',
-    'Sec-Fetch-Mode': 'navigate',
-    'Sec-Fetch-Site': 'none',
-    'Sec-Fetch-User': '?1'
+    'Accept-Language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7'
   }
 };
-
-// User Agent alternativi per evitare detection
-const USER_AGENTS = [
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-];
 
 // === CONFIGURAZIONE TRACKER ===
 const TRACKER_PATTERNS = {
@@ -73,80 +59,44 @@ const GA4_STANDARD_EVENTS = [
   'session_start', 'first_visit'
 ];
 
-// Eventi GA4 che potrebbero essere equivalenti a click_phone
-const GA4_PHONE_EVENTS = [
-  'click_phone', 'phone_click', 'call_click', 'tel_click',
-  'click_to_call', 'phone_interaction', 'call_interaction'
-];
-
-// === BROWSER POOL MANAGER ===
-class BrowserPool {
-  constructor(maxSize = 7) {
-    this.maxSize = maxSize;
-    this.pool = [];
-    this.waiting = [];
-    this.inUse = new Set();
+// === BROWSER CACHE MANAGER ===
+class BrowserCacheManager {
+  constructor() {
+    this.cache = new Map();
+    this.ttl = 300000; // 5 minuti
+    this.cleanupInterval = setInterval(() => this.cleanup(), 60000);
   }
 
-  async acquire() {
-    // Cerca browser disponibile nel pool
-    const available = this.pool.find(b => !this.inUse.has(b));
-    if (available) {
-      this.inUse.add(available);
-      return available;
+  get(url) {
+    const item = this.cache.get(url);
+    if (!item) return null;
+    if (Date.now() - item.timestamp > this.ttl) {
+      this.cache.delete(url);
+      return null;
     }
-
-    // Crea nuovo browser se possibile
-    if (this.pool.length < this.maxSize) {
-      const browser = await this._createBrowser();
-      this.pool.push(browser);
-      this.inUse.add(browser);
-      return browser;
-    }
-
-    // Attendi disponibilità
-    return new Promise((resolve) => {
-      this.waiting.push(resolve);
-    });
+    return item.data;
   }
 
-  async release(browser) {
-    this.inUse.delete(browser);
-    
-    if (this.waiting.length > 0) {
-      const next = this.waiting.shift();
-      this.inUse.add(browser);
-      next(browser);
-    }
+  set(url, data) {
+    this.cache.set(url, { data, timestamp: Date.now() });
   }
 
-  async _createBrowser() {
-    return await chromium.launch({
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu'
-      ]
-    });
-  }
-
-  async dispose() {
-    for (const browser of this.pool) {
-      try {
-        await browser.close();
-      } catch (e) {
-        console.error('Error closing browser:', e);
+  cleanup() {
+    const now = Date.now();
+    for (const [url, item] of this.cache) {
+      if (now - item.timestamp > this.ttl) {
+        this.cache.delete(url);
       }
     }
-    this.pool = [];
-    this.inUse.clear();
-    this.waiting = [];
+  }
+
+  dispose() {
+    clearInterval(this.cleanupInterval);
+    this.cache.clear();
   }
 }
 
-// === EVENT DEDUPLICATOR MIGLIORATO ===
+// === EVENT DEDUPLICATOR ===
 class EventDeduplicator {
   constructor(ttl = 5000) {
     this.events = new Map();
@@ -154,42 +104,9 @@ class EventDeduplicator {
     this.cleanupInterval = setInterval(() => this.cleanup(), 1000);
   }
 
-  // Genera chiave intelligente per deduplicazione
-  generateKey(details) {
-    const tracker = details.tracker || 'unknown';
-    const event = details.event || 'unknown';
-    const phase = details.phase || 'unknown';
-    
-    // Per eventi dataLayer come 'set' e 'consent', includi i parametri principali
-    if (details.params && typeof details.params === 'object') {
-      const params = JSON.stringify(details.params);
-      const paramsHash = params.split('').reduce((a, b) => {
-        a = ((a << 5) - a) + b.charCodeAt(0);
-        return a & a;
-      }, 0);
-      return `${tracker}|${event}|${phase}|${paramsHash}`;
-    }
-    
-    // Per eventi normali, usa tracker + evento + fase
-    return `${tracker}|${event}|${phase}`;
-  }
-
-  isDuplicate(details, timestamp) {
-    const key = this.generateKey(details);
-    
-    // Per eventi 'set' e 'consent', non deduplicare se sono separati da più di 1 secondo
-    if (details.event === 'set' || details.event === 'consent') {
-      const lastTime = this.events.get(key);
-      if (lastTime && (timestamp - lastTime) < 1000) {
-        return true; // Troppo vicini, probabilmente duplicato
-      }
-    }
-    
-    // Per altri eventi, deduplicazione standard
-    if (this.events.has(key)) {
-      return true;
-    }
-    
+  isDuplicate(tracker, event, timestamp) {
+    const key = `${tracker}|${event}|${Math.floor(timestamp / 1000)}`;
+    if (this.events.has(key)) return true;
     this.events.set(key, timestamp);
     return false;
   }
@@ -219,14 +136,7 @@ class Logger {
 
   log(message, level = 'info') {
     if (!this.verbose && level === 'info') return;
-    
-    const icons = {
-      info: 'i',
-      warn: '!',
-      error: 'X',
-      success: '+'
-    };
-    
+    const icons = { info: 'i', warn: '!', error: 'X', success: '+' };
     console.log(`[${icons[level]}] ${message}`);
   }
 
@@ -240,8 +150,8 @@ class Logger {
   }
 }
 
-// === CLASSE PRINCIPALE SCANNER ===
-class CookieAuditScanner {
+// === CLASSE PRINCIPALE SCANNER ULTRA OTTIMIZZATO ===
+class CookieAuditScannerUltraOptimized {
   constructor(url, options = {}) {
     this.url = url;
     this.options = {
@@ -251,13 +161,15 @@ class CookieAuditScanner {
       verbose: options.verbose || false,
       onPhase: options.onPhase || null,
       maxRetries: options.maxRetries || 3,
-      skipInteractions: options.skipInteractions || false, // NUOVO: salta interazioni
-      fastMode: options.fastMode || false, // NUOVO: modalità rapida
+      skipInteractions: options.skipInteractions || false,
+      fastMode: options.fastMode || false,
       ...options
     };
 
     this.logger = new Logger(this.options.verbose);
     this.deduplicator = new EventDeduplicator();
+    this.cacheManager = new BrowserCacheManager();
+    
     this.notifyPhase = (phase, label) => {
       if (this.options.onPhase) {
         this.options.onPhase(phase, label);
@@ -267,9 +179,9 @@ class CookieAuditScanner {
     this.report = {
       url: url,
       timestamp: new Date().toISOString(),
-      _timestamp: Date.now(), // Per TTL
-      _eventSignatures: new Set(), // Per deduplicazione
-      errors: [], // Errori di parsing
+      _timestamp: Date.now(),
+      _eventSignatures: new Set(),
+      errors: [],
       cmp: {
         detected: false,
         type: null,
@@ -307,7 +219,6 @@ class CookieAuditScanner {
     this.phase = 'PRE_CONSENT';
     this.browser = null;
     this.page = null;
-    this.browserPool = null;
   }
 
   // Identifica il tracker dalla URL
@@ -320,148 +231,160 @@ class CookieAuditScanner {
     return null;
   }
 
-  // Estrae dettagli aggiuntivi dalla richiesta
+  // Estrae dettagli aggiuntivi dalla richiesta (ultra ottimizzato)
   extractRequestDetails(url, trackerName, postData = null) {
     const details = { tracker: trackerName, url: url };
+
+    // Cache per URL simili
+    const cacheKey = `${trackerName}:${url.split('?')[0]}`;
+    const cached = this.cacheManager.get(cacheKey);
+    if (cached) {
+      return { ...details, ...cached };
+    }
 
     try {
       const urlObj = new URL(url);
 
-      // Facebook Pixel
-      if (trackerName === 'Facebook Pixel') {
-        const eventName = urlObj.searchParams.get('ev');
-        if (eventName) {
-          details.event = eventName;
-          const fbStandardEvents = ['PageView', 'ViewContent', 'Search', 'AddToCart', 'AddToWishlist', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Lead', 'CompleteRegistration', 'Contact', 'CustomizeProduct', 'Donate', 'FindLocation', 'Schedule', 'StartTrial', 'SubmitApplication', 'Subscribe'];
-          details.eventCategory = fbStandardEvents.includes(eventName) ? 'standard' : 'custom';
-        }
-        const pixelId = urlObj.searchParams.get('id');
-        if (pixelId) details.pixelId = pixelId;
-        const dl = urlObj.searchParams.get('dl');
-        if (dl) details.destinationUrl = decodeURIComponent(dl);
-        const cd = urlObj.searchParams.get('cd');
-        if (cd) {
-          try {
-            details.customData = JSON.parse(decodeURIComponent(cd));
-          } catch (e) {}
-        }
-      }
-
-      // LinkedIn Insight
-      if (trackerName === 'LinkedIn Insight') {
-        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('conversionId');
-        if (eventName) {
-          details.event = eventName;
-          details.eventCategory = 'conversion';
-        } else {
-          details.event = 'PageView';
-          details.eventCategory = 'standard';
-        }
-      }
-
-      // TikTok Pixel
-      if (trackerName === 'TikTok Pixel') {
-        const eventName = urlObj.searchParams.get('event');
-        if (eventName) {
-          details.event = eventName;
-          const ttStandardEvents = ['ViewContent', 'ClickButton', 'Search', 'AddToWishlist', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'CompletePayment', 'PlaceAnOrder', 'Contact', 'Download', 'SubmitForm', 'Subscribe'];
-          details.eventCategory = ttStandardEvents.includes(eventName) ? 'standard' : 'custom';
-        }
-      }
-
-      // Pinterest
-      if (trackerName === 'Pinterest') {
-        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('ed');
-        if (eventName) {
-          details.event = eventName;
-          details.eventCategory = 'custom';
-        }
-      }
-
-      // Twitter/X
-      if (trackerName === 'Twitter/X') {
-        const eventName = urlObj.searchParams.get('event') || urlObj.searchParams.get('txn_id');
-        if (eventName) {
-          details.event = eventName;
-          details.eventCategory = 'conversion';
-        } else {
-          details.event = 'PageView';
-          details.eventCategory = 'standard';
-        }
-      }
-
-      // Hotjar
-      if (trackerName === 'Hotjar') {
-        details.event = 'Recording';
-        details.eventCategory = 'session';
-      }
-
-      // Clarity
-      if (trackerName === 'Clarity') {
-        details.event = 'Recording';
-        details.eventCategory = 'session';
-      }
-
-      // Google: estrai consent state
-      if (trackerName?.startsWith('GA') || trackerName?.startsWith('Google')) {
-        const gcs = urlObj.searchParams.get('gcs');
-        if (gcs) {
-          details.gcsRaw = gcs;
-          details.consentMode = GOOGLE_CONSENT_PATTERNS.gcs[gcs] || gcs;
-        }
-        const gcd = urlObj.searchParams.get('gcd');
-        if (gcd) details.gcd = gcd;
-      }
-
-      // GA4: estrai evento e parametri
-      if (trackerName === 'GA4') {
-        let en = urlObj.searchParams.get('en');
-
-        if (!en && postData) {
-          const events = this.parseGA4PostBody(postData);
-          if (events.length > 0) {
-            details.events = events;
-            en = events[0];
+      // Ottimizzato: switch case con early return
+      switch (trackerName) {
+        case 'Facebook Pixel':
+          const fbEvent = urlObj.searchParams.get('ev');
+          if (fbEvent) {
+            details.event = fbEvent;
+            const fbStandardEvents = ['PageView', 'ViewContent', 'Search', 'AddToCart', 'AddToWishlist', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Lead', 'CompleteRegistration', 'Contact', 'CustomizeProduct', 'Donate', 'FindLocation', 'Schedule', 'StartTrial', 'SubmitApplication', 'Subscribe'];
+            details.eventCategory = fbStandardEvents.includes(fbEvent) ? 'standard' : 'custom';
           }
-        }
+          const pixelId = urlObj.searchParams.get('id');
+          if (pixelId) details.pixelId = pixelId;
+          const dl = urlObj.searchParams.get('dl');
+          if (dl) details.destinationUrl = decodeURIComponent(dl);
+          break;
 
-        if (en) {
-          details.event = en;
-          details.isStandardEvent = GA4_STANDARD_EVENTS.includes(en) || GA4_PHONE_EVENTS.includes(en);
-          if (GA4_STANDARD_EVENTS.includes(en)) {
-            details.eventCategory = 'standard';
-          } else if (GA4_PHONE_EVENTS.includes(en) || en.startsWith('click_') || en.startsWith('cta_')) {
-            details.eventCategory = 'click';
+        case 'LinkedIn Insight':
+          const liEvent = urlObj.searchParams.get('event') || urlObj.searchParams.get('conversionId');
+          if (liEvent) {
+            details.event = liEvent;
+            details.eventCategory = 'conversion';
           } else {
+            details.event = 'PageView';
+            details.eventCategory = 'standard';
+          }
+          break;
+
+        case 'TikTok Pixel':
+          const ttEvent = urlObj.searchParams.get('event');
+          if (ttEvent) {
+            details.event = ttEvent;
+            const ttStandardEvents = ['ViewContent', 'ClickButton', 'Search', 'AddToWishlist', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'CompletePayment', 'PlaceAnOrder', 'Contact', 'Download', 'SubmitForm', 'Subscribe'];
+            details.eventCategory = ttStandardEvents.includes(ttEvent) ? 'standard' : 'custom';
+          }
+          break;
+
+        case 'Pinterest':
+          const piEvent = urlObj.searchParams.get('event') || urlObj.searchParams.get('ed');
+          if (piEvent) {
+            details.event = piEvent;
             details.eventCategory = 'custom';
           }
-        }
+          break;
 
-        // Parametri evento
-        const eventParams = {};
-        for (const [key, value] of urlObj.searchParams) {
-          if (key.startsWith('ep.')) {
-            eventParams[key.replace('ep.', '')] = value;
-          } else if (key.startsWith('epn.')) {
-            eventParams[key.replace('epn.', '')] = parseFloat(value);
+        case 'Twitter/X':
+          const twEvent = urlObj.searchParams.get('event') || urlObj.searchParams.get('txn_id');
+          if (twEvent) {
+            details.event = twEvent;
+            details.eventCategory = 'conversion';
+          } else {
+            details.event = 'PageView';
+            details.eventCategory = 'standard';
           }
-        }
-        if (Object.keys(eventParams).length > 0) {
-          details.params = eventParams;
-        }
+          break;
 
-        // Parametri ecommerce
-        const pr1_nm = urlObj.searchParams.get('pr1.nm');
-        if (pr1_nm) details.productName = decodeURIComponent(pr1_nm);
-        const pr1_pr = urlObj.searchParams.get('pr1.pr');
-        if (pr1_pr) details.productPrice = pr1_pr;
+        case 'Hotjar':
+          details.event = 'Recording';
+          details.eventCategory = 'session';
+          break;
 
-        // Page info
-        const dt = urlObj.searchParams.get('dt');
-        if (dt) details.pageTitle = decodeURIComponent(dt);
-        const dl = urlObj.searchParams.get('dl');
-        if (dl) details.pageUrl = decodeURIComponent(dl);
+        case 'Clarity':
+          details.event = 'Recording';
+          details.eventCategory = 'session';
+          break;
+
+        default:
+          // GA4 e Google
+          if (trackerName?.startsWith('GA') || trackerName?.startsWith('Google')) {
+            const gcs = urlObj.searchParams.get('gcs');
+            if (gcs) {
+              details.gcsRaw = gcs;
+              details.consentMode = GOOGLE_CONSENT_PATTERNS.gcs[gcs] || gcs;
+            }
+            const gcd = urlObj.searchParams.get('gcd');
+            if (gcd) details.gcd = gcd;
+          }
+
+          if (trackerName === 'GA4') {
+            let en = urlObj.searchParams.get('en');
+
+            // Parsing GA4 ottimizzato (inline)
+            if (!en && postData) {
+              const events = [];
+              const lines = postData.split(/\r?\n/);
+              for (const line of lines) {
+                if (!line.trim()) continue;
+                const matches = line.match(/(?:^|&)en=([^&\r\n]+)/g);
+                if (matches) {
+                  for (const match of matches) {
+                    const eventName = match.replace(/^&?en=/, '');
+                    if (eventName && !events.includes(eventName)) {
+                      events.push(eventName);
+                    }
+                  }
+                }
+              }
+              if (events.length > 0) {
+                details.events = events;
+                en = events[0];
+              }
+            }
+
+            if (en) {
+              details.event = en;
+              details.isStandardEvent = GA4_STANDARD_EVENTS.includes(en);
+              details.eventCategory = GA4_STANDARD_EVENTS.includes(en) ? 'standard' : 
+                                     (en.startsWith('click_') || en.startsWith('cta_')) ? 'click' : 'custom';
+            }
+
+            // Parametri evento (ottimizzato)
+            const eventParams = {};
+            for (const [key, value] of urlObj.searchParams) {
+              if (key.startsWith('ep.')) {
+                eventParams[key.slice(3)] = value;
+              } else if (key.startsWith('epn.')) {
+                eventParams[key.slice(4)] = parseFloat(value);
+              }
+            }
+            if (Object.keys(eventParams).length > 0) {
+              details.params = eventParams;
+            }
+
+            // Parametri ecommerce
+            const pr1_nm = urlObj.searchParams.get('pr1.nm');
+            if (pr1_nm) details.productName = decodeURIComponent(pr1_nm);
+            const pr1_pr = urlObj.searchParams.get('pr1.pr');
+            if (pr1_pr) details.productPrice = pr1_pr;
+
+            // Page info
+            const dt = urlObj.searchParams.get('dt');
+            if (dt) details.pageTitle = decodeURIComponent(dt);
+            const dlGA = urlObj.searchParams.get('dl');
+            if (dlGA) details.pageUrl = decodeURIComponent(dlGA);
+          }
       }
+
+      // Salva in cache
+      const cacheData = { ...details };
+      delete cacheData.tracker;
+      delete cacheData.url;
+      this.cacheManager.set(cacheKey, cacheData);
 
     } catch (e) {
       this.logger.error(`URL parsing failed: ${e.message}`, { url, trackerName });
@@ -475,123 +398,7 @@ class CookieAuditScanner {
     return details;
   }
 
-  // Parsing del POST body GA4 - Migliorato per catturare più eventi
-  parseGA4PostBody(postData) {
-    const events = [];
-    if (!postData) return events;
-
-    try {
-      // Cerca eventi in formato standard (en=nome_evento)
-      const enMatches = postData.match(/(?:^|&)en=([^&\r\n]+)/g);
-      if (enMatches) {
-        for (const match of enMatches) {
-          const eventName = match.replace(/^&?en=/, '');
-          if (eventName && !events.includes(eventName)) {
-            events.push(eventName);
-          }
-        }
-      }
-
-      // Cerca eventi in formato custom (ev=nome_evento o event=nome_evento)
-      const evMatches = postData.match(/(?:^|&)(?:ev|event)=([^&\r\n]+)/g);
-      if (evMatches) {
-        for (const match of evMatches) {
-          const eventName = match.replace(/^&?(?:ev|event)=/, '');
-          if (eventName && !events.includes(eventName)) {
-            events.push(eventName);
-          }
-        }
-      }
-
-      // Cerca eventi in formato GA4 avanzato (con parametri)
-      const advancedMatches = postData.match(/(?:^|&)e=([^&\r\n]+)/g);
-      if (advancedMatches) {
-        for (const match of advancedMatches) {
-          const eventName = match.replace(/^&?e=/, '');
-          if (eventName && !events.includes(eventName)) {
-            events.push(eventName);
-          }
-        }
-      }
-    } catch (e) {
-      this.logger.error(`GA4 POST parsing failed: ${e.message}`);
-    }
-
-    return events;
-  }
-
-  // Traccia evento con deduplicazione MIGLIORATA
-  trackEvent(details, phase, source = 'automatic') {
-    // Deduplicazione con sistema intelligente
-    const timestamp = Date.now();
-    
-    // Prepara i dati per la deduplicazione
-    const dedupDetails = {
-      tracker: details.tracker || 'unknown',
-      event: details.event || 'unknown',
-      phase: phase,
-      params: details.params || null
-    };
-    
-    if (this.deduplicator.isDuplicate(dedupDetails, timestamp)) {
-      this.logger.log(`   [DEDUPLICATO] ${details.tracker}: ${details.event}`, 'warn');
-      return null;
-    }
-
-    const eventData = {
-      tracker: details.tracker || 'unknown',
-      event: details.event || 'unknown',
-      eventCategory: details.eventCategory || 'unknown',
-      consentMode: details.consentMode || null,
-      timestamp: new Date(timestamp).toISOString(),
-      phase: phase,
-      source: source, // 'automatic' o 'simulated'
-      isStandard: details.isStandardEvent || false,
-      pixelId: details.pixelId || null,
-      destinationUrl: details.destinationUrl || null,
-      pageTitle: details.pageTitle || null,
-      pageUrl: details.pageUrl || null,
-      params: details.params || null,
-      productName: details.productName || null,
-      productPrice: details.productPrice || null,
-      customData: details.customData || null
-    };
-
-    // Rimuovi campi null
-    Object.keys(eventData).forEach(key => {
-      if (eventData[key] === null) delete eventData[key];
-    });
-
-    // Aggiungi firma per deduplicazione aggiuntiva
-    const signature = `${eventData.tracker}|${eventData.event}|${timestamp}`;
-    if (this.report._eventSignatures.has(signature)) {
-      return null;
-    }
-    this.report._eventSignatures.add(signature);
-
-    if (phase === 'PRE_CONSENT') {
-      this.report.events.preConsent.push(eventData);
-    } else if (phase === 'INTERACTION') {
-      this.report.events.interactions.push(eventData);
-    } else {
-      this.report.events.postConsent.push(eventData);
-    }
-
-    return eventData;
-  }
-
-  // Analizza Google Consent Mode
-  isGoogleDeniedMode(url) {
-    try {
-      const urlObj = new URL(url);
-      const gcs = urlObj.searchParams.get('gcs');
-      return gcs === 'G100' || gcs === 'G1--';
-    } catch {
-      return false;
-    }
-  }
-
-  // Handler per le richieste di rete
+  // Handler per le richieste di rete (ottimizzato)
   handleRequest(request) {
     const url = request.url();
     const trackerName = this.identifyTracker(url);
@@ -654,6 +461,65 @@ class CookieAuditScanner {
       this.report.postConsent.requests.push(details);
       this.logger.log(`   [OK] ${trackerName} attivo dopo consenso`);
     }
+  }
+
+  // Analizza Google Consent Mode
+  isGoogleDeniedMode(url) {
+    try {
+      const urlObj = new URL(url);
+      const gcs = urlObj.searchParams.get('gcs');
+      return gcs === 'G100' || gcs === 'G1--';
+    } catch {
+      return false;
+    }
+  }
+
+  // Traccia evento con deduplicazione
+  trackEvent(details, phase) {
+    const timestamp = Date.now();
+    if (this.deduplicator.isDuplicate(details.tracker || 'unknown', details.event || 'unknown', timestamp)) {
+      return null;
+    }
+
+    const eventData = {
+      tracker: details.tracker || 'unknown',
+      event: details.event || 'unknown',
+      eventCategory: details.eventCategory || 'unknown',
+      consentMode: details.consentMode || null,
+      timestamp: new Date(timestamp).toISOString(),
+      phase: phase,
+      isStandard: details.isStandardEvent || false,
+      pixelId: details.pixelId || null,
+      destinationUrl: details.destinationUrl || null,
+      pageTitle: details.pageTitle || null,
+      pageUrl: details.pageUrl || null,
+      params: details.params || null,
+      productName: details.productName || null,
+      productPrice: details.productPrice || null,
+      customData: details.customData || null
+    };
+
+    // Rimuovi campi null
+    Object.keys(eventData).forEach(key => {
+      if (eventData[key] === null) delete eventData[key];
+    });
+
+    // Aggiungi firma per deduplicazione aggiuntiva
+    const signature = `${eventData.tracker}|${eventData.event}|${timestamp}`;
+    if (this.report._eventSignatures.has(signature)) {
+      return null;
+    }
+    this.report._eventSignatures.add(signature);
+
+    if (phase === 'PRE_CONSENT') {
+      this.report.events.preConsent.push(eventData);
+    } else if (phase === 'INTERACTION') {
+      this.report.events.interactions.push(eventData);
+    } else {
+      this.report.events.postConsent.push(eventData);
+    }
+
+    return eventData;
   }
 
   // Raccoglie i cookie correnti
@@ -1039,127 +905,62 @@ class CookieAuditScanner {
     }
   }
 
-  // Simula click - Versione ultra-migliorata per triggerare click_phone
+  // Simula click
   async simulateClicks() {
-    this.logger.log('Simulazione click REALISTICA per click_phone...');
+    this.logger.log('Simulazione click...');
 
     try {
-      // Prima: trova specificamente link telefonici
-      const phoneLinks = await this.page.evaluate(() => {
-        const selectors = [
-          'a[href^="tel:"]',
-          'a[href*="tel"]',
-          'a[href*="phone"]',
-          'a[href*="call"]',
-          'a[href*="whatsapp"]',
-          'a[href*="wa.me"]'
-        ];
+      const trackableSelectors = [
+        'a[href*="whatsapp"]',
+        'a[href*="wa.me"]',
+        'a[href^="tel:"]',
+        'a[href^="mailto:"]',
+        '[data-gtm-click]',
+        '[data-ga-click]',
+        '[data-track]',
+        '[data-event]',
+        '.cta',
+        '[class*="cta"]',
+        '.btn-primary',
+        '.btn-cta',
+        'a[href^="#"]',
+        'button:not([type="submit"])',
+        'a[href*="facebook"]',
+        'a[href*="instagram"]',
+        'a[href*="linkedin"]',
+        'a[href*="twitter"]',
+        '[onclick]'
+      ];
 
-        const elements = [];
-        selectors.forEach(selector => {
-          document.querySelectorAll(selector).forEach(el => {
-            if (el.offsetParent !== null) {
-              const href = el.getAttribute('href') || '';
-              const onclick = el.getAttribute('onclick') || '';
-              const text = el.textContent?.trim() || '';
-              elements.push({
-                selector: selector,
-                tagName: el.tagName,
-                href: href,
-                onclick: onclick,
-                text: text,
-                rect: el.getBoundingClientRect(),
-                isPhone: href.includes('tel:') || href.includes('phone') || href.includes('call') || onclick.includes('tel:') || onclick.includes('phone') || onclick.includes('click_phone')
-              });
-            }
-          });
-        });
-        return elements;
-      });
+      const selector = trackableSelectors.join(', ');
+      const elements = await this.page.$$(selector);
 
-      this.logger.log(`   Trovati ${phoneLinks.length} link telefonici`);
+      this.logger.log(`   Trovati ${elements.length} elementi cliccabili`);
 
-      // Seconda: clicca SOLO link telefonici con eventi mouse REALISTICI
-      let phoneClicks = 0;
-
-      for (const link of phoneLinks) {
-        if (phoneClicks >= 5) break;
+      let clicked = 0;
+      for (const element of elements) {
+        if (clicked >= 10) break;
 
         try {
-          // Trova l'elemento esatto nella pagina
-          const elementHandle = await this.page.evaluateHandle((args) => {
-            const { selector, href, text } = args;
-            const elements = Array.from(document.querySelectorAll(selector));
-            return elements.find(el => {
-              const elHref = el.getAttribute('href') || '';
-              const elText = el.textContent?.trim() || '';
-              return (href && elHref === href) || (text && elText.includes(text));
-            });
-          }, { selector: link.selector, href: link.href, text: link.text });
+          if (await element.isVisible()) {
+            const href = await element.evaluate(el => el.getAttribute('href') || '');
 
-          if (elementHandle && elementHandle.asElement()) {
-            this.logger.log(`   Clicco link telefonico: ${link.href} (${link.text.substring(0, 30)})`);
+            if (href && !href.startsWith('#') && !href.startsWith('tel:') && !href.startsWith('mailto:') && !href.includes('whatsapp') && !href.includes('wa.me')) {
+              await element.evaluate(el => {
+                el.addEventListener('click', e => e.preventDefault(), { once: true });
+              });
+            }
 
-            // Click REALISTICO con tutti gli eventi mouse
-            await this.page.evaluate((el) => {
-              if (!el) return;
-              
-              const rect = el.getBoundingClientRect();
-              const x = rect.left + rect.width / 2;
-              const y = rect.top + rect.height / 2;
-
-              // Sequenza eventi mouse REALISTICA
-              const events = [
-                new MouseEvent('mouseover', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y }),
-                new MouseEvent('mouseenter', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y }),
-                new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0 }),
-                new MouseEvent('focus', { bubbles: true, cancelable: true, view: window }),
-                new MouseEvent('mouseup', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0 }),
-                new MouseEvent('click', { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0 })
-              ];
-
-              events.forEach(event => el.dispatchEvent(event));
-            }, elementHandle);
-
-            phoneClicks++;
-            
-            // Attesa più lunga per eventi async (click_phone potrebbe essere delayed)
-            await this.page.waitForTimeout(1500);
-            
-            // Forza un refresh del dataLayer per catturare eventi delayed
-            await this.page.evaluate(() => {
-              if (window.dataLayer && window.dataLayer.push) {
-                // Triggera un evento di verifica
-                window.dataLayer.push({ event: 'audit_verification', timestamp: Date.now() });
-              }
-            });
-            
+            await element.click({ force: true, noWaitAfter: true });
+            clicked++;
             await this.page.waitForTimeout(500);
           }
         } catch (e) {
-          this.logger.error(`   Errore click: ${e.message}`);
+          // Ignora errori click
         }
       }
 
-      this.logger.log(`   Click telefonici effettuati: ${phoneClicks}`);
-
-      // Terza: attesa finale per tutti gli eventi async
-      if (phoneClicks > 0) {
-        this.logger.log('   Attesa finale per eventi async...');
-        await this.page.waitForTimeout(3000);
-        
-        // Verifica finale dataLayer
-        const finalDataLayer = await this.page.evaluate(() => {
-          return window.__dataLayerEvents || [];
-        });
-        
-        if (finalDataLayer.length > 0) {
-          this.logger.log(`   Eventi dataLayer finali: ${finalDataLayer.length}`);
-          finalDataLayer.forEach(e => {
-            this.logger.log(`      - ${e.event} (${e.source})`);
-          });
-        }
-      }
+      this.logger.log(`   Click effettuati: ${clicked}`);
     } catch (e) {
       this.logger.error(`Click simulation failed: ${e.message}`);
     }
@@ -1242,23 +1043,93 @@ class CookieAuditScanner {
     return false;
   }
 
-  // Esecuzione principale con retry
+  // Genera summary ottimizzato (inline)
+  generateSummary() {
+    const newCookies = this.report.postConsent.cookies.filter(
+      post => !this.report.preConsent.cookies.find(pre => pre.name === post.name)
+    );
+
+    const allEvents = [
+      ...this.report.events.preConsent,
+      ...this.report.events.postConsent,
+      ...this.report.events.interactions,
+      ...this.report.events.formTest
+    ];
+
+    const eventsByTracker = {};
+    allEvents.forEach(e => {
+      if (!eventsByTracker[e.tracker]) {
+        eventsByTracker[e.tracker] = {
+          standard: [],
+          custom: [],
+          click: [],
+          session: [],
+          conversion: []
+        };
+      }
+      const category = e.eventCategory || 'custom';
+      const eventInfo = {
+        name: e.event,
+        destinationUrl: e.destinationUrl,
+        params: e.params,
+        productName: e.productName
+      };
+      const exists = eventsByTracker[e.tracker][category]?.some(ev => ev.name === e.event);
+      if (!exists && eventsByTracker[e.tracker][category]) {
+        eventsByTracker[e.tracker][category].push(eventInfo);
+      }
+    });
+
+    Object.keys(eventsByTracker).forEach(tracker => {
+      Object.keys(eventsByTracker[tracker]).forEach(cat => {
+        if (eventsByTracker[tracker][cat].length === 0) {
+          delete eventsByTracker[tracker][cat];
+        }
+      });
+    });
+
+    const uniqueEvents = [...new Set(allEvents.map(e => `${e.tracker}: ${e.event}`))];
+
+    this.report.summary = {
+      violations: this.report.violations.length,
+      technicalPings: this.report.technicalPings.length,
+      trackersPostConsent: this.report.postConsent.requests.length,
+      cookiesPreConsent: this.report.preConsent.cookies.length,
+      cookiesPostConsent: this.report.postConsent.cookies.length,
+      newCookiesAfterConsent: newCookies.length,
+      cmpWorking: this.report.cmp.detected &&
+                  this.report.violations.length === 0 &&
+                  this.report.cmp.consentState?.marketing === true,
+      blockedScriptsCount: this.report.cmp.blockedScripts?.length || 0,
+      events: {
+        total: allEvents.length,
+        preConsent: this.report.events.preConsent.length,
+        postConsent: this.report.events.postConsent.length,
+        interactions: this.report.events.interactions.length,
+        formTest: this.report.events.formTest.length,
+        uniqueEvents: uniqueEvents,
+        byTracker: eventsByTracker
+      },
+      formsFound: this.report.forms.found.length,
+      formSubmitted: this.report.forms.submitted?.success || false,
+      errors: this.report.errors.length
+    };
+  }
+
+  // Esecuzione principale con ottimizzazioni architetturali
   async run() {
-    this.logger.log(`\n=== COOKIE AUDIT SCANNER ===`);
+    this.logger.log(`\n=== COOKIE AUDIT SCANNER ULTRA OTTIMIZZATO ===`);
     this.logger.log(`URL: ${this.url}`);
     this.logger.log(`Timestamp: ${this.report.timestamp}\n`);
 
-    // Ottimizzazione: riduci timeout per pagine semplici ma aumenta per pagine lente
-    const optimizedTimeout = this.options.fastMode ? 15000 : this.options.timeout;
+    // Ottimizzazione: riduci timeout per pagine semplici
+    const optimizedTimeout = this.options.fastMode ? 5000 : this.options.timeout;
     
     for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
       try {
         this.logger.log(`Tentativo ${attempt}/${this.options.maxRetries}`);
         
-        // Ottimizzazione: lancia browser direttamente senza pool complesso
-        // Usa User Agent casuale per evitare detection
-        const randomUserAgent = USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-        
+        // Ottimizzazione: lancia browser con args ottimizzati
         this.browser = await chromium.launch({
           headless: this.options.headless,
           args: [
@@ -1274,27 +1145,12 @@ class CookieAuditScanner {
             '--no-first-run',
             '--safebrowsing-disable-auto-update',
             '--disable-features=VizDisplayCompositor',
-            '--disable-blink-features=AutomationControlled', // Anti-bot detection
-            '--disable-dev-shm-usage',
-            '--no-first-run',
-            '--no-default-browser-check',
-            '--disable-infobars',
-            '--window-size=1920,1080',
-            '--start-maximized'
+            '--disable-web-security',
+            '--disable-features=IsolateOrigins,site-per-process'
           ]
         });
 
-        const context = await this.browser.newContext({
-          ...BROWSER_CONFIG,
-          userAgent: randomUserAgent,
-          viewport: { width: 1920, height: 1080 },
-          locale: 'it-IT',
-          timezoneId: 'Europe/Rome',
-          extraHTTPHeaders: {
-            ...BROWSER_CONFIG.extraHTTPHeaders,
-            'User-Agent': randomUserAgent
-          }
-        });
+        const context = await this.browser.newContext(BROWSER_CONFIG);
         this.page = await context.newPage();
 
         // Ottimizzazione: disabilita risorse non essenziali
@@ -1303,85 +1159,7 @@ class CookieAuditScanner {
         // Registra handler richieste
         this.page.on('request', (req) => this.handleRequest(req));
 
-        // === MONITORAGGIO DATA LAYER (SOSTITUZIONE COMPLETA) ===
-        await this.page.addInitScript(() => {
-          window.__dataLayerEvents = [];
-          window.__auditPhase = 'UNKNOWN';
-
-          // Salva dataLayer originale se esiste
-          const originalDataLayer = window.dataLayer || [];
-
-          // Crea wrapper completo per dataLayer
-          window.dataLayer = {
-            ...originalDataLayer,
-            push: function(...args) {
-              args.forEach(item => {
-                if (item && typeof item === 'object') {
-                  const eventName = item.event || item[0];
-                  if (eventName) {
-                    window.__dataLayerEvents.push({
-                      event: eventName,
-                      data: item,
-                      timestamp: Date.now(),
-                      phase: window.__auditPhase,
-                      source: 'dataLayer'
-                    });
-                    console.log(`[AUDIT] DataLayer event: ${eventName}`, item);
-                  }
-                }
-              });
-              // Esegui push originale
-              return Array.prototype.push.apply(this, args);
-            }
-          };
-
-          // Monitora gtag se presente
-          if (window.gtag) {
-            const originalGtag = window.gtag;
-            window.gtag = function(...args) {
-              const command = args[0];
-              if (command === 'event') {
-                const eventName = args[1];
-                const params = args[2] || {};
-                window.__dataLayerEvents.push({
-                  event: eventName,
-                  data: params,
-                  timestamp: Date.now(),
-                  phase: window.__auditPhase,
-                  source: 'gtag'
-                });
-                console.log(`[AUDIT] gtag event: ${eventName}`, params);
-              }
-              return originalGtag.apply(window, args);
-            };
-          }
-
-          // Monitora dataLayer.push globale
-          if (originalDataLayer.push) {
-            const originalPush = originalDataLayer.push;
-            originalDataLayer.push = function(...args) {
-              args.forEach(item => {
-                if (item && typeof item === 'object') {
-                  const eventName = item.event || item[0];
-                  if (eventName) {
-                    window.__dataLayerEvents.push({
-                      event: eventName,
-                      data: item,
-                      timestamp: Date.now(),
-                      phase: window.__auditPhase,
-                      source: 'dataLayer_original'
-                    });
-                    console.log(`[AUDIT] Original DataLayer event: ${eventName}`, item);
-                  }
-                }
-              });
-              return originalPush.apply(originalDataLayer, args);
-            };
-          }
-        });
-
         // === FASE 1: PRE-CONSENSO ===
-        await this.page.evaluate(() => { window.__auditPhase = 'PRE_CONSENT'; });
         this.logger.log('--- FASE 1: Analisi PRE-CONSENSO ---');
         this.phase = 'PRE_CONSENT';
         this.notifyPhase('pre_consent', 'Analisi pre-consenso...');
@@ -1460,59 +1238,9 @@ class CookieAuditScanner {
           await this.page.waitForTimeout(500);
         }
 
-        // === RACCOLTA EVENTI DATALAYER ===
-        this.logger.log('\n--- RACCOLTA EVENTI DATALAYER ---');
-        const dataLayerEvents = await this.page.evaluate(() => {
-          return window.__dataLayerEvents || [];
-        });
-
-        // Processa eventi dataLayer
-        if (dataLayerEvents.length > 0) {
-          this.logger.log(`Trovati ${dataLayerEvents.length} eventi nel dataLayer`);
-          
-          dataLayerEvents.forEach(dlEvent => {
-            const eventName = dlEvent.event;
-            const phase = dlEvent.phase === 'PRE_CONSENT' ? 'PRE_CONSENT' : 
-                         dlEvent.phase === 'POST_CONSENT' ? 'POST_CONSENT' : 'POST_CONSENT';
-            
-            // Determina tracker basato su sorgente
-            let tracker = 'GA4';
-            if (dlEvent.source === 'gtag') {
-              tracker = 'GA4';
-            } else if (dlEvent.data && dlEvent.data.tracker) {
-              tracker = dlEvent.data.tracker;
-            }
-
-            // Determina categoria evento
-            let eventCategory = 'custom';
-            if (GA4_STANDARD_EVENTS.includes(eventName)) {
-              eventCategory = 'standard';
-            } else if (GA4_PHONE_EVENTS.includes(eventName) || eventName.startsWith('click_') || eventName.startsWith('cta_')) {
-              eventCategory = 'click';
-            }
-
-            // Crea dettagli evento
-            const details = {
-              tracker: tracker,
-              event: eventName,
-              eventCategory: eventCategory,
-              timestamp: new Date(dlEvent.timestamp).toISOString(),
-              phase: phase,
-              source: 'automatic',
-              isStandard: GA4_STANDARD_EVENTS.includes(eventName) || GA4_PHONE_EVENTS.includes(eventName),
-              params: dlEvent.data || null
-            };
-
-            // Traccia l'evento
-            this.trackEvent(details, phase, 'automatic');
-            this.logger.log(`   [DATALAYER] ${tracker}: ${eventName}`);
-          });
-        } else {
-          this.logger.log('Nessun evento dataLayer rilevato');
-        }
-
         // Rilascia browser
         await this.page.close();
+        await context.close();
         await this.browser.close();
         this.browser = null;
         this.page = null;
@@ -1543,12 +1271,13 @@ class CookieAuditScanner {
       }
     }
 
-    // === GENERA SUMMARY ===
+    // === GENERA SUMMARY (ottimizzato inline) ===
     this.notifyPhase('finalizing', 'Generazione report...');
     this.generateSummary();
 
     // Cleanup
     this.deduplicator.dispose();
+    this.cacheManager.dispose();
 
     this.printReport();
 
@@ -1564,13 +1293,12 @@ class CookieAuditScanner {
     const startTime = Date.now();
     let lastRequestTime = startTime;
     let checkCount = 0;
-    // Aumentato timeout per garantire rilevamento eventi automatici come user_engagement
-    const maxWait = this.options.fastMode ? 12000 : 15000; // 12s per fast, 15s per standard
+    const maxWait = this.options.fastMode ? 3000 : 5000;
 
     while (Date.now() - startTime < maxWait) {
       checkCount++;
       
-      // Controlla ogni 300ms invece di 500ms
+      // Controlla ogni 300ms
       await this.page.waitForTimeout(300);
 
       // Se ci sono nuove richieste post-consenso
@@ -1578,113 +1306,14 @@ class CookieAuditScanner {
         lastRequestTime = Date.now();
       }
 
-      // Se non ci sono nuove richieste da 2 secondi, usciamo
-      if (Date.now() - lastRequestTime > 2000 && checkCount > 6) {
+      // Se non ci sono nuove richieste da 1 secondo, usciamo
+      if (Date.now() - lastRequestTime > 1000 && checkCount > 3) {
         break;
       }
     }
 
     const elapsed = Math.round((Date.now() - startTime) / 1000);
     this.logger.log(`Adaptive waiting ottimizzato: ${elapsed}s (max: ${maxWait/1000}s)`);
-  }
-
-  // Adaptive waiting per effetti consenso
-  async waitForConsentEffects() {
-    const startTime = Date.now();
-    let lastRequestTime = startTime;
-    let checkCount = 0;
-
-    while (Date.now() - startTime < 10000) {
-      checkCount++;
-      
-      // Controlla ogni 500ms
-      await this.page.waitForTimeout(500);
-
-      // Se ci sono nuove richieste post-consenso
-      if (this.report.postConsent.requests.length > 0) {
-        lastRequestTime = Date.now();
-      }
-
-      // Se non ci sono nuove richieste da 2 secondi, usciamo
-      if (Date.now() - lastRequestTime > 2000 && checkCount > 4) {
-        break;
-      }
-    }
-
-    this.logger.log(`Adaptive waiting completato in ${Math.round((Date.now() - startTime) / 1000)}s`);
-  }
-
-  // Genera il summary
-  generateSummary() {
-    const newCookies = this.report.postConsent.cookies.filter(
-      post => !this.report.preConsent.cookies.find(pre => pre.name === post.name)
-    );
-
-    const allEvents = [
-      ...this.report.events.preConsent,
-      ...this.report.events.postConsent,
-      ...this.report.events.interactions,
-      ...this.report.events.formTest
-    ];
-
-    const eventsByTracker = {};
-    allEvents.forEach(e => {
-      if (!eventsByTracker[e.tracker]) {
-        eventsByTracker[e.tracker] = {
-          standard: [],
-          custom: [],
-          click: [],
-          session: [],
-          conversion: []
-        };
-      }
-      const category = e.eventCategory || 'custom';
-      const eventInfo = {
-        name: e.event,
-        destinationUrl: e.destinationUrl,
-        params: e.params,
-        productName: e.productName
-      };
-      const exists = eventsByTracker[e.tracker][category]?.some(ev => ev.name === e.event);
-      if (!exists && eventsByTracker[e.tracker][category]) {
-        eventsByTracker[e.tracker][category].push(eventInfo);
-      }
-    });
-
-    Object.keys(eventsByTracker).forEach(tracker => {
-      Object.keys(eventsByTracker[tracker]).forEach(cat => {
-        if (eventsByTracker[tracker][cat].length === 0) {
-          delete eventsByTracker[tracker][cat];
-        }
-      });
-    });
-
-    const uniqueEvents = [...new Set(allEvents.map(e => `${e.tracker}: ${e.event}`))];
-
-    this.report.summary = {
-      violations: this.report.violations.length,
-      technicalPings: this.report.technicalPings.length,
-      trackersPostConsent: this.report.postConsent.requests.length,
-      cookiesPreConsent: this.report.preConsent.cookies.length,
-      cookiesPostConsent: this.report.postConsent.cookies.length,
-      newCookiesAfterConsent: newCookies.length,
-      cmpWorking: this.report.cmp.detected &&
-                  this.report.violations.length === 0 &&
-                  this.report.cmp.consentState?.marketing === true,
-      blockedScriptsCount: this.report.cmp.blockedScripts?.length || 0,
-      events: {
-        total: allEvents.length,
-        preConsent: this.report.events.preConsent.length,
-        postConsent: this.report.events.postConsent.length,
-        interactions: this.report.events.interactions.length,
-        formTest: this.report.events.formTest.length,
-        uniqueEvents: uniqueEvents,
-        byTracker: eventsByTracker
-      },
-      formsFound: this.report.forms.found.length,
-      formSubmitted: this.report.forms.submitted?.success || false,
-      errors: this.report.errors.length
-    };
   }
 
   // Stampa report
@@ -1780,9 +1409,9 @@ async function main() {
 
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`
-Cookie Audit Scanner - Verifica GDPR compliance
+Cookie Audit Scanner ULTRA OTTIMIZZATO - Verifica GDPR compliance
 
-Uso: node scanner.js <url> [opzioni]
+Uso: node scanner-ultra-optimized.js <url> [opzioni]
 
 Opzioni:
   --output, -o <file>   Salva report in file JSON
@@ -1792,9 +1421,9 @@ Opzioni:
   --help, -h            Mostra questo messaggio
 
 Esempi:
-  node scanner.js https://example.com
-  node scanner.js https://example.com -o report.json
-  node scanner.js https://example.com --visible --verbose
+  node scanner-ultra-optimized.js https://example.com
+  node scanner-ultra-optimized.js https://example.com -o report.json
+  node scanner-ultra-optimized.js https://example.com --visible --verbose
 `);
     process.exit(0);
   }
@@ -1817,11 +1446,11 @@ Esempi:
     options.timeout = parseInt(args[timeoutIdx + 1], 10);
   }
 
-  const scanner = new CookieAuditScanner(url, options);
+  const scanner = new CookieAuditScannerUltraOptimized(url, options);
   await scanner.run();
 }
 
-module.exports = { CookieAuditScanner };
+module.exports = { CookieAuditScannerUltraOptimized };
 
 if (require.main === module) {
   main().catch(console.error);

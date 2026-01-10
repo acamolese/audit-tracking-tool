@@ -1,0 +1,116 @@
+{
+  "url": "https://adhoccasa.it",
+  "timestamp": "2026-01-04T10:07:23.617Z",
+  "events": [
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.js",
+        "data": {
+          "gtm.start": 1767521225506,
+          "event": "gtm.js"
+        }
+      },
+      "timestamp": 1767521225506,
+      "id": 0
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GTM",
+        "url": "https://www.googletagmanager.com/gtm.js?id=GTM-5TNHZGND",
+        "event": null
+      },
+      "timestamp": 1767521225542,
+      "id": 1
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "set",
+        "data": {
+          "0": "set",
+          "1": "developer_id.dMWZhNz",
+          "2": true
+        }
+      },
+      "timestamp": 1767521225602,
+      "id": 2
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GA4",
+        "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-TEBV9QHYC5&gtm=45je5cb0h2v9222601593z89222169600za20gzb9222169600zd9222169600&_p=1767521225506&gcs=G100&gcd=13p3p3p2p7l1&npa=1&dma_cps=-&dma=1&",
+        "event": "page_view"
+      },
+      "timestamp": 1767521225627,
+      "id": 3
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GTM",
+        "url": "https://www.googletagmanager.com/gtag/js?id=G-TEBV9QHYC5&cx=c&gtm=4e5cb0h2",
+        "event": null
+      },
+      "timestamp": 1767521225645,
+      "id": 4
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.dom",
+        "data": {
+          "event": "gtm.dom"
+        }
+      },
+      "timestamp": 1767521225677,
+      "id": 5
+    },
+    {
+      "type": "mkdjegdakgimmckobdnfiimhgmabbido:content:wxt:content-script-started",
+      "timestamp": 1767521226121,
+      "id": 6
+    },
+    {
+      "type": "network",
+      "data": {
+        "tracker": "GA4",
+        "url": "https://region1.google-analytics.com/g/collect?v=2&tid=G-TEBV9QHYC5&gtm=45je5cb0h2v9222601593z89222169600za20gzb9222169600zd9222169600&_p=1767521225506&gcs=G100&gcd=13p3p3p2p7l1&npa=1&dma_cps=-&dma=1&",
+        "event": "page_view"
+      },
+      "timestamp": 1767521226161,
+      "id": 7
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.load",
+        "data": {
+          "event": "gtm.load"
+        }
+      },
+      "timestamp": 1767521226235,
+      "id": 8
+    },
+    {
+      "type": "dataLayer",
+      "data": {
+        "event": "gtm.load",
+        "data": {
+          "event": "gtm.load"
+        }
+      },
+      "timestamp": 1767521226235,
+      "id": 9
+    }
+  ],
+  "formEventCounts": {
+    "form_submit": 0,
+    "generate_lead": 0,
+    "form_start": 0,
+    "purchase": 0
+  },
+  "success": false
+}
