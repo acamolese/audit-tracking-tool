@@ -894,20 +894,21 @@
     function updateTrackerGrid() {
       const grid = document.getElementById('trackerGrid');
       
-      // Filtra eventi utili
-      const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load', 'gtm.scrollDepth', 'gtm.click', 'gtm.linkClick'];
-      const IGNORED_EVENTS = ['scroll', 'click', 'mouseover', 'mouseenter', 'mouseleave'];
+      // Filtra eventi utili - MANTENI TUTTI GLI EVENTI SIGNIFICATIVI
+      const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load'];
       
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
+      
+      // Eventi network: mantieni tutti tranne quelli di sistema
       const networkEvents = events.filter(e => 
         e.type === 'network' && e.data?.event && 
-        !SYSTEM_EVENTS.includes(e.data.event) &&
-        !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
+        !SYSTEM_EVENTS.includes(e.data.event)
       );
+      
+      // Eventi dataLayer: mantieni tutti tranne quelli di sistema
       const dataLayerEvents = events.filter(e => 
         e.type === 'dataLayer' && e.data?.event && 
-        !SYSTEM_EVENTS.includes(e.data.event) &&
-        !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
+        !SYSTEM_EVENTS.includes(e.data.event)
       );
 
       if (formSubmitEvents.length === 0 && networkEvents.length === 0 && dataLayerEvents.length === 0) {
@@ -918,6 +919,7 @@
       // Raggruppa per tracker
       const grouped = {};
       
+      // DOM events
       if (formSubmitEvents.length > 0) {
         grouped['DOM'] = formSubmitEvents.map(e => ({
           name: 'Form Submit',
@@ -927,8 +929,58 @@
         }));
       }
 
+      // Network events - Migliorato rilevamento tracker
       networkEvents.forEach(e => {
-        const tracker = e.data.tracker || 'Unknown';
+        let tracker = e.data.tracker || 'Unknown';
+        
+        // Miglioramento: identifica tracker da URL o nome evento
+        const url = e.data.url || '';
+        const eventName = e.data.event || '';
+        
+        // Facebook Pixel
+        if (url.includes('facebook.com') || url.includes('fbq') || 
+            eventName.includes('fb_') || eventName.includes('facebook') ||
+            tracker.toLowerCase().includes('facebook')) {
+          tracker = 'Facebook';
+        }
+        // Google Analytics 4
+        else if (url.includes('google-analytics.com') || url.includes('analytics.google.com') ||
+                 eventName.includes('ga_') || tracker.toLowerCase().includes('ga4')) {
+          tracker = 'GA4';
+        }
+        // Google Tag Manager
+        else if (url.includes('googletagmanager.com') || tracker.toLowerCase().includes('gtm')) {
+          tracker = 'GTM';
+        }
+        // Altri tracker comuni
+        else if (url.includes('hotjar.com')) {
+          tracker = 'Hotjar';
+        }
+        else if (url.includes('clarity.ms')) {
+          tracker = 'Clarity';
+        }
+        else if (url.includes('criteo.com')) {
+          tracker = 'Criteo';
+        }
+        else if (url.includes('taboola.com')) {
+          tracker = 'Taboola';
+        }
+        else if (url.includes('outbrain.com')) {
+          tracker = 'Outbrain';
+        }
+        else if (url.includes('linkedin.com') || url.includes('licdn.com')) {
+          tracker = 'LinkedIn';
+        }
+        else if (url.includes('tiktok.com')) {
+          tracker = 'TikTok';
+        }
+        else if (url.includes('bing.com')) {
+          tracker = 'Bing';
+        }
+        else if (url.includes('doubleclick.net') || url.includes('googleadservices.com')) {
+          tracker = 'Google Ads';
+        }
+
         if (!grouped[tracker]) grouped[tracker] = [];
         grouped[tracker].push({
           name: e.data.event,
@@ -938,6 +990,7 @@
         });
       });
 
+      // DataLayer events
       if (dataLayerEvents.length > 0) {
         grouped['DataLayer'] = dataLayerEvents.map(e => ({
           name: e.data.event,
