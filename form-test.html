@@ -616,32 +616,9 @@
       </div>
 
       <div class="summary-panel">
-        <div class="summary-title">📊 RIEPILOGO NUMERICO</div>
-        <div id="trackingStatus" class="tracking-status" style="display:none;"></div>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <div class="summary-value" id="formSubmitDomCount">0</div>
-            <div class="summary-label">Form Inviati (DOM)</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value" id="formSubmitGa4Count">0</div>
-            <div class="summary-label">Tracking GA4</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value" id="generateLeadCount">0</div>
-            <div class="summary-label">generate_lead</div>
-          </div>
-          <div class="summary-item">
-            <div class="summary-value" id="purchaseCount">0</div>
-            <div class="summary-label">purchase</div>
-          </div>
-        </div>
-        <!-- Dettagli avanzati -->
-        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e5e5;">
-          <div style="font-size: 12px; color: var(--text-light); margin-bottom: 8px;">📈 DETTAGLI EVENTI</div>
-          <div id="eventDetails" style="font-size: 11px; line-height: 1.6; color: var(--text-light);">
-            In attesa di eventi...
-          </div>
+        <div class="summary-title">📊 EVENTI RAGGRUPPATI</div>
+        <div id="eventDetails" style="font-size: 11px; line-height: 1.6; color: var(--text-light);">
+          In attesa di eventi...
         </div>
       </div>
     </div>
@@ -807,7 +784,8 @@
           showFormAlert('✅ purchase Rilevato!', `${source} ha inviato l'evento purchase al tracking.`, true);
         }
 
-        updateSummary();
+        // Aggiorna dettagli
+        updateEventDetails();
       }
     }
 
@@ -934,42 +912,7 @@
       document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
     }
 
-    // Aggiorna summary
-    function updateSummary() {
-      const domCount = formEventCounts.form_submit_dom;
-      const ga4Count = formEventCounts.form_submit_ga4;
-
-      document.getElementById('formSubmitDomCount').textContent = domCount;
-      document.getElementById('formSubmitDomCount').className = 'summary-value' + (domCount > 0 ? ' success' : '');
-
-      document.getElementById('formSubmitGa4Count').textContent = ga4Count;
-      document.getElementById('formSubmitGa4Count').className = 'summary-value' + (ga4Count > 0 ? ' success' : '');
-
-      document.getElementById('generateLeadCount').textContent = formEventCounts.generate_lead;
-      document.getElementById('generateLeadCount').className = 'summary-value' + (formEventCounts.generate_lead > 0 ? ' success' : '');
-
-      document.getElementById('purchaseCount').textContent = formEventCounts.purchase;
-      document.getElementById('purchaseCount').className = 'summary-value' + (formEventCounts.purchase > 0 ? ' success' : '');
-
-      // Aggiorna dettagli avanzati
-      updateEventDetails();
-
-      // Mostra stato tracking
-      const statusDiv = document.getElementById('trackingStatus');
-      if (domCount > 0 && ga4Count > 0) {
-        statusDiv.innerHTML = '✅ <strong>Tracking Corretto:</strong> Il form invia correttamente gli eventi a GA4';
-        statusDiv.className = 'tracking-status success';
-        statusDiv.style.display = 'block';
-      } else if (domCount > 0 && ga4Count === 0) {
-        statusDiv.innerHTML = '⚠️ <strong>In Attesa:</strong> Form inviato, attendo conferma tracking GA4...';
-        statusDiv.className = 'tracking-status warning';
-        statusDiv.style.display = 'block';
-      } else {
-        statusDiv.style.display = 'none';
-      }
-    }
-
-    // Aggiorna dettagli avanzati degli eventi con deduplicazione
+    // Aggiorna dettagli avanzati degli eventi con raggruppamento per Tracker → Tipologia → Fonte
     function updateEventDetails() {
       const detailsDiv = document.getElementById('eventDetails');
       
@@ -978,25 +921,24 @@
         return;
       }
 
-      // === DEDUPLICAZIONE AVANZATA ===
+      // === RAGGRUPPAMENTO PER TRACKER → TIPOLOGIA → FONTE ===
       
       // 1. Filtra eventi di sistema poco utili
       const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load', 'gtm.scrollDepth', 'gtm.click', 'gtm.linkClick'];
       const IGNORED_EVENTS = ['scroll', 'click', 'mouseover', 'mouseenter', 'mouseleave'];
       
-      // 2. Eventi form submit (DOM)
+      // 2. Eventi form submit (DOM - Fonte: Utente)
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
       
-      // 3. Eventi GA4 deduplicati
-      const ga4Events = events.filter(e => 
+      // 3. Eventi network (Tracker → Tipologia → Fonte)
+      const networkEvents = events.filter(e => 
         e.type === 'network' && 
-        e.data?.tracker === 'GA4' && 
         e.data?.event && 
         !SYSTEM_EVENTS.includes(e.data.event) &&
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
       
-      // 4. DataLayer events deduplicati (solo eventi significativi)
+      // 4. Eventi dataLayer (Tracker → Tipologia → Fonte)
       const dataLayerEvents = events.filter(e => 
         e.type === 'dataLayer' && 
         e.data?.event && 
@@ -1004,125 +946,199 @@
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
 
-      // 5. Raggruppamento intelligente per evitare duplicati
-      const uniqueGa4Events = {};
-      ga4Events.forEach(e => {
-        const name = e.data.event;
-        const paramsStr = e.data.params ? JSON.stringify(e.data.params) : '';
-        
-        // Chiave unica: nome + parametri significativi
-        const key = name + '|' + paramsStr.substring(0, 50);
-        
-        if (!uniqueGa4Events[key]) {
-          uniqueGa4Events[key] = {
-            name: name,
-            count: 0,
-            params: e.data.params,
-            timestamp: e.timestamp
-          };
+      // === STRUTTURA RAGGRUPPATA ===
+      const grouped = {
+        'DOM': {
+          'Form Submit': []
+        },
+        'GA4': {
+          'Standard': [],
+          'Custom': [],
+          'E-commerce': []
+        },
+        'GTM': {
+          'DataLayer': [],
+          'Variabili': []
+        },
+        'Facebook': {
+          'Pixel': []
+        },
+        'DataLayer': {
+          'Eventi': []
         }
-        uniqueGa4Events[key].count++;
-      });
+      };
 
-      const uniqueDataLayerEvents = {};
-      dataLayerEvents.forEach(e => {
-        const name = e.data.event;
-        const dataStr = e.data.data ? JSON.stringify(e.data.data) : '';
-        
-        // Chiave unica: nome + dati parziali
-        const key = name + '|' + dataStr.substring(0, 30);
-        
-        if (!uniqueDataLayerEvents[key]) {
-          uniqueDataLayerEvents[key] = {
-            name: name,
-            count: 0,
-            data: e.data.data,
-            timestamp: e.timestamp
-          };
-        }
-        uniqueDataLayerEvents[key].count++;
-      });
-
-      // === GENERAZIONE HTML CON DEDUPLICAZIONE ===
-      let detailsHTML = '';
-
-      // Dettagli form submit
+      // === RAGGRUPPAMENTO INTELLIGENTE ===
+      
+      // 3.1. Eventi DOM (Form Submit)
       if (formSubmitEvents.length > 0) {
-        detailsHTML += `<div style="margin-bottom: 8px;"><strong>📝 Form Submit (DOM):</strong> ${formSubmitEvents.length} invii</div>`;
-        
-        // Raggruppa per formId
-        const formGroups = {};
         formSubmitEvents.forEach(e => {
           const formId = e.data?.formId || 'senza ID';
-          if (!formGroups[formId]) formGroups[formId] = { count: 0, actions: new Set() };
-          formGroups[formId].count++;
-          if (e.data?.formAction) formGroups[formId].actions.add(e.data.formAction);
-        });
-
-        Object.keys(formGroups).forEach(formId => {
-          const group = formGroups[formId];
-          const actions = Array.from(group.actions).join(', ') || 'N/A';
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${formId}</strong>: ${group.count} invii | Actions: ${actions}</div>`;
+          const action = e.data?.formAction || 'N/A';
+          grouped['DOM']['Form Submit'].push({
+            name: formId,
+            details: `Action: ${action}`,
+            count: 1
+          });
         });
       }
 
-      // Dettagli GA4 (con deduplicazione)
-      const ga4Count = Object.keys(uniqueGa4Events).length;
-      if (ga4Count > 0) {
-        detailsHTML += `<div style="margin: 8px 0;"><strong>📈 GA4 Events:</strong> ${ga4Count} tipi unici</div>`;
+      // 3.2. Eventi Network (Tracker → Tipologia)
+      networkEvents.forEach(e => {
+        const tracker = e.data.tracker || 'Unknown';
+        const eventName = e.data.event;
+        const params = e.data.params ? JSON.stringify(e.data.params) : '';
         
-        // Ordina per count decrescente
-        const sortedGa4 = Object.values(uniqueGa4Events).sort((a, b) => b.count - a.count);
-        
-        sortedGa4.forEach(event => {
-          const params = event.params ? JSON.stringify(event.params) : 'Nessun parametro';
-          const paramsDisplay = params.length > 60 ? params.substring(0, 60) + '...' : params;
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${event.name}</strong>: ${event.count} volte | Params: ${paramsDisplay}</div>`;
-        });
-      }
-
-      // Dettagli DataLayer (con deduplicazione)
-      const dlCount = Object.keys(uniqueDataLayerEvents).length;
-      if (dlCount > 0) {
-        detailsHTML += `<div style="margin: 8px 0;"><strong>📊 DataLayer Events:</strong> ${dlCount} tipi unici</div>`;
-        
-        // Mostra solo i più recenti (massimo 5)
-        const sortedDL = Object.values(uniqueDataLayerEvents)
-          .sort((a, b) => b.timestamp - a.timestamp)
-          .slice(0, 5);
-        
-        sortedDL.forEach(event => {
-          const data = event.data ? JSON.stringify(event.data) : 'N/A';
-          const dataDisplay = data.length > 60 ? data.substring(0, 60) + '...' : data;
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px;">• <strong>${event.name}</strong>: ${event.count} volte | Data: ${dataDisplay}</div>`;
-        });
-      }
-
-      // Stato finale con logica avanzata
-      const hasFormSubmit = formSubmitEvents.length > 0;
-      const hasGa4Tracking = ga4Count > 0;
-      const hasDataLayer = dlCount > 0;
-
-      if (hasFormSubmit && hasGa4Tracking) {
-        // Verifica se i form submit GA4 corrispondono a quelli DOM
-        const formSubmitGa4 = Object.keys(uniqueGa4Events).filter(k => k.includes('form_submit')).length;
-        if (formSubmitGa4 > 0) {
-          detailsHTML += `<div style="margin-top: 8px; color: #0a7a52;">✅ <strong>Tracking Completo:</strong> ${formSubmitGa4} eventi form_submit rilevati in GA4</div>`;
-        } else {
-          detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ <strong>Parziale:</strong> Form inviati ma eventi GA4 diversi</div>`;
+        // Determina tipologia
+        let category = 'Custom';
+        if (['page_view', 'scroll', 'click', 'form_start', 'form_submit', 'generate_lead', 'purchase'].includes(eventName)) {
+          category = 'Standard';
+        } else if (['view_item', 'add_to_cart', 'begin_checkout', 'purchase'].includes(eventName)) {
+          category = 'E-commerce';
         }
-      } else if (hasFormSubmit && !hasGa4Tracking) {
-        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">⚠️ <strong>In Attesa:</strong> Form inviati ma nessun evento GA4 form_submit</div>`;
-      } else if (!hasFormSubmit && hasGa4Tracking) {
-        detailsHTML += `<div style="margin-top: 8px; color: #8a6d2b;">ℹ️ <strong>Info:</strong> Eventi GA4 rilevati ma nessun form submit DOM</div>`;
+
+        // Aggiungi al gruppo corretto
+        if (grouped[tracker] && grouped[tracker][category] !== undefined) {
+          grouped[tracker][category].push({
+            name: eventName,
+            details: params ? params.substring(0, 80) : 'Nessun parametro',
+            count: 1,
+            source: e.type
+          });
+        }
+      });
+
+      // 3.3. Eventi DataLayer
+      dataLayerEvents.forEach(e => {
+        const eventName = e.data.event;
+        const data = e.data.data ? JSON.stringify(e.data.data) : '';
+        
+        grouped['DataLayer']['Eventi'].push({
+          name: eventName,
+          details: data.substring(0, 80),
+          count: 1,
+          source: 'dataLayer'
+        });
+      });
+
+      // === GENERAZIONE HTML RAGGRUPPATO ===
+      let detailsHTML = '';
+
+      // Funzione per raggruppare per nome e contare
+      const groupByName = (items) => {
+        const grouped = {};
+        items.forEach(item => {
+          const key = item.name + '|' + item.details;
+          if (!grouped[key]) {
+            grouped[key] = { ...item, count: 0 };
+          }
+          grouped[key].count++;
+        });
+        return Object.values(grouped);
+      };
+
+      // 4.1. DOM Section
+      if (formSubmitEvents.length > 0) {
+        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
+        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📝 <strong>DOM (Fonte: Utente)</strong></div>`;
+        
+        const domGrouped = groupByName(grouped['DOM']['Form Submit']);
+        domGrouped.forEach(item => {
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
+          detailsHTML += `<strong>Form Submit:</strong> ${item.name} <span style="color: #666;">(${item.count}x)</span><br>`;
+          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
+          detailsHTML += `</div>`;
+        });
+        detailsHTML += `</div>`;
       }
 
-      // Aggiungi suggerimenti
-      if (hasFormSubmit && hasGa4Tracking) {
-        detailsHTML += `<div style="margin-top: 8px; font-size: 10px; color: var(--text-light);">💡 <strong>Consiglio:</strong> Verifica che i parametri GA4 includano form_id e form_location</div>`;
+      // 4.2. GA4 Section
+      const ga4Items = [...grouped['GA4']['Standard'], ...grouped['GA4']['Custom'], ...grouped['GA4']['E-commerce']];
+      if (ga4Items.length > 0) {
+        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
+        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📈 <strong>GA4 (Tracker: GA4)</strong></div>`;
+        
+        // Raggruppa per tipologia
+        ['Standard', 'Custom', 'E-commerce'].forEach(category => {
+          if (grouped['GA4'][category].length > 0) {
+            detailsHTML += `<div style="margin-left: 8px; margin-bottom: 6px; font-size: 10px; color: var(--text-light);"><em>${category}:</em></div>`;
+            const ga4Grouped = groupByName(grouped['GA4'][category]);
+            ga4Grouped.forEach(item => {
+              detailsHTML += `<div style="margin-left: 16px; margin-bottom: 4px; font-size: 10px;">`;
+              detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
+              detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
+              detailsHTML += `</div>`;
+            });
+          }
+        });
+        detailsHTML += `</div>`;
       }
 
-      detailsDiv.innerHTML = detailsHTML || 'Nessun dettaglio disponibile';
+      // 4.3. GTM Section
+      const gtmItems = [...grouped['GTM']['DataLayer'], ...grouped['GTM']['Variabili']];
+      if (gtmItems.length > 0) {
+        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
+        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">🏷️ <strong>GTM (Tracker: GTM)</strong></div>`;
+        
+        const gtmGrouped = groupByName(gtmItems);
+        gtmGrouped.forEach(item => {
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
+          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
+          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
+          detailsHTML += `</div>`;
+        });
+        detailsHTML += `</div>`;
+      }
+
+      // 4.4. Facebook Section
+      if (grouped['Facebook']['Pixel'].length > 0) {
+        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
+        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📘 <strong>Facebook (Tracker: Facebook)</strong></div>`;
+        
+        const fbGrouped = groupByName(grouped['Facebook']['Pixel']);
+        fbGrouped.forEach(item => {
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
+          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
+          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
+          detailsHTML += `</div>`;
+        });
+        detailsHTML += `</div>`;
+      }
+
+      // 4.5. DataLayer Section
+      if (grouped['DataLayer']['Eventi'].length > 0) {
+        detailsHTML += `<div style="margin-bottom: 12px;">`;
+        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📊 <strong>DataLayer (Fonte: dataLayer)</strong></div>`;
+        
+        const dlGrouped = groupByName(grouped['DataLayer']['Eventi']);
+        dlGrouped.forEach(item => {
+          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
+          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
+          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
+          detailsHTML += `</div>`;
+        });
+        detailsHTML += `</div>`;
+      }
+
+      // 5. Stato Finale Semplificato
+      const hasFormSubmit = formSubmitEvents.length > 0;
+      const hasGa4 = ga4Items.length > 0;
+      const hasDataLayer = grouped['DataLayer']['Eventi'].length > 0;
+
+      if (hasFormSubmit && hasGa4) {
+        const formSubmitGa4 = ga4Items.filter(i => i.name.includes('form_submit')).length;
+        if (formSubmitGa4 > 0) {
+          detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(6, 232, 159, 0.1); border-left: 3px solid var(--success); border-radius: 4px; font-size: 10px;">✅ <strong>Tracking Completo</strong><br>Form submit rilevato in GA4</div>`;
+        } else {
+          detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">⚠️ <strong>Tracking Parziale</strong><br>Form inviato ma eventi GA4 diversi</div>`;
+        }
+      } else if (hasFormSubmit && !hasGa4) {
+        detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">⚠️ <strong>In Attesa</strong><br>Form inviato ma nessun evento GA4</div>`;
+      } else if (!hasFormSubmit && hasGa4) {
+        detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">ℹ️ <strong>Info</strong><br>Eventi GA4 rilevati ma nessun form submit</div>`;
+      }
+
+      detailsDiv.innerHTML = detailsHTML || 'Nessun evento significativo rilevato';
     }
 
     // Switch tab
@@ -1138,10 +1154,9 @@
     function clearEvents() {
       events = [];
       Object.keys(formEventCounts).forEach(k => formEventCounts[k] = 0);
-      document.getElementById('trackingStatus').style.display = 'none';
       updateEventList();
       updateCounts();
-      updateSummary();
+      updateEventDetails();
     }
 
     // Salva risultati
@@ -1204,3 +1219,4 @@
   </script>
 </body>
 </html>
+            alert(`Risultati salvati! ${data.eventsAdded} eventi aggiunti al report.`);
