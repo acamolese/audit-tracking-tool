@@ -360,6 +360,8 @@
       padding: 16px 20px;
       border-top: 1px solid #e5e5e5;
       background: var(--bg);
+      max-height: 50%;
+      overflow-y: auto;
     }
 
     .summary-title {
@@ -369,37 +371,162 @@
       margin-bottom: 12px;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .summary-item {
+    /* Tracker Cards - NUOVO DESIGN */
+    .tracker-card {
       background: var(--white);
-      padding: 12px;
-      border-radius: 8px;
-      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 1px solid #e5e5e5;
     }
 
-    .summary-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
+    .tracker-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--primary);
+      color: white;
     }
 
-    .summary-value.success {
-      color: var(--success);
+    .tracker-card-header .tracker-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .summary-value.danger {
-      color: var(--danger);
+    .tracker-card-header .tracker-icon {
+      font-size: 16px;
     }
 
-    .summary-label {
+    .tracker-card-header .event-count {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 10px;
+      border-radius: 12px;
       font-size: 11px;
+    }
+
+    .tracker-events {
+      padding: 8px 0;
+    }
+
+    .event-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 12px;
+    }
+
+    .event-row:last-child {
+      border-bottom: none;
+    }
+
+    .event-row:hover {
+      background: #fafbfc;
+    }
+
+    .event-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .event-name {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+
+    .event-params {
       color: var(--text-light);
-      margin-top: 4px;
+      font-size: 11px;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .event-params code {
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 10px;
+    }
+
+    .event-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .count-badge {
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 10px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .source-badge {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .source-badge.network {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .source-badge.datalayer {
+      background: #f3e8ff;
+      color: #7c3aed;
+    }
+
+    .source-badge.user {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .empty-events {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-light);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* Status box */
+    .status-box {
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .status-box.success {
+      background: rgba(6, 232, 159, 0.15);
+      color: #0a7a52;
+      border-left: 4px solid var(--success);
+    }
+
+    .status-box.warning {
+      background: rgba(255, 184, 77, 0.15);
+      color: #8a6d2b;
+      border-left: 4px solid var(--warning);
+    }
+
+    .status-box.info {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1d4ed8;
+      border-left: 4px solid #3b82f6;
     }
 
     /* Form detection alert */
@@ -522,28 +649,6 @@
         border-left: none;
         border-top: 1px solid #e5e5e5;
       }
-
-      .summary-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .summary-item {
-        padding: 8px;
-      }
-
-      .summary-value {
-        font-size: 18px;
-      }
-
-      .summary-label {
-        font-size: 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .summary-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
   </style>
 </head>
@@ -617,8 +722,8 @@
 
       <div class="summary-panel">
         <div class="summary-title">📊 EVENTI RAGGRUPPATI</div>
-        <div id="eventDetails" style="font-size: 11px; line-height: 1.6; color: var(--text-light);">
-          In attesa di eventi...
+        <div id="eventDetails">
+          <div class="empty-events">In attesa di eventi...<br>Interagisci con il form per vedere gli eventi raggruppati.</div>
         </div>
       </div>
     </div>
@@ -732,6 +837,7 @@
       // Aggiorna UI
       updateEventList();
       updateCounts();
+      updateEventDetails();
     }
 
     // Controlla se è un evento form
@@ -744,7 +850,6 @@
           `L'utente ha inviato il form "${eventObj.data.formId || 'senza ID'}". In attesa del tracking GA4...`,
           false
         );
-        updateSummary();
         return;
       }
 
@@ -783,9 +888,6 @@
           formEventCounts.purchase++;
           showFormAlert('✅ purchase Rilevato!', `${source} ha inviato l'evento purchase al tracking.`, true);
         }
-
-        // Aggiorna dettagli
-        updateEventDetails();
       }
     }
 
@@ -912,25 +1014,23 @@
       document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
     }
 
-    // Aggiorna dettagli avanzati degli eventi con raggruppamento per Tracker → Tipologia → Fonte
+    // Aggiorna dettagli avanzati degli eventi - NUOVA STRUTTURA SEMPLIFICATA
     function updateEventDetails() {
       const detailsDiv = document.getElementById('eventDetails');
       
       if (events.length === 0) {
-        detailsDiv.innerHTML = 'In attesa di eventi...';
+        detailsDiv.innerHTML = '<div class="empty-events">In attesa di eventi...<br>Interagisci con il form per vedere gli eventi raggruppati.</div>';
         return;
       }
 
-      // === RAGGRUPPAMENTO PER TRACKER → TIPOLOGIA → FONTE ===
-      
       // 1. Filtra eventi di sistema poco utili
       const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load', 'gtm.scrollDepth', 'gtm.click', 'gtm.linkClick'];
       const IGNORED_EVENTS = ['scroll', 'click', 'mouseover', 'mouseenter', 'mouseleave'];
       
-      // 2. Eventi form submit (DOM - Fonte: Utente)
+      // 2. Eventi form submit (DOM)
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
       
-      // 3. Eventi network (Tracker → Tipologia → Fonte)
+      // 3. Eventi network (Tracker)
       const networkEvents = events.filter(e => 
         e.type === 'network' && 
         e.data?.event && 
@@ -938,7 +1038,7 @@
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
       
-      // 4. Eventi dataLayer (Tracker → Tipologia → Fonte)
+      // 4. Eventi dataLayer
       const dataLayerEvents = events.filter(e => 
         e.type === 'dataLayer' && 
         e.data?.event && 
@@ -946,199 +1046,141 @@
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
 
-      // === STRUTTURA RAGGRUPPATA ===
-      const grouped = {
-        'DOM': {
-          'Form Submit': []
-        },
-        'GA4': {
-          'Standard': [],
-          'Custom': [],
-          'E-commerce': []
-        },
-        'GTM': {
-          'DataLayer': [],
-          'Variabili': []
-        },
-        'Facebook': {
-          'Pixel': []
-        },
-        'DataLayer': {
-          'Eventi': []
-        }
-      };
-
-      // === RAGGRUPPAMENTO INTELLIGENTE ===
+      // 5. Raggruppa per Tracker
+      const groupedByTracker = {};
       
-      // 3.1. Eventi DOM (Form Submit)
+      // 5.1. DOM events
       if (formSubmitEvents.length > 0) {
+        if (!groupedByTracker['DOM']) groupedByTracker['DOM'] = [];
         formSubmitEvents.forEach(e => {
           const formId = e.data?.formId || 'senza ID';
           const action = e.data?.formAction || 'N/A';
-          grouped['DOM']['Form Submit'].push({
-            name: formId,
-            details: `Action: ${action}`,
-            count: 1
+          groupedByTracker['DOM'].push({
+            name: 'Form Submit',
+            details: `${formId} → ${action}`,
+            count: 1,
+            source: 'user'
           });
         });
       }
 
-      // 3.2. Eventi Network (Tracker → Tipologia)
+      // 5.2. Network events per tracker
       networkEvents.forEach(e => {
         const tracker = e.data.tracker || 'Unknown';
-        const eventName = e.data.event;
+        if (!groupedByTracker[tracker]) groupedByTracker[tracker] = [];
+        
         const params = e.data.params ? JSON.stringify(e.data.params) : '';
-        
-        // Determina tipologia
-        let category = 'Custom';
-        if (['page_view', 'scroll', 'click', 'form_start', 'form_submit', 'generate_lead', 'purchase'].includes(eventName)) {
-          category = 'Standard';
-        } else if (['view_item', 'add_to_cart', 'begin_checkout', 'purchase'].includes(eventName)) {
-          category = 'E-commerce';
-        }
-
-        // Aggiungi al gruppo corretto
-        if (grouped[tracker] && grouped[tracker][category] !== undefined) {
-          grouped[tracker][category].push({
-            name: eventName,
-            details: params ? params.substring(0, 80) : 'Nessun parametro',
-            count: 1,
-            source: e.type
-          });
-        }
-      });
-
-      // 3.3. Eventi DataLayer
-      dataLayerEvents.forEach(e => {
-        const eventName = e.data.event;
-        const data = e.data.data ? JSON.stringify(e.data.data) : '';
-        
-        grouped['DataLayer']['Eventi'].push({
-          name: eventName,
-          details: data.substring(0, 80),
+        groupedByTracker[tracker].push({
+          name: e.data.event,
+          details: params ? params.substring(0, 80) : '',
           count: 1,
-          source: 'dataLayer'
+          source: 'network'
         });
       });
 
-      // === GENERAZIONE HTML RAGGRUPPATO ===
-      let detailsHTML = '';
+      // 5.3. DataLayer events
+      if (dataLayerEvents.length > 0) {
+        if (!groupedByTracker['DataLayer']) groupedByTracker['DataLayer'] = [];
+        dataLayerEvents.forEach(e => {
+          const data = e.data.data ? JSON.stringify(e.data.data) : '';
+          groupedByTracker['DataLayer'].push({
+            name: e.data.event,
+            details: data.substring(0, 80),
+            count: 1,
+            source: 'datalayer'
+          });
+        });
+      }
 
-      // Funzione per raggruppare per nome e contare
-      const groupByName = (items) => {
+      // 6. Genera HTML con nuovo design
+      let html = '';
+
+      // 6.1. Status finale
+      const hasFormSubmit = formSubmitEvents.length > 0;
+      const hasGa4Events = networkEvents.some(e => e.data.tracker === 'GA4' && e.data.event && e.data.event.includes('form_submit'));
+      
+      if (hasFormSubmit && hasGa4Events) {
+        html += '<div class="status-box success">✅ Tracking Completo — Form submit rilevato in GA4</div>';
+      } else if (hasFormSubmit && !hasGa4Events) {
+        html += '<div class="status-box warning">⚠️ In Attesa — Form inviato ma nessun evento GA4 form_submit</div>';
+      } else if (!hasFormSubmit && networkEvents.length > 0) {
+        html += '<div class="status-box info">ℹ️ Eventi rilevati ma nessun form submit DOM</div>';
+      }
+
+      // 6.2. Tracker cards
+      const trackerIcons = {
+        'DOM': '📝',
+        'GA4': '📊',
+        'GTM': '🏷️',
+        'Facebook': '📘',
+        'DataLayer': '📦'
+      };
+
+      // Funzione per raggruppare eventi per nome
+      const groupEventsByName = (items) => {
         const grouped = {};
         items.forEach(item => {
-          const key = item.name + '|' + item.details;
+          const key = item.name;
           if (!grouped[key]) {
-            grouped[key] = { ...item, count: 0 };
+            grouped[key] = { ...item, count: 0, allDetails: [] };
           }
           grouped[key].count++;
+          if (item.details) {
+            grouped[key].allDetails.push(item.details);
+          }
         });
         return Object.values(grouped);
       };
 
-      // 4.1. DOM Section
-      if (formSubmitEvents.length > 0) {
-        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
-        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📝 <strong>DOM (Fonte: Utente)</strong></div>`;
-        
-        const domGrouped = groupByName(grouped['DOM']['Form Submit']);
-        domGrouped.forEach(item => {
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
-          detailsHTML += `<strong>Form Submit:</strong> ${item.name} <span style="color: #666;">(${item.count}x)</span><br>`;
-          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
-          detailsHTML += `</div>`;
-        });
-        detailsHTML += `</div>`;
-      }
+      // Ordina tracker per importanza
+      const trackerOrder = ['DOM', 'GA4', 'GTM', 'Facebook', 'DataLayer'];
+      const sortedTrackers = Object.keys(groupedByTracker).sort((a, b) => {
+        const indexA = trackerOrder.indexOf(a);
+        const indexB = trackerOrder.indexOf(b);
+        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
 
-      // 4.2. GA4 Section
-      const ga4Items = [...grouped['GA4']['Standard'], ...grouped['GA4']['Custom'], ...grouped['GA4']['E-commerce']];
-      if (ga4Items.length > 0) {
-        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
-        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📈 <strong>GA4 (Tracker: GA4)</strong></div>`;
-        
-        // Raggruppa per tipologia
-        ['Standard', 'Custom', 'E-commerce'].forEach(category => {
-          if (grouped['GA4'][category].length > 0) {
-            detailsHTML += `<div style="margin-left: 8px; margin-bottom: 6px; font-size: 10px; color: var(--text-light);"><em>${category}:</em></div>`;
-            const ga4Grouped = groupByName(grouped['GA4'][category]);
-            ga4Grouped.forEach(item => {
-              detailsHTML += `<div style="margin-left: 16px; margin-bottom: 4px; font-size: 10px;">`;
-              detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
-              detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
-              detailsHTML += `</div>`;
-            });
-          }
-        });
-        detailsHTML += `</div>`;
-      }
+      sortedTrackers.forEach(tracker => {
+        const events = groupedByTracker[tracker];
+        const groupedEvents = groupEventsByName(events);
+        const totalEvents = events.length;
 
-      // 4.3. GTM Section
-      const gtmItems = [...grouped['GTM']['DataLayer'], ...grouped['GTM']['Variabili']];
-      if (gtmItems.length > 0) {
-        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
-        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">🏷️ <strong>GTM (Tracker: GTM)</strong></div>`;
-        
-        const gtmGrouped = groupByName(gtmItems);
-        gtmGrouped.forEach(item => {
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
-          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
-          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
-          detailsHTML += `</div>`;
-        });
-        detailsHTML += `</div>`;
-      }
+        html += `
+          <div class="tracker-card">
+            <div class="tracker-card-header">
+              <div class="tracker-info">
+                <span class="tracker-icon">${trackerIcons[tracker] || '📡'}</span>
+                ${tracker}
+              </div>
+              <span class="event-count">${totalEvents} eventi</span>
+            </div>
+            <div class="tracker-events">
+              ${groupedEvents.map(event => `
+                <div class="event-row">
+                  <div class="event-details">
+                    <div class="event-name">${event.name}</div>
+                    ${event.allDetails.length > 0 ? `
+                      <div class="event-params">
+                        ${event.allDetails.slice(0, 2).map(d => `<code>${d}</code>`).join(' ')}
+                        ${event.allDetails.length > 2 ? `<span>+${event.allDetails.length - 2} altri</span>` : ''}
+                      </div>
+                    ` : ''}
+                  </div>
+                  <div class="event-meta">
+                    ${event.count > 1 ? `<span class="count-badge">${event.count}x</span>` : ''}
+                    <span class="source-badge ${event.source}">${event.source}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
 
-      // 4.4. Facebook Section
-      if (grouped['Facebook']['Pixel'].length > 0) {
-        detailsHTML += `<div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e5e5e5;">`;
-        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📘 <strong>Facebook (Tracker: Facebook)</strong></div>`;
-        
-        const fbGrouped = groupByName(grouped['Facebook']['Pixel']);
-        fbGrouped.forEach(item => {
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
-          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
-          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
-          detailsHTML += `</div>`;
-        });
-        detailsHTML += `</div>`;
-      }
-
-      // 4.5. DataLayer Section
-      if (grouped['DataLayer']['Eventi'].length > 0) {
-        detailsHTML += `<div style="margin-bottom: 12px;">`;
-        detailsHTML += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 6px;">📊 <strong>DataLayer (Fonte: dataLayer)</strong></div>`;
-        
-        const dlGrouped = groupByName(grouped['DataLayer']['Eventi']);
-        dlGrouped.forEach(item => {
-          detailsHTML += `<div style="margin-left: 12px; margin-bottom: 4px; font-size: 10px;">`;
-          detailsHTML += `<strong>${item.name}</strong> <span style="color: #666;">(${item.count}x)</span><br>`;
-          detailsHTML += `<span style="color: var(--text-light);">${item.details}</span>`;
-          detailsHTML += `</div>`;
-        });
-        detailsHTML += `</div>`;
-      }
-
-      // 5. Stato Finale Semplificato
-      const hasFormSubmit = formSubmitEvents.length > 0;
-      const hasGa4 = ga4Items.length > 0;
-      const hasDataLayer = grouped['DataLayer']['Eventi'].length > 0;
-
-      if (hasFormSubmit && hasGa4) {
-        const formSubmitGa4 = ga4Items.filter(i => i.name.includes('form_submit')).length;
-        if (formSubmitGa4 > 0) {
-          detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(6, 232, 159, 0.1); border-left: 3px solid var(--success); border-radius: 4px; font-size: 10px;">✅ <strong>Tracking Completo</strong><br>Form submit rilevato in GA4</div>`;
-        } else {
-          detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">⚠️ <strong>Tracking Parziale</strong><br>Form inviato ma eventi GA4 diversi</div>`;
-        }
-      } else if (hasFormSubmit && !hasGa4) {
-        detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">⚠️ <strong>In Attesa</strong><br>Form inviato ma nessun evento GA4</div>`;
-      } else if (!hasFormSubmit && hasGa4) {
-        detailsHTML += `<div style="margin-top: 8px; padding: 8px; background: rgba(255, 184, 77, 0.1); border-left: 3px solid var(--warning); border-radius: 4px; font-size: 10px;">ℹ️ <strong>Info</strong><br>Eventi GA4 rilevati ma nessun form submit</div>`;
-      }
-
-      detailsDiv.innerHTML = detailsHTML || 'Nessun evento significativo rilevato';
+      detailsDiv.innerHTML = html || '<div class="empty-events">Nessun evento significativo rilevato.<br>Interagisci con il form per vedere gli eventi.</div>';
     }
 
     // Switch tab
@@ -1218,5 +1260,4 @@
     init();
   </script>
 </body>
-</html>
-            alert(`Risultati salvati! ${data.eventsAdded} eventi aggiunti al report.`);
+</html>      }
