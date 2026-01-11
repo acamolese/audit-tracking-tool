@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Form - AuditTrackingTool</title>
+  <title>Form Audit Dashboard - AuditTrackingTool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #1c3738;
-      --accent: #06e89f;
-      --danger: #ff4f50;
-      --warning: #ffb84d;
-      --success: #06e89f;
-      --bg: #f3f1ee;
-      --white: #ffffff;
-      --text: #111d0c;
-      --text-light: #5a6a5c;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-light: #64748b;
     }
 
     * {
@@ -27,22 +28,21 @@
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
       height: 100vh;
-      display: flex;
-      flex-direction: column;
+      overflow: hidden;
     }
 
     /* Header */
     .header {
-      background: var(--primary);
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
       padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: relative;
     }
 
     .header-left {
@@ -52,69 +52,21 @@
     }
 
     .logo {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 20px;
       font-weight: 700;
-      color: var(--white);
-      text-decoration: none;
+      font-size: 18px;
+      color: var(--primary);
     }
 
-    .logo span {
-      color: var(--accent);
-    }
-
-    .header .url-display {
-      background: rgba(255,255,255,0.1);
-      padding: 8px 16px;
-      border-radius: 8px;
-      color: var(--white);
-      font-size: 14px;
+    .url-badge {
+      background: var(--bg);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-light);
+      max-width: 300px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 400px;
-    }
-
-    /* Navigation */
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-      padding: 8px 0;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      opacity: 1;
-    }
-
-    .nav-links a.active {
-      border-bottom: 2px solid var(--accent);
-    }
-
-    /* Mobile menu button */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      margin: 5px 0;
-      transition: 0.3s;
     }
 
     .header-actions {
@@ -123,47 +75,99 @@
     }
 
     .btn {
-      padding: 10px 20px;
-      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: 600;
-      font-family: inherit;
-      border: none;
-      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      border: none;
     }
 
-    .btn-accent {
-      background: var(--accent);
-      color: var(--primary);
+    .btn-primary {
+      background: var(--primary);
+      color: white;
     }
 
-    .btn-accent:hover {
-      opacity: 0.9;
+    .btn-primary:hover {
+      background: #152a2b;
     }
 
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 2px solid rgba(255,255,255,0.3);
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .btn-outline:hover {
-      border-color: var(--white);
+    .btn-secondary:hover {
+      background: var(--bg);
     }
 
-    /* Main content */
-    .main {
-      flex: 1;
+    /* Main Container */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 65px);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    /* Left Panel - Site Preview */
+    .preview-panel {
+      background: var(--card-bg);
       display: flex;
+      flex-direction: column;
       overflow: hidden;
     }
 
-    /* Iframe container */
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-light);
+    }
+
+    .status-dot.connected {
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    .status-dot.waiting {
+      background: var(--warning);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     .iframe-container {
       flex: 1;
-      background: var(--white);
       position: relative;
+      background: #f1f5f9;
     }
 
     .iframe-container iframe {
@@ -180,14 +184,14 @@
       text-align: center;
     }
 
-    .iframe-loading .spinner {
+    .spinner {
       width: 40px;
       height: 40px;
-      border: 4px solid var(--bg);
-      border-top-color: var(--accent);
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
+      margin: 0 auto 12px;
     }
 
     @keyframes spin {
@@ -201,532 +205,478 @@
       transform: translate(-50%, -50%);
       text-align: center;
       color: var(--danger);
+      padding: 20px;
     }
 
-    /* Event monitor panel */
-    .monitor-panel {
-      width: 480px;
-      background: var(--white);
-      border-left: 1px solid #e5e5e5;
+    /* Right Panel - Dashboard */
+    .dashboard-panel {
+      background: var(--bg);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
-    .monitor-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid #e5e5e5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .monitor-header h2 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .monitor-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--text-light);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ccc;
-    }
-
-    .status-dot.connected {
-      background: var(--success);
-    }
-
-    .status-dot.waiting {
-      background: var(--warning);
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    /* Tabs */
-    .monitor-tabs {
-      display: flex;
-      border-bottom: 1px solid #e5e5e5;
-    }
-
-    .monitor-tab {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-light);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .monitor-tab:hover {
-      color: var(--primary);
-    }
-
-    .monitor-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--accent);
-    }
-
-    .monitor-tab .count {
-      display: inline-block;
-      min-width: 20px;
-      padding: 2px 6px;
-      background: var(--bg);
-      border-radius: 10px;
-      font-size: 11px;
-      margin-left: 4px;
-    }
-
-    .monitor-tab.active .count {
-      background: var(--accent);
-      color: var(--primary);
-    }
-
-    /* Event list */
-    .event-list {
+    .dashboard-content {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 20px;
     }
 
-    .event-item {
-      padding: 12px;
-      background: var(--bg);
+    /* Status Cards */
+    .status-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .status-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      margin-bottom: 8px;
-      font-size: 13px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .event-item.highlight {
-      background: rgba(6, 232, 159, 0.15);
-      border-left: 3px solid var(--success);
+    .status-card.success {
+      border-left: 4px solid var(--success);
     }
 
-    .event-item.warning {
-      background: rgba(255, 184, 77, 0.15);
-      border-left: 3px solid var(--warning);
+    .status-card.warning {
+      border-left: 4px solid var(--warning);
     }
 
-    .event-item .event-type {
-      font-weight: 600;
-      color: var(--primary);
+    .status-card.danger {
+      border-left: 4px solid var(--danger);
+    }
+
+    .status-card.info {
+      border-left: 4px solid var(--info);
+    }
+
+    .card-icon {
+      font-size: 20px;
       margin-bottom: 4px;
     }
 
-    .event-item .event-tracker {
-      display: inline-block;
-      padding: 2px 8px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 4px;
-      font-size: 11px;
-      margin-right: 8px;
-    }
-
-    .event-item .event-time {
-      color: var(--text-light);
-      font-size: 11px;
-    }
-
-    .event-item .event-detail {
-      color: var(--text-light);
-      margin-top: 4px;
-      word-break: break-all;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-light);
-    }
-
-    /* Summary panel - ORIZZONTALE */
-    .summary-panel {
-      padding: 16px 20px;
-      border-top: 1px solid #e5e5e5;
-      background: var(--bg);
-      max-height: 50%;
-      overflow-y: auto;
-    }
-
-    .summary-title {
-      font-size: 14px;
+    .card-title {
       font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text);
     }
 
-    /* Status Bar Orizzontale */
-    .status-bar {
+    .card-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-description {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    /* Alert Box */
+    .alert-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alert-box.show {
       display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
     }
 
-    .status-pill {
+    .alert-box.success {
+      border-left: 4px solid var(--success);
+      background: #f0fdf4;
+    }
+
+    .alert-box.warning {
+      border-left: 4px solid var(--warning);
+      background: #fffbeb;
+    }
+
+    .alert-box.danger {
+      border-left: 4px solid var(--danger);
+      background: #fef2f2;
+    }
+
+    .alert-icon {
+      font-size: 18px;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      background: var(--card-bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .tab {
       flex: 1;
       padding: 8px 12px;
-      border-radius: 6px;
+      text-align: center;
       font-size: 12px;
       font-weight: 600;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .status-pill.success {
-      background: rgba(6, 232, 159, 0.2);
-      color: #0a7a52;
-      border: 1px solid var(--success);
-    }
-
-    .status-pill.warning {
-      background: rgba(255, 184, 77, 0.2);
-      color: #8a6d2b;
-      border: 1px solid var(--warning);
-    }
-
-    .status-pill.info {
-      background: rgba(59, 130, 246, 0.2);
-      color: #1d4ed8;
-      border: 1px solid #3b82f6;
-    }
-
-    .status-pill.empty {
-      background: #e5e5e5;
+      border-radius: 6px;
+      cursor: pointer;
       color: var(--text-light);
-      border: 1px dashed #ccc;
+      transition: all 0.2s;
     }
 
-    /* Tracker Rows - ORIZZONTALE */
-    .tracker-row {
-      background: var(--white);
-      border-radius: 10px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      border: 1px solid #e5e5e5;
+    .tab:hover {
+      background: var(--bg);
     }
 
-    .tracker-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
+    .tab.active {
       background: var(--primary);
       color: white;
     }
 
-    .tracker-header .tracker-info {
+    .tab .count {
+      font-size: 10px;
+      opacity: 0.8;
+      margin-left: 4px;
+    }
+
+    /* Event List */
+    .event-list {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .event-list-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 13px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      justify-content: space-between;
+    }
+
+    .event-list-content {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .event-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .event-item:last-child {
+      border-bottom: none;
+    }
+
+    .event-item.highlight {
+      background: #f0fdf4;
+    }
+
+    .event-item.warning {
+      background: #fffbeb;
+    }
+
+    .event-icon {
+      font-size: 14px;
+      margin-top: 1px;
+    }
+
+    .event-content {
+      flex: 1;
+    }
+
+    .event-name {
       font-weight: 600;
+      color: var(--text);
     }
 
-    .tracker-header .tracker-icon {
-      font-size: 16px;
-    }
-
-    .tracker-header .event-count {
-      background: rgba(255,255,255,0.2);
-      padding: 2px 10px;
-      border-radius: 12px;
+    .event-details {
       font-size: 11px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    .event-time {
+      font-size: 10px;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      padding: 30px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 13px;
+    }
+
+    /* Tracker Grid */
+    .tracker-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tracker-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .tracker-header {
+      padding: 10px 14px;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
     }
 
     .tracker-events {
+      padding: 10px 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      padding: 10px 14px;
     }
 
     .event-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
       background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 6px;
+      padding: 6px 10px;
       font-size: 11px;
       font-weight: 600;
-      color: var(--primary);
-      border: 1px solid #e5e5e5;
+      color: var(--text);
       cursor: pointer;
       transition: all 0.2s;
-      max-width: 100%;
+      position: relative;
     }
 
     .event-badge:hover {
-      background: var(--white);
-      border-color: var(--accent);
+      background: white;
+      border-color: var(--primary);
       transform: translateY(-1px);
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .event-badge .name {
-      font-weight: 700;
+    .event-badge.has-params {
+      border-left: 3px solid var(--info);
     }
 
-    .event-badge .count {
+    .badge-count {
       background: var(--primary);
       color: white;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 4px;
       font-size: 10px;
+      margin-left: 4px;
     }
 
-    .event-badge .source {
+    .badge-source {
       font-size: 9px;
       text-transform: uppercase;
-      opacity: 0.7;
-    }
-
-    .event-badge.has-params {
-      border-left: 3px solid var(--accent);
-    }
-
-    /* Tooltip per parametri */
-    .event-badge:hover .params-tooltip {
-      display: block;
+      opacity: 0.6;
+      margin-left: 4px;
     }
 
     .params-tooltip {
       display: none;
       position: absolute;
+      bottom: 100%;
+      left: 0;
       background: var(--primary);
       color: white;
       padding: 8px 10px;
       border-radius: 6px;
       font-size: 11px;
-      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-family: 'Courier New', monospace;
       white-space: nowrap;
       z-index: 1000;
-      margin-top: 4px;
+      margin-bottom: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    .params-tooltip code {
-      background: rgba(255,255,255,0.1);
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-
-    /* Form detection alert */
-    .form-alert {
-      padding: 12px 16px;
-      background: rgba(6, 232, 159, 0.15);
-      border-left: 3px solid var(--success);
-      margin: 12px;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .form-alert.warning {
-      background: rgba(255, 79, 80, 0.15);
-      border-left-color: var(--danger);
-    }
-
-    .form-alert-title {
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .form-alert-text {
-      font-size: 13px;
-      color: var(--text-light);
+    .event-badge:hover .params-tooltip {
+      display: block;
     }
 
     /* Mobile Responsive */
     @media (max-width: 1024px) {
-      .monitor-panel {
-        width: 380px;
+      .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
       }
     }
 
     @media (max-width: 768px) {
       .header {
-        padding: 14px 16px;
-        flex-wrap: wrap;
-      }
-
-      .logo {
-        font-size: 18px;
-      }
-
-      .menu-toggle {
-        display: block;
-        order: 2;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--primary);
         flex-direction: column;
-        padding: 16px 24px;
-        gap: 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        z-index: 100;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .header-left {
-        flex: 1;
-      }
-
-      .header .url-display {
-        display: none;
+        gap: 12px;
+        align-items: flex-start;
       }
 
       .header-actions {
-        display: none;
-      }
-
-      /* Mobile: stack layout */
-      .main {
-        flex-direction: column;
-      }
-
-      .iframe-container {
-        height: 50vh;
-        min-height: 300px;
-      }
-
-      .monitor-panel {
         width: 100%;
-        height: 50vh;
-        border-left: none;
-        border-top: 1px solid #e5e5e5;
       }
 
-      .tracker-events {
+      .btn {
+        flex: 1;
+      }
+
+      .status-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
         flex-direction: column;
-      }
-
-      .event-badge {
-        width: 100%;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
     <div class="header-left">
-      <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
-      <div class="url-display" id="urlDisplay">Caricamento...</div>
+      <div class="logo">Form Audit Dashboard</div>
+      <div class="url-badge" id="urlDisplay">Caricamento...</div>
     </div>
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav class="nav-links" id="navLinks">
-      <a href="/">Scansione</a>
-      <a href="/bulk-scan.html">Bulk Scan</a>
-      <a href="/form-test.html" class="active">Form Test</a>
-    </nav>
     <div class="header-actions">
-      <button class="btn btn-outline" onclick="clearEvents()">Pulisci</button>
-      <button class="btn btn-accent" onclick="saveResults()">Salva</button>
+      <button class="btn btn-secondary" onclick="clearEvents()">Pulisci</button>
+      <button class="btn btn-primary" onclick="saveResults()">Salva Report</button>
     </div>
   </header>
 
-  <main class="main">
-    <!-- Iframe con il sito -->
-    <div class="iframe-container">
-      <div class="iframe-loading" id="iframeLoading">
-        <div class="spinner"></div>
-        <p>Caricamento sito in corso...</p>
-      </div>
-      <div class="iframe-error" id="iframeError" style="display:none;">
-        <p>Impossibile caricare il sito</p>
-        <p style="font-size:13px;margin-top:8px;">Il sito potrebbe bloccare l'embedding in iframe</p>
-      </div>
-      <iframe id="siteFrame" style="display:none;"></iframe>
-    </div>
-
-    <!-- Pannello monitor eventi -->
-    <div class="monitor-panel">
-      <div class="monitor-header">
-        <h2>Monitor Eventi</h2>
-        <div class="monitor-status">
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Left Panel: Site Preview -->
+    <div class="preview-panel">
+      <div class="panel-header">
+        <div class="panel-title">Anteprima Sito</div>
+        <div class="connection-status">
           <span class="status-dot" id="statusDot"></span>
           <span id="statusText">In attesa...</span>
         </div>
       </div>
-
-      <div class="monitor-tabs">
-        <div class="monitor-tab active" data-tab="all" onclick="switchTab('all')">
-          Tutti <span class="count" id="countAll">0</span>
+      <div class="iframe-container">
+        <div class="iframe-loading" id="iframeLoading">
+          <div class="spinner"></div>
+          <div>Caricamento sito in corso...</div>
         </div>
-        <div class="monitor-tab" data-tab="dataLayer" onclick="switchTab('dataLayer')">
-          DataLayer <span class="count" id="countDataLayer">0</span>
+        <div class="iframe-error" id="iframeError" style="display:none;">
+          <div>⚠️ Impossibile caricare il sito</div>
+          <div style="font-size:12px; margin-top:8px;">Il sito potrebbe bloccare l'embedding</div>
         </div>
-        <div class="monitor-tab" data-tab="network" onclick="switchTab('network')">
-          Network <span class="count" id="countNetwork">0</span>
-        </div>
+        <iframe id="siteFrame" style="display:none;"></iframe>
       </div>
+    </div>
 
-      <!-- Alert form detection -->
-      <div id="formAlert" style="display:none;"></div>
-
-      <div class="event-list" id="eventList">
-        <div class="empty-state">
-          <p>In attesa di eventi...</p>
-          <p style="font-size:12px;margin-top:8px;">Interagisci con il form nel sito</p>
-        </div>
-      </div>
-
-      <div class="summary-panel">
-        <div class="summary-title">📊 EVENTI RAGGRUPPATI</div>
-        
-        <!-- Status Bar Orizzontale -->
-        <div class="status-bar" id="statusBar">
-          <div class="status-pill empty">In attesa...</div>
-        </div>
-
-        <!-- Tracker Rows Container -->
-        <div id="trackerRows">
-          <div class="empty-state" style="padding: 20px;">
-            Nessun evento rilevato<br>Interagisci con il form per vedere gli eventi raggruppati
+    <!-- Right Panel: Dashboard -->
+    <div class="dashboard-panel">
+      <div class="dashboard-content">
+        <!-- Status Cards -->
+        <div class="status-cards" id="statusCards">
+          <div class="status-card info">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Eventi Totali</div>
+            <div class="card-value" id="cardTotal">0</div>
+            <div class="card-description">Monitorati in tempo reale</div>
           </div>
+          <div class="status-card info">
+            <div class="card-icon">📝</div>
+            <div class="card-title">Form Submit</div>
+            <div class="card-value" id="cardForm">0</div>
+            <div class="card-description">Azioni utente</div>
+          </div>
+          <div class="status-card info">
+            <div class="card-icon">📈</div>
+            <div class="card-title">Tracking GA4</div>
+            <div class="card-value" id="cardGA4">0</div>
+            <div class="card-description">Eventi inviati</div>
+          </div>
+          <div class="status-card info">
+            <div class="card-icon">📦</div>
+            <div class="card-title">DataLayer</div>
+            <div class="card-value" id="cardDL">0</div>
+            <div class="card-description">Eventi pushati</div>
+          </div>
+        </div>
+
+        <!-- Alert Box -->
+        <div class="alert-box" id="alertBox">
+          <div class="alert-icon" id="alertIcon">⚠️</div>
+          <div class="alert-content">
+            <div class="alert-title" id="alertTitle">Titolo Alert</div>
+            <div class="alert-text" id="alertText">Testo descrittivo</div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <div class="tab active" data-tab="all" onclick="switchTab('all')">
+            Tutti <span class="count" id="countAll">0</span>
+          </div>
+          <div class="tab" data-tab="dataLayer" onclick="switchTab('dataLayer')">
+            DataLayer <span class="count" id="countDataLayer">0</span>
+          </div>
+          <div class="tab" data-tab="network" onclick="switchTab('network')">
+            Network <span class="count" id="countNetwork">0</span>
+          </div>
+        </div>
+
+        <!-- Event List -->
+        <div class="event-list">
+          <div class="event-list-header">
+            <span>Eventi Live</span>
+            <span style="font-size:11px; color:var(--text-light); font-weight:400;">Ultimi 10</span>
+          </div>
+          <div class="event-list-content" id="eventList">
+            <div class="empty-state">In attesa di eventi...</div>
+          </div>
+        </div>
+
+        <!-- Tracker Grid -->
+        <div class="tracker-grid" id="trackerGrid">
+          <div class="empty-state">Nessun tracker rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
   <script>
     // Stato
@@ -736,16 +686,15 @@
     let targetUrl = '';
     let reportId = '';
 
-    // Contatori eventi form
+    // Contatori
     const formEventCounts = {
-      form_submit_dom: 0,      // Azione utente (submit del form)
-      form_submit_ga4: 0,      // Tracking GA4 inviato
+      form_submit_dom: 0,
+      form_submit_ga4: 0,
       generate_lead: 0,
       form_start: 0,
       purchase: 0
     };
 
-    // Eventi form da monitorare
     const FORM_EVENTS = ['form_submit', 'generate_lead', 'form_start', 'purchase', 'Lead', 'CompleteRegistration', 'Contact', 'SubmitApplication'];
 
     // Init
@@ -762,15 +711,10 @@
       }
 
       document.getElementById('urlDisplay').textContent = targetUrl;
-
-      // Carica iframe tramite proxy
       loadIframe(targetUrl);
-
-      // Ascolta messaggi dall'iframe
       window.addEventListener('message', handleMessage);
     }
 
-    // Carica iframe
     function loadIframe(url) {
       const iframe = document.getElementById('siteFrame');
       const proxyUrl = `/proxy?url=${encodeURIComponent(url)}`;
@@ -785,7 +729,6 @@
         document.getElementById('iframeError').style.display = 'block';
       };
 
-      // Timeout per errore
       setTimeout(() => {
         if (!monitorConnected) {
           document.getElementById('statusDot').className = 'status-dot waiting';
@@ -796,10 +739,8 @@
       iframe.src = proxyUrl;
     }
 
-    // Gestisce messaggi dall'iframe
     function handleMessage(event) {
       const { type, data, timestamp } = event.data || {};
-
       if (!type) return;
 
       if (type === 'monitor_ready') {
@@ -809,9 +750,7 @@
         return;
       }
 
-      // Gestisci navigazione interna - ricarica iframe con nuovo URL
       if (type === 'navigate' && data?.url) {
-        console.log('[Form Test] Navigazione a:', data.url);
         document.getElementById('urlDisplay').textContent = data.url;
         document.getElementById('statusDot').className = 'status-dot waiting';
         document.getElementById('statusText').textContent = 'Navigazione...';
@@ -820,39 +759,19 @@
         return;
       }
 
-      // Aggiungi evento
-      const eventObj = {
-        type,
-        data,
-        timestamp: timestamp || Date.now(),
-        id: events.length
-      };
-
+      const eventObj = { type, data, timestamp: timestamp || Date.now(), id: events.length };
       events.push(eventObj);
-
-      // Controlla eventi form
       checkFormEvent(eventObj);
-
-      // Aggiorna UI
-      updateEventList();
-      updateCounts();
-      updateEventDetails();
+      updateUI();
     }
 
-    // Controlla se è un evento form
     function checkFormEvent(eventObj) {
-      // Evento DOM: l'utente ha inviato il form
       if (eventObj.type === 'form_submit') {
         formEventCounts.form_submit_dom++;
-        showFormAlert(
-          '📝 Form Inviato (Azione Utente)',
-          `L'utente ha inviato il form "${eventObj.data.formId || 'senza ID'}". In attesa del tracking GA4...`,
-          false
-        );
+        showAlert('📝 Form Inviato', `L'utente ha inviato il form "${eventObj.data.formId || 'senza ID'}"`, 'warning');
         return;
       }
 
-      // Evento di tracking (dataLayer o network)
       let eventName = null;
       let source = '';
 
@@ -870,265 +789,166 @@
         if (normalizedName === 'form_submit' || normalizedName.includes('form_submit')) {
           formEventCounts.form_submit_ga4++;
           const isCorrect = formEventCounts.form_submit_dom > 0;
-          showFormAlert(
-            '✅ Tracking form_submit Inviato!',
-            `${source} ha inviato l'evento "form_submit" a GA4. ${isCorrect ? 'Il tracking funziona correttamente!' : ''}`,
-            true
-          );
+          showAlert('✅ Tracking Attivo', `${source} ha inviato form_submit a GA4. ${isCorrect ? 'Tutto ok!' : ''}`, 'success');
         }
         if (normalizedName === 'generate_lead' || normalizedName.includes('generate_lead') || normalizedName === 'lead') {
           formEventCounts.generate_lead++;
-          showFormAlert('✅ generate_lead Rilevato!', `${source} ha inviato l'evento generate_lead/Lead al tracking.`, true);
+          showAlert('✅ generate_lead Rilevato', `${source} ha inviato l'evento`, 'success');
         }
         if (normalizedName === 'form_start' || normalizedName.includes('form_start')) {
           formEventCounts.form_start++;
         }
         if (normalizedName === 'purchase' || normalizedName.includes('purchase')) {
           formEventCounts.purchase++;
-          showFormAlert('✅ purchase Rilevato!', `${source} ha inviato l'evento purchase al tracking.`, true);
+          showAlert('✅ purchase Rilevato', `${source} ha inviato l'evento`, 'success');
         }
       }
     }
 
-    // Mostra alert form
-    function showFormAlert(title, text, success = false) {
-      const alertDiv = document.getElementById('formAlert');
-      alertDiv.className = 'form-alert' + (success ? '' : ' warning');
-      alertDiv.innerHTML = `
-        <div class="form-alert-title">${title}</div>
-        <div class="form-alert-text">${text}</div>
-      `;
-      alertDiv.style.display = 'block';
+    function showAlert(title, text, type) {
+      const alertBox = document.getElementById('alertBox');
+      const alertIcon = document.getElementById('alertIcon');
+      const alertTitle = document.getElementById('alertTitle');
+      const alertText = document.getElementById('alertText');
 
-      // Nascondi dopo 5 secondi
+      alertBox.className = `alert-box show ${type}`;
+      
+      const icons = { success: '✅', warning: '⚠️', danger: '❌' };
+      alertIcon.textContent = icons[type] || 'ℹ️';
+      alertTitle.textContent = title;
+      alertText.textContent = text;
+
       setTimeout(() => {
-        alertDiv.style.display = 'none';
+        alertBox.classList.remove('show');
       }, 5000);
     }
 
-    // Aggiorna lista eventi
+    function updateUI() {
+      updateCards();
+      updateEventList();
+      updateCounts();
+      updateTrackerGrid();
+    }
+
+    function updateCards() {
+      document.getElementById('cardTotal').textContent = events.length;
+      document.getElementById('cardForm').textContent = formEventCounts.form_submit_dom;
+      document.getElementById('cardGA4').textContent = formEventCounts.form_submit_ga4;
+      document.getElementById('cardDL').textContent = events.filter(e => e.type === 'dataLayer').length;
+    }
+
     function updateEventList() {
       const list = document.getElementById('eventList');
-      const filteredEvents = currentTab === 'all'
-        ? events
-        : events.filter(e => e.type === currentTab);
+      const filteredEvents = currentTab === 'all' ? events : events.filter(e => e.type === currentTab);
 
       if (filteredEvents.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <p>Nessun evento</p>
-          </div>
-        `;
+        list.innerHTML = '<div class="empty-state">Nessun evento</div>';
         return;
       }
 
-      list.innerHTML = filteredEvents.slice().reverse().map(e => {
-        const isFormEvent = FORM_EVENTS.some(fe =>
-          e.data?.event?.toLowerCase()?.includes(fe.toLowerCase())
-        ) || e.type === 'form_submit';
-
-        let content = '';
-        let description = '';
-
-        if (e.type === 'dataLayer' && e.data) {
-          const eventName = e.data.event || 'unknown';
-          // Descrizioni più parlanti per eventi comuni
-          if (eventName === 'gtm.js') {
-            description = 'GTM inizializzato';
-          } else if (eventName === 'gtm.dom') {
-            description = 'DOM pronto per GTM';
-          } else if (eventName === 'gtm.load') {
-            description = 'Pagina completamente caricata';
-          } else if (eventName === 'gtm.click') {
-            const classes = e.data.data?.['gtm.elementClasses'] || '';
-            description = 'Click rilevato' + (classes ? ' (' + classes.substring(0, 30) + ')' : '');
-          } else if (eventName === 'gtm.scrollDepth') {
-            const threshold = e.data.data?.['gtm.scrollThreshold'] || '';
-            description = 'Scroll al ' + threshold + '%';
-          } else if (eventName === 'gtm.linkClick') {
-            description = 'Click su link';
-          } else {
-            const dataStr = e.data.data ? JSON.stringify(e.data.data) : '';
-            description = dataStr ? dataStr.substring(0, 100) : eventName;
-          }
-          content = '<div class="event-type">📊 ' + eventName + '</div>' +
-            '<div class="event-detail">' + description + '</div>';
-        } else if (e.type === 'network' && e.data) {
-          const tracker = e.data.tracker || 'Unknown';
-          const eventName = e.data.event;
-          let icon = '🌐';
-          let desc = '';
-
-          if (tracker === 'GA4') {
-            icon = '📈';
-            if (eventName === 'page_view') {
-              desc = 'Visualizzazione pagina inviata a GA4';
-            } else if (eventName?.includes('form_submit')) {
-              desc = '✅ Evento form_submit inviato correttamente a GA4';
-            } else if (eventName?.includes('scroll')) {
-              desc = 'Evento scroll inviato a GA4';
-            } else if (eventName?.includes('click')) {
-              desc = 'Evento click inviato a GA4';
-            } else {
-              desc = 'Evento "' + (eventName || 'request') + '" inviato a GA4';
-            }
-          } else if (tracker === 'GTM') {
-            icon = '🏷️';
-            desc = 'Caricamento script GTM';
-          } else if (tracker === 'Facebook') {
-            icon = '📘';
-            desc = 'Evento Facebook Pixel';
-          } else {
-            desc = e.data.url ? e.data.url.substring(0, 80) : '';
-          }
-
-          content = '<span class="event-tracker">' + tracker + '</span>' +
-            '<span class="event-type">' + icon + ' ' + (eventName || 'request') + '</span>' +
-            '<div class="event-detail">' + desc + '</div>';
+      const recentEvents = filteredEvents.slice(-10).reverse();
+      
+      list.innerHTML = recentEvents.map(e => {
+        const isFormEvent = FORM_EVENTS.some(fe => e.data?.event?.toLowerCase()?.includes(fe.toLowerCase())) || e.type === 'form_submit';
+        
+        let icon = '📊';
+        let name = e.type;
+        let details = '';
+        
+        if (e.type === 'dataLayer') {
+          icon = '📦';
+          name = e.data.event || 'unknown';
+          details = e.data.data ? JSON.stringify(e.data.data).substring(0, 60) : '';
+        } else if (e.type === 'network') {
+          icon = '🌐';
+          name = e.data.event || 'request';
+          details = e.data.tracker || '';
         } else if (e.type === 'form_submit') {
-          content = '<div class="event-type">📝 Form Inviato (Azione Utente)</div>' +
-            '<div class="event-detail">L\'utente ha cliccato submit sul form "' + (e.data?.formId || 'senza ID') + '"</div>';
-        } else if (e.type === 'anchor_click') {
-          content = '<div class="event-type">🔗 Click Ancora</div>' +
-            '<div class="event-detail">Navigazione a ' + (e.data?.hash || '') + '</div>';
-        } else {
-          const dataStr = e.data ? JSON.stringify(e.data) : '';
-          content = '<div class="event-type">' + (e.type || 'event') + '</div>' +
-            '<div class="event-detail">' + (dataStr ? dataStr.substring(0, 100) : '-') + '</div>';
+          icon = '📝';
+          name = 'Form Submit';
+          details = e.data.formId || '';
         }
 
         const time = new Date(e.timestamp).toLocaleTimeString('it-IT');
+        const highlightClass = isFormEvent ? 'highlight' : '';
 
-        return '<div class="event-item ' + (isFormEvent ? 'highlight' : '') + '">' +
-          content +
-          '<div class="event-time">' + time + '</div>' +
-          '</div>';
+        return `
+          <div class="event-item ${highlightClass}">
+            <div class="event-icon">${icon}</div>
+            <div class="event-content">
+              <div class="event-name">${name}</div>
+              ${details ? `<div class="event-details">${details}</div>` : ''}
+            </div>
+            <div class="event-time">${time}</div>
+          </div>
+        `;
       }).join('');
     }
 
-    // Aggiorna contatori tab
     function updateCounts() {
       document.getElementById('countAll').textContent = events.length;
       document.getElementById('countDataLayer').textContent = events.filter(e => e.type === 'dataLayer').length;
       document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
     }
 
-    // Aggiorna dettagli avanzati degli eventi - STRUTTURA ORIZZONTALE
-    function updateEventDetails() {
-      const statusDiv = document.getElementById('statusBar');
-      const trackerRowsDiv = document.getElementById('trackerRows');
+    function updateTrackerGrid() {
+      const grid = document.getElementById('trackerGrid');
       
-      if (events.length === 0) {
-        statusDiv.innerHTML = '<div class="status-pill empty">In attesa...</div>';
-        trackerRowsDiv.innerHTML = '<div class="empty-state" style="padding: 20px;">Nessun evento rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>';
-        return;
-      }
-
-      // 1. Filtra eventi di sistema poco utili
+      // Filtra eventi utili
       const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load', 'gtm.scrollDepth', 'gtm.click', 'gtm.linkClick'];
       const IGNORED_EVENTS = ['scroll', 'click', 'mouseover', 'mouseenter', 'mouseleave'];
       
-      // 2. Eventi form submit (DOM)
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
-      
-      // 3. Eventi network (Tracker)
       const networkEvents = events.filter(e => 
-        e.type === 'network' && 
-        e.data?.event && 
+        e.type === 'network' && e.data?.event && 
         !SYSTEM_EVENTS.includes(e.data.event) &&
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
-      
-      // 4. Eventi dataLayer
       const dataLayerEvents = events.filter(e => 
-        e.type === 'dataLayer' && 
-        e.data?.event && 
+        e.type === 'dataLayer' && e.data?.event && 
         !SYSTEM_EVENTS.includes(e.data.event) &&
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
 
-      // 5. Status Bar Orizzontale
-      const hasFormSubmit = formSubmitEvents.length > 0;
-      const hasGa4Events = networkEvents.some(e => e.data.tracker === 'GA4' && e.data.event && e.data.event.includes('form_submit'));
-      const hasDataLayer = dataLayerEvents.length > 0;
-      const hasAnyEvents = networkEvents.length > 0;
-
-      let statusHTML = '';
-
-      if (hasFormSubmit && hasGa4Events) {
-        statusHTML += '<div class="status-pill success">✅ Tracking Completo</div>';
-      } else if (hasFormSubmit && !hasGa4Events) {
-        statusHTML += '<div class="status-pill warning">⚠️ In Attesa GA4</div>';
-      } else if (!hasFormSubmit && hasAnyEvents) {
-        statusHTML += '<div class="status-pill info">ℹ️ Eventi senza Form</div>';
-      } else {
-        statusHTML += '<div class="status-pill empty">Nessun evento</div>';
+      if (formSubmitEvents.length === 0 && networkEvents.length === 0 && dataLayerEvents.length === 0) {
+        grid.innerHTML = '<div class="empty-state">Nessun tracker rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>';
+        return;
       }
 
-      // Aggiungi info aggiuntive
-      if (hasFormSubmit) statusHTML += `<div class="status-pill info">📝 ${formSubmitEvents.length} Form</div>`;
-      if (hasGa4Events) statusHTML += `<div class="status-pill success">📊 ${networkEvents.filter(e => e.data.tracker === 'GA4').length} GA4</div>`;
-      if (hasDataLayer) statusHTML += `<div class="status-pill info">📦 ${dataLayerEvents.length} DL</div>`;
-
-      statusDiv.innerHTML = statusHTML;
-
-      // 6. Raggruppa per Tracker
-      const groupedByTracker = {};
+      // Raggruppa per tracker
+      const grouped = {};
       
-      // 6.1. DOM events
       if (formSubmitEvents.length > 0) {
-        if (!groupedByTracker['DOM']) groupedByTracker['DOM'] = [];
-        formSubmitEvents.forEach(e => {
-          const formId = e.data?.formId || 'senza ID';
-          const action = e.data?.formAction || 'N/A';
-          groupedByTracker['DOM'].push({
-            name: 'Form Submit',
-            details: `${formId} → ${action}`,
-            count: 1,
-            source: 'user'
-          });
-        });
+        grouped['DOM'] = formSubmitEvents.map(e => ({
+          name: 'Form Submit',
+          details: `${e.data?.formId || 'ID'} → ${e.data?.formAction || 'N/A'}`,
+          count: 1,
+          source: 'user'
+        }));
       }
 
-      // 6.2. Network events per tracker
       networkEvents.forEach(e => {
         const tracker = e.data.tracker || 'Unknown';
-        if (!groupedByTracker[tracker]) groupedByTracker[tracker] = [];
-        
-        const params = e.data.params ? JSON.stringify(e.data.params) : '';
-        groupedByTracker[tracker].push({
+        if (!grouped[tracker]) grouped[tracker] = [];
+        grouped[tracker].push({
           name: e.data.event,
-          details: params ? params.substring(0, 80) : '',
+          details: e.data.params ? JSON.stringify(e.data.params) : '',
           count: 1,
           source: 'network'
         });
       });
 
-      // 6.3. DataLayer events
       if (dataLayerEvents.length > 0) {
-        if (!groupedByTracker['DataLayer']) groupedByTracker['DataLayer'] = [];
-        dataLayerEvents.forEach(e => {
-          const data = e.data.data ? JSON.stringify(e.data.data) : '';
-          groupedByTracker['DataLayer'].push({
-            name: e.data.event,
-            details: data.substring(0, 80),
-            count: 1,
-            source: 'datalayer'
-          });
-        });
+        grouped['DataLayer'] = dataLayerEvents.map(e => ({
+          name: e.data.event,
+          details: e.data.data ? JSON.stringify(e.data.data) : '',
+          count: 1,
+          source: 'datalayer'
+        }));
       }
 
-      // 7. Genera HTML Tracker Rows Orizzontali
-      const trackerIcons = {
-        'DOM': '📝',
-        'GA4': '📊',
-        'GTM': '🏷️',
-        'Facebook': '📘',
-        'DataLayer': '📦'
-      };
-
-      // Funzione per raggruppare eventi per nome
-      const groupEventsByName = (items) => {
+      // Raggruppa per nome
+      const groupByName = (items) => {
         const grouped = {};
         items.forEach(item => {
           const key = item.name;
@@ -1136,89 +956,68 @@
             grouped[key] = { ...item, count: 0, allDetails: [] };
           }
           grouped[key].count++;
-          if (item.details) {
-            grouped[key].allDetails.push(item.details);
-          }
+          if (item.details) grouped[key].allDetails.push(item.details);
         });
         return Object.values(grouped);
       };
 
-      // Ordina tracker per importanza
-      const trackerOrder = ['DOM', 'GA4', 'GTM', 'Facebook', 'DataLayer'];
-      const sortedTrackers = Object.keys(groupedByTracker).sort((a, b) => {
-        const indexA = trackerOrder.indexOf(a);
-        const indexB = trackerOrder.indexOf(b);
+      // Genera HTML
+      const icons = { 'DOM': '📝', 'GA4': '📈', 'GTM': '🏷️', 'Facebook': '📘', 'DataLayer': '📦' };
+      const order = ['DOM', 'GA4', 'GTM', 'Facebook', 'DataLayer'];
+      const sortedTrackers = Object.keys(grouped).sort((a, b) => {
+        const indexA = order.indexOf(a);
+        const indexB = order.indexOf(b);
         if (indexA === -1 && indexB === -1) return a.localeCompare(b);
         if (indexA === -1) return 1;
         if (indexB === -1) return -1;
         return indexA - indexB;
       });
 
-      let rowsHTML = '';
+      grid.innerHTML = sortedTrackers.map(tracker => {
+        const events = groupByName(grouped[tracker]);
+        const totalEvents = grouped[tracker].length;
 
-      sortedTrackers.forEach(tracker => {
-        const events = groupedByTracker[tracker];
-        const groupedEvents = groupEventsByName(events);
-        const totalEvents = events.length;
-
-        // Genera badges orizzontali
-        const badgesHTML = groupedEvents.map(event => {
-          const hasParams = event.allDetails.length > 0;
-          const paramsText = hasParams ? event.allDetails[0] : '';
-          
-          return `
-            <div class="event-badge ${hasParams ? 'has-params' : ''}" style="position: relative;">
-              <span class="name">${event.name}</span>
-              ${event.count > 1 ? `<span class="count">${event.count}</span>` : ''}
-              <span class="source">${event.source}</span>
-              ${hasParams ? `
-                <div class="params-tooltip">
-                  <code>${paramsText}</code>
-                  ${event.allDetails.length > 1 ? `<br><small>+${event.allDetails.length - 1} altri</small>` : ''}
-                </div>
-              ` : ''}
-            </div>
-          `;
-        }).join('');
-
-        rowsHTML += `
-          <div class="tracker-row">
+        return `
+          <div class="tracker-card">
             <div class="tracker-header">
-              <div class="tracker-info">
-                <span class="tracker-icon">${trackerIcons[tracker] || '📡'}</span>
-                ${tracker}
-              </div>
-              <span class="event-count">${totalEvents} eventi</span>
+              <span>${icons[tracker] || '📡'} ${tracker}</span>
+              <span>${totalEvents} eventi</span>
             </div>
             <div class="tracker-events">
-              ${badgesHTML}
+              ${events.map(event => {
+                const hasParams = event.allDetails.length > 0;
+                const paramsText = hasParams ? event.allDetails[0].substring(0, 50) : '';
+                return `
+                  <div class="event-badge ${hasParams ? 'has-params' : ''}">
+                    ${event.name}
+                    ${event.count > 1 ? `<span class="badge-count">${event.count}</span>` : ''}
+                    <span class="badge-source">${event.source}</span>
+                    ${hasParams ? `<div class="params-tooltip">${paramsText}</div>` : ''}
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
-      });
-
-      trackerRowsDiv.innerHTML = rowsHTML || '<div class="empty-events">Nessun evento significativo rilevato</div>';
+      }).join('');
     }
 
-    // Switch tab
     function switchTab(tab) {
       currentTab = tab;
-      document.querySelectorAll('.monitor-tab').forEach(t => {
+      document.querySelectorAll('.tab').forEach(t => {
         t.classList.toggle('active', t.dataset.tab === tab);
       });
       updateEventList();
     }
 
-    // Pulisci eventi
     function clearEvents() {
       events = [];
       Object.keys(formEventCounts).forEach(k => formEventCounts[k] = 0);
-      updateEventList();
-      updateCounts();
-      updateEventDetails();
+      updateUI();
+      document.getElementById('statusDot').className = 'status-dot';
+      document.getElementById('statusText').textContent = 'In attesa...';
     }
 
-    // Salva risultati
     async function saveResults() {
       const results = {
         url: targetUrl,
@@ -1228,7 +1027,6 @@
         success: formEventCounts.form_submit > 0 || formEventCounts.generate_lead > 0
       };
 
-      // Se abbiamo un reportId, aggiorna il report
       if (reportId) {
         try {
           const response = await fetch(`/api/report/${reportId}/form-test`, {
@@ -1240,38 +1038,36 @@
           const data = await response.json();
 
           if (data.success) {
-            // Notifica la finestra parent di ricaricare il report
             if (window.opener && !window.opener.closed) {
               window.opener.postMessage({ type: 'formTestComplete', reportId, eventsAdded: data.eventsAdded }, '*');
               window.opener.location.reload();
             }
-            alert(`Risultati salvati! ${data.eventsAdded} eventi aggiunti al report.`);
-            window.close();
+            showAlert('✅ Report Salvato', `${data.eventsAdded} eventi aggiunti al report`, 'success');
+            setTimeout(() => window.close(), 2000);
             return;
           } else {
-            alert('Errore nel salvataggio: ' + (data.error || 'Errore sconosciuto'));
+            showAlert('❌ Errore', data.error || 'Errore sconosciuto', 'danger');
           }
         } catch (e) {
-          console.error('Error saving:', e);
-          alert('Errore di connessione: ' + e.message);
+          showAlert('❌ Errore di Connessione', e.message, 'danger');
         }
       }
 
-      // Fallback: download JSON
       const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `form-test-${Date.now()}.json`;
+      a.download = `form-audit-${Date.now()}.json`;
       a.click();
+      showAlert('✅ Report Scaricato', 'File JSON salvato localmente', 'success');
     }
 
-    // Mobile menu toggle
+    // Mobile menu
     const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+      });
+    }
 
     // Avvia
     init();
