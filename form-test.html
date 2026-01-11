@@ -205,7 +205,7 @@
 
     /* Event monitor panel */
     .monitor-panel {
-      width: 400px;
+      width: 480px;
       background: var(--white);
       border-left: 1px solid #e5e5e5;
       display: flex;
@@ -355,7 +355,7 @@
       color: var(--text-light);
     }
 
-    /* Summary panel */
+    /* Summary panel - ORIZZONTALE */
     .summary-panel {
       padding: 16px 20px;
       border-top: 1px solid #e5e5e5;
@@ -371,16 +371,59 @@
       margin-bottom: 12px;
     }
 
-    /* Tracker Cards - NUOVO DESIGN */
-    .tracker-card {
+    /* Status Bar Orizzontale */
+    .status-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .status-pill {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-pill.success {
+      background: rgba(6, 232, 159, 0.2);
+      color: #0a7a52;
+      border: 1px solid var(--success);
+    }
+
+    .status-pill.warning {
+      background: rgba(255, 184, 77, 0.2);
+      color: #8a6d2b;
+      border: 1px solid var(--warning);
+    }
+
+    .status-pill.info {
+      background: rgba(59, 130, 246, 0.2);
+      color: #1d4ed8;
+      border: 1px solid #3b82f6;
+    }
+
+    .status-pill.empty {
+      background: #e5e5e5;
+      color: var(--text-light);
+      border: 1px dashed #ccc;
+    }
+
+    /* Tracker Rows - ORIZZONTALE */
+    .tracker-row {
       background: var(--white);
       border-radius: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       overflow: hidden;
       border: 1px solid #e5e5e5;
     }
 
-    .tracker-card-header {
+    .tracker-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -389,7 +432,7 @@
       color: white;
     }
 
-    .tracker-card-header .tracker-info {
+    .tracker-header .tracker-info {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -397,11 +440,11 @@
       font-weight: 600;
     }
 
-    .tracker-card-header .tracker-icon {
+    .tracker-header .tracker-icon {
       font-size: 16px;
     }
 
-    .tracker-card-header .event-count {
+    .tracker-header .event-count {
       background: rgba(255,255,255,0.2);
       padding: 2px 10px;
       border-radius: 12px;
@@ -409,124 +452,81 @@
     }
 
     .tracker-events {
-      padding: 8px 0;
-    }
-
-    .event-row {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: 8px 14px;
-      border-bottom: 1px solid #f5f5f5;
-      font-size: 12px;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 14px;
     }
 
-    .event-row:last-child {
-      border-bottom: none;
-    }
-
-    .event-row:hover {
-      background: #fafbfc;
-    }
-
-    .event-details {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .event-name {
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 2px;
-    }
-
-    .event-params {
-      color: var(--text-light);
-      font-size: 11px;
-      word-break: break-word;
-      line-height: 1.4;
-    }
-
-    .event-params code {
-      background: #f1f5f9;
-      padding: 1px 4px;
-      border-radius: 3px;
-      font-family: 'SF Mono', Monaco, Consolas, monospace;
-      font-size: 10px;
-    }
-
-    .event-meta {
-      display: flex;
+    .event-badge {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      flex-shrink: 0;
-      margin-left: 8px;
-    }
-
-    .count-badge {
+      padding: 6px 10px;
       background: var(--bg);
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-size: 10px;
-      color: var(--text-light);
+      border-radius: 6px;
+      font-size: 11px;
       font-weight: 600;
+      color: var(--primary);
+      border: 1px solid #e5e5e5;
+      cursor: pointer;
+      transition: all 0.2s;
+      max-width: 100%;
     }
 
-    .source-badge {
-      padding: 2px 8px;
+    .event-badge:hover {
+      background: var(--white);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .event-badge .name {
+      font-weight: 700;
+    }
+
+    .event-badge .count {
+      background: var(--primary);
+      color: white;
+      padding: 1px 6px;
       border-radius: 4px;
       font-size: 10px;
-      font-weight: 500;
     }
 
-    .source-badge.network {
-      background: #dbeafe;
-      color: #1d4ed8;
+    .event-badge .source {
+      font-size: 9px;
+      text-transform: uppercase;
+      opacity: 0.7;
     }
 
-    .source-badge.datalayer {
-      background: #f3e8ff;
-      color: #7c3aed;
+    .event-badge.has-params {
+      border-left: 3px solid var(--accent);
     }
 
-    .source-badge.user {
-      background: #dcfce7;
-      color: #15803d;
+    /* Tooltip per parametri */
+    .event-badge:hover .params-tooltip {
+      display: block;
     }
 
-    .empty-events {
-      text-align: center;
-      padding: 20px;
-      color: var(--text-light);
-      font-size: 12px;
-      line-height: 1.6;
+    .params-tooltip {
+      display: none;
+      position: absolute;
+      background: var(--primary);
+      color: white;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      white-space: nowrap;
+      z-index: 1000;
+      margin-top: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    /* Status box */
-    .status-box {
-      padding: 12px 14px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .status-box.success {
-      background: rgba(6, 232, 159, 0.15);
-      color: #0a7a52;
-      border-left: 4px solid var(--success);
-    }
-
-    .status-box.warning {
-      background: rgba(255, 184, 77, 0.15);
-      color: #8a6d2b;
-      border-left: 4px solid var(--warning);
-    }
-
-    .status-box.info {
-      background: rgba(59, 130, 246, 0.1);
-      color: #1d4ed8;
-      border-left: 4px solid #3b82f6;
+    .params-tooltip code {
+      background: rgba(255,255,255,0.1);
+      padding: 2px 4px;
+      border-radius: 3px;
     }
 
     /* Form detection alert */
@@ -554,28 +554,10 @@
       color: var(--text-light);
     }
 
-    /* Tracking status */
-    .tracking-status {
-      padding: 10px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .tracking-status.success {
-      background: rgba(6, 232, 159, 0.15);
-      color: #0a7a52;
-    }
-
-    .tracking-status.warning {
-      background: rgba(255, 184, 77, 0.15);
-      color: #8a6d2b;
-    }
-
     /* Mobile Responsive */
     @media (max-width: 1024px) {
       .monitor-panel {
-        width: 320px;
+        width: 380px;
       }
     }
 
@@ -648,6 +630,14 @@
         height: 50vh;
         border-left: none;
         border-top: 1px solid #e5e5e5;
+      }
+
+      .tracker-events {
+        flex-direction: column;
+      }
+
+      .event-badge {
+        width: 100%;
       }
     }
   </style>
@@ -722,8 +712,17 @@
 
       <div class="summary-panel">
         <div class="summary-title">📊 EVENTI RAGGRUPPATI</div>
-        <div id="eventDetails">
-          <div class="empty-events">In attesa di eventi...<br>Interagisci con il form per vedere gli eventi raggruppati.</div>
+        
+        <!-- Status Bar Orizzontale -->
+        <div class="status-bar" id="statusBar">
+          <div class="status-pill empty">In attesa...</div>
+        </div>
+
+        <!-- Tracker Rows Container -->
+        <div id="trackerRows">
+          <div class="empty-state" style="padding: 20px;">
+            Nessun evento rilevato<br>Interagisci con il form per vedere gli eventi raggruppati
+          </div>
         </div>
       </div>
     </div>
@@ -1014,12 +1013,14 @@
       document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
     }
 
-    // Aggiorna dettagli avanzati degli eventi - NUOVA STRUTTURA SEMPLIFICATA
+    // Aggiorna dettagli avanzati degli eventi - STRUTTURA ORIZZONTALE
     function updateEventDetails() {
-      const detailsDiv = document.getElementById('eventDetails');
+      const statusDiv = document.getElementById('statusBar');
+      const trackerRowsDiv = document.getElementById('trackerRows');
       
       if (events.length === 0) {
-        detailsDiv.innerHTML = '<div class="empty-events">In attesa di eventi...<br>Interagisci con il form per vedere gli eventi raggruppati.</div>';
+        statusDiv.innerHTML = '<div class="status-pill empty">In attesa...</div>';
+        trackerRowsDiv.innerHTML = '<div class="empty-state" style="padding: 20px;">Nessun evento rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>';
         return;
       }
 
@@ -1046,10 +1047,35 @@
         !IGNORED_EVENTS.some(ie => e.data.event.toLowerCase().includes(ie))
       );
 
-      // 5. Raggruppa per Tracker
+      // 5. Status Bar Orizzontale
+      const hasFormSubmit = formSubmitEvents.length > 0;
+      const hasGa4Events = networkEvents.some(e => e.data.tracker === 'GA4' && e.data.event && e.data.event.includes('form_submit'));
+      const hasDataLayer = dataLayerEvents.length > 0;
+      const hasAnyEvents = networkEvents.length > 0;
+
+      let statusHTML = '';
+
+      if (hasFormSubmit && hasGa4Events) {
+        statusHTML += '<div class="status-pill success">✅ Tracking Completo</div>';
+      } else if (hasFormSubmit && !hasGa4Events) {
+        statusHTML += '<div class="status-pill warning">⚠️ In Attesa GA4</div>';
+      } else if (!hasFormSubmit && hasAnyEvents) {
+        statusHTML += '<div class="status-pill info">ℹ️ Eventi senza Form</div>';
+      } else {
+        statusHTML += '<div class="status-pill empty">Nessun evento</div>';
+      }
+
+      // Aggiungi info aggiuntive
+      if (hasFormSubmit) statusHTML += `<div class="status-pill info">📝 ${formSubmitEvents.length} Form</div>`;
+      if (hasGa4Events) statusHTML += `<div class="status-pill success">📊 ${networkEvents.filter(e => e.data.tracker === 'GA4').length} GA4</div>`;
+      if (hasDataLayer) statusHTML += `<div class="status-pill info">📦 ${dataLayerEvents.length} DL</div>`;
+
+      statusDiv.innerHTML = statusHTML;
+
+      // 6. Raggruppa per Tracker
       const groupedByTracker = {};
       
-      // 5.1. DOM events
+      // 6.1. DOM events
       if (formSubmitEvents.length > 0) {
         if (!groupedByTracker['DOM']) groupedByTracker['DOM'] = [];
         formSubmitEvents.forEach(e => {
@@ -1064,7 +1090,7 @@
         });
       }
 
-      // 5.2. Network events per tracker
+      // 6.2. Network events per tracker
       networkEvents.forEach(e => {
         const tracker = e.data.tracker || 'Unknown';
         if (!groupedByTracker[tracker]) groupedByTracker[tracker] = [];
@@ -1078,7 +1104,7 @@
         });
       });
 
-      // 5.3. DataLayer events
+      // 6.3. DataLayer events
       if (dataLayerEvents.length > 0) {
         if (!groupedByTracker['DataLayer']) groupedByTracker['DataLayer'] = [];
         dataLayerEvents.forEach(e => {
@@ -1092,22 +1118,7 @@
         });
       }
 
-      // 6. Genera HTML con nuovo design
-      let html = '';
-
-      // 6.1. Status finale
-      const hasFormSubmit = formSubmitEvents.length > 0;
-      const hasGa4Events = networkEvents.some(e => e.data.tracker === 'GA4' && e.data.event && e.data.event.includes('form_submit'));
-      
-      if (hasFormSubmit && hasGa4Events) {
-        html += '<div class="status-box success">✅ Tracking Completo — Form submit rilevato in GA4</div>';
-      } else if (hasFormSubmit && !hasGa4Events) {
-        html += '<div class="status-box warning">⚠️ In Attesa — Form inviato ma nessun evento GA4 form_submit</div>';
-      } else if (!hasFormSubmit && networkEvents.length > 0) {
-        html += '<div class="status-box info">ℹ️ Eventi rilevati ma nessun form submit DOM</div>';
-      }
-
-      // 6.2. Tracker cards
+      // 7. Genera HTML Tracker Rows Orizzontali
       const trackerIcons = {
         'DOM': '📝',
         'GA4': '📊',
@@ -1143,14 +1154,36 @@
         return indexA - indexB;
       });
 
+      let rowsHTML = '';
+
       sortedTrackers.forEach(tracker => {
         const events = groupedByTracker[tracker];
         const groupedEvents = groupEventsByName(events);
         const totalEvents = events.length;
 
-        html += `
-          <div class="tracker-card">
-            <div class="tracker-card-header">
+        // Genera badges orizzontali
+        const badgesHTML = groupedEvents.map(event => {
+          const hasParams = event.allDetails.length > 0;
+          const paramsText = hasParams ? event.allDetails[0] : '';
+          
+          return `
+            <div class="event-badge ${hasParams ? 'has-params' : ''}" style="position: relative;">
+              <span class="name">${event.name}</span>
+              ${event.count > 1 ? `<span class="count">${event.count}</span>` : ''}
+              <span class="source">${event.source}</span>
+              ${hasParams ? `
+                <div class="params-tooltip">
+                  <code>${paramsText}</code>
+                  ${event.allDetails.length > 1 ? `<br><small>+${event.allDetails.length - 1} altri</small>` : ''}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+        rowsHTML += `
+          <div class="tracker-row">
+            <div class="tracker-header">
               <div class="tracker-info">
                 <span class="tracker-icon">${trackerIcons[tracker] || '📡'}</span>
                 ${tracker}
@@ -1158,29 +1191,13 @@
               <span class="event-count">${totalEvents} eventi</span>
             </div>
             <div class="tracker-events">
-              ${groupedEvents.map(event => `
-                <div class="event-row">
-                  <div class="event-details">
-                    <div class="event-name">${event.name}</div>
-                    ${event.allDetails.length > 0 ? `
-                      <div class="event-params">
-                        ${event.allDetails.slice(0, 2).map(d => `<code>${d}</code>`).join(' ')}
-                        ${event.allDetails.length > 2 ? `<span>+${event.allDetails.length - 2} altri</span>` : ''}
-                      </div>
-                    ` : ''}
-                  </div>
-                  <div class="event-meta">
-                    ${event.count > 1 ? `<span class="count-badge">${event.count}x</span>` : ''}
-                    <span class="source-badge ${event.source}">${event.source}</span>
-                  </div>
-                </div>
-              `).join('')}
+              ${badgesHTML}
             </div>
           </div>
         `;
       });
 
-      detailsDiv.innerHTML = html || '<div class="empty-events">Nessun evento significativo rilevato.<br>Interagisci con il form per vedere gli eventi.</div>';
+      trackerRowsDiv.innerHTML = rowsHTML || '<div class="empty-events">Nessun evento significativo rilevato</div>';
     }
 
     // Switch tab
@@ -1260,4 +1277,4 @@
     init();
   </script>
 </body>
-</html>      }
+</html>
