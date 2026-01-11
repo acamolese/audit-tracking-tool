@@ -902,7 +902,7 @@
     function updateTrackerGrid() {
       const grid = document.getElementById('trackerGrid');
       
-      // Filtra eventi utili - MANTENI TUTTI GLI EVENTI SIGNIFICATIVI
+      // Filtra eventi utili - ALLINEATO CON SCANNER.JS
       const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load'];
       
       const formSubmitEvents = events.filter(e => e.type === 'form_submit');
@@ -937,56 +937,102 @@
         }));
       }
 
-      // Network events - Migliorato rilevamento tracker
+      // Network events - LOGICA ALLINEATA CON SCANNER.JS
       networkEvents.forEach(e => {
         let tracker = e.data.tracker || 'Unknown';
-        
-        // Miglioramento: identifica tracker da URL o nome evento
         const url = e.data.url || '';
         const eventName = e.data.event || '';
         
-        // Facebook Pixel
-        if (url.includes('facebook.com') || url.includes('fbq') || 
-            eventName.includes('fb_') || eventName.includes('facebook') ||
+        // === LOGICA DI RILEVAMENTO ALLINEATA CON SCANNER.JS ===
+        
+        // Facebook Pixel (pattern: facebook.com/tr)
+        if (url.match(/facebook\.com\/tr/i) || 
+            url.match(/connect\.facebook\.net|facebook\.net/i) ||
             tracker.toLowerCase().includes('facebook')) {
           tracker = 'Facebook';
         }
         // Google Analytics 4
-        else if (url.includes('google-analytics.com') || url.includes('analytics.google.com') ||
-                 eventName.includes('ga_') || tracker.toLowerCase().includes('ga4')) {
+        else if (url.match(/google-analytics\.com|analytics\.google\.com|\/g\/collect|stape\.net|stape\.io|sgtm\./i) ||
+                 tracker.toLowerCase().includes('ga4')) {
           tracker = 'GA4';
         }
         // Google Tag Manager
-        else if (url.includes('googletagmanager.com') || tracker.toLowerCase().includes('gtm')) {
+        else if (url.match(/googletagmanager\.com\/gtm\.js|googletagmanager\.com\/gtag\/js/i) ||
+                 tracker.toLowerCase().includes('gtm')) {
           tracker = 'GTM';
         }
-        // Altri tracker comuni
-        else if (url.includes('hotjar.com')) {
-          tracker = 'Hotjar';
+        // Google Ads
+        else if (url.match(/googleadservices\.com|googlesyndication\.com|doubleclick\.net|googleads\./i)) {
+          tracker = 'Google Ads';
         }
-        else if (url.includes('clarity.ms')) {
+        // Facebook SDK
+        else if (url.match(/connect\.facebook\.net|facebook\.net/i)) {
+          tracker = 'Facebook SDK';
+        }
+        // Clarity
+        else if (url.match(/clarity\.ms/i)) {
           tracker = 'Clarity';
         }
-        else if (url.includes('criteo.com')) {
+        // Bing Ads
+        else if (url.match(/bat\.bing\.com/i)) {
+          tracker = 'Bing Ads';
+        }
+        // LinkedIn Insight
+        else if (url.match(/snap\.licdn\.com|linkedin\.com\/px|licdn\.com|px\.ads\.linkedin/i)) {
+          tracker = 'LinkedIn Insight';
+        }
+        // TikTok Pixel
+        else if (url.match(/analytics\.tiktok\.com|tiktok\.com\/i18n\/pixel/i)) {
+          tracker = 'TikTok Pixel';
+        }
+        // Hotjar
+        else if (url.match(/hotjar\.com|static\.hotjar\.com/i)) {
+          tracker = 'Hotjar';
+        }
+        // Criteo
+        else if (url.match(/criteo\.com|criteo\.net/i)) {
           tracker = 'Criteo';
         }
-        else if (url.includes('taboola.com')) {
+        // Taboola
+        else if (url.match(/taboola\.com|trc\.taboola\.com/i)) {
           tracker = 'Taboola';
         }
-        else if (url.includes('outbrain.com')) {
+        // Outbrain
+        else if (url.match(/outbrain\.com/i)) {
           tracker = 'Outbrain';
         }
-        else if (url.includes('linkedin.com') || url.includes('licdn.com')) {
-          tracker = 'LinkedIn';
+        // Yahoo/Verizon
+        else if (url.match(/analytics\.yahoo\.com|ads\.yahoo\.com/i)) {
+          tracker = 'Yahoo/Verizon';
         }
-        else if (url.includes('tiktok.com')) {
-          tracker = 'TikTok';
+        // Adobe Analytics
+        else if (url.match(/omtrdc\.net|demdex\.net|2o7\.net/i)) {
+          tracker = 'Adobe Analytics';
         }
-        else if (url.includes('bing.com')) {
-          tracker = 'Bing';
+        // CMP
+        else if (url.match(/cookiebot\.com|consentcdn\.cookiebot\.com/i)) {
+          tracker = 'Cookiebot';
         }
-        else if (url.includes('doubleclick.net') || url.includes('googleadservices.com')) {
-          tracker = 'Google Ads';
+        else if (url.match(/onetrust\.com|cdn\.cookielaw\.org/i)) {
+          tracker = 'OneTrust';
+        }
+        else if (url.match(/iubenda\.com/i)) {
+          tracker = 'iubenda';
+        }
+        else if (url.match(/tagcommander\.com|commander1\.com|tC\.cmp/i)) {
+          tracker = 'Commanders Act';
+        }
+        else if (url.match(/didomi\.io|sdk\.privacy-center\.org/i)) {
+          tracker = 'Didomi';
+        }
+        else if (url.match(/axeptio\.eu|client\.axept\.io/i)) {
+          tracker = 'Axeptio';
+        }
+        else if (url.match(/usercentrics\.eu|app\.usercentrics\.eu/i)) {
+          tracker = 'Usercentrics';
+        }
+        else if (url.match(/quantcast\.com|quantserve\.com/i)) {
+          tracker = 'Quantcast';
         }
 
         if (!grouped[tracker]) grouped[tracker] = [];
