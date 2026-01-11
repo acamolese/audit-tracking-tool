@@ -536,6 +536,14 @@
       display: block;
     }
 
+    .event-badge.click-tooltip .params-tooltip {
+      display: block;
+      bottom: auto;
+      top: 100%;
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+
     /* Mobile Responsive */
     @media (max-width: 1024px) {
       .container {
@@ -1121,6 +1129,48 @@
         document.getElementById('navLinks').classList.toggle('open');
       });
     }
+
+    // Gestione click sui badge per tooltip
+    function setupBadgeClickHandlers() {
+      // Rimuovi vecchi event listeners
+      const oldContainer = document.getElementById('trackerGrid');
+      if (oldContainer) {
+        const newContainer = oldContainer.cloneNode(true);
+        oldContainer.parentNode.replaceChild(newContainer, oldContainer);
+      }
+
+      // Aggiungi nuovi event listeners
+      document.addEventListener('click', function(e) {
+        const badge = e.target.closest('.event-badge');
+        if (badge) {
+          e.stopPropagation();
+          
+          // Chiudi tutti gli altri tooltip aperti
+          document.querySelectorAll('.event-badge.click-tooltip').forEach(b => {
+            if (b !== badge) b.classList.remove('click-tooltip');
+          });
+          
+          // Toggle tooltip cliccato
+          badge.classList.toggle('click-tooltip');
+        }
+      });
+
+      // Chiudi tooltip quando si clicca fuori
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.event-badge')) {
+          document.querySelectorAll('.event-badge.click-tooltip').forEach(b => {
+            b.classList.remove('click-tooltip');
+          });
+        }
+      });
+    }
+
+    // Modifica updateTrackerGrid per aggiungere gestione click
+    const originalUpdateTrackerGrid = updateTrackerGrid;
+    updateTrackerGrid = function() {
+      originalUpdateTrackerGrid();
+      setupBadgeClickHandlers();
+    };
 
     // Avvia
     init();
