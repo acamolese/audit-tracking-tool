@@ -6,7 +6,7 @@
   <title>Form Audit Dashboard - AuditTrackingTool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #1c3738;
@@ -41,20 +41,77 @@
       border-bottom: 1px solid var(--border);
       padding: 16px 24px;
       display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-content {
+      display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--primary);
+      text-decoration: none;
     }
 
-    .logo {
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--primary);
+    .logo span {
+      color: var(--accent);
+    }
+
+    /* Navigation */
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      padding: 8px 0;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      opacity: 1;
+    }
+
+    .nav-links a.active {
+      border-bottom: 2px solid var(--accent);
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--primary);
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+
+    /* Header Info (URL + Actions) */
+    .header-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .url-badge {
@@ -63,7 +120,7 @@
       border-radius: 6px;
       font-size: 13px;
       color: var(--text-light);
-      max-width: 300px;
+      max-width: 400px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -549,14 +606,64 @@
       .container {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr;
+        height: auto;
+        min-height: calc(100vh - 120px);
       }
     }
 
     @media (max-width: 768px) {
       .header {
-        flex-direction: column;
+        padding: 14px 16px;
         gap: 12px;
-        align-items: flex-start;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 0;
+        border-top: 1px solid var(--border);
+        z-index: 100;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .nav-links a.active {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-info {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .url-badge {
+        max-width: 100%;
       }
 
       .header-actions {
@@ -574,19 +681,70 @@
       .tabs {
         flex-direction: column;
       }
+
+      .container {
+        height: auto;
+        min-height: calc(100vh - 140px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 12px 12px;
+      }
+
+      .logo {
+        font-size: 16px;
+      }
+
+      .header-content {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        width: 100%;
+      }
+
+      .status-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-content {
+        padding: 12px;
+      }
+
+      .status-card {
+        padding: 12px;
+      }
+
+      .card-value {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Header -->
   <header class="header">
-    <div class="header-left">
-      <div class="logo">Form Audit Dashboard</div>
-      <div class="url-badge" id="urlDisplay">Caricamento...</div>
+    <div class="header-content">
+      <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="/">Scansione</a>
+        <a href="/bulk-scan.html">Bulk Scan</a>
+        <a href="/form-test.html" class="active">Form Test</a>
+      </nav>
     </div>
-    <div class="header-actions">
-      <button class="btn btn-secondary" onclick="clearEvents()">Pulisci</button>
-      <button class="btn btn-primary" onclick="saveResults()">Salva Report</button>
+    <div class="header-info">
+      <div class="url-badge" id="urlDisplay">Caricamento...</div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="clearEvents()">Pulisci</button>
+        <button class="btn btn-primary" onclick="saveResults()">Salva Report</button>
+      </div>
     </div>
   </header>
 
