@@ -819,6 +819,9 @@
         <button onclick="downloadJson()" class="btn btn-secondary">
           &#128190; Scarica JSON
         </button>
+        <button onclick="openLiveMonitor()" class="btn btn-secondary">
+          &#128225; Live Monitor
+        </button>
         <a href="/" class="btn btn-primary">
           &#128269; Nuova Scansione
         </a>
@@ -1198,6 +1201,17 @@
       a.download = `audit-${reportData.url.replace(/[^a-z0-9]/gi, '_')}.json`;
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    function openLiveMonitor() {
+      const params = new URLSearchParams(window.location.search);
+      const reportId = params.get('id');
+      const url = reportData?.url;
+
+      if (!url) return;
+
+      const monitorUrl = `/form-test.html?url=${encodeURIComponent(url)}&reportId=${reportId}`;
+      window.open(monitorUrl, 'liveMonitor', 'width=1400,height=900');
     }
 
     // Mobile menu toggle
