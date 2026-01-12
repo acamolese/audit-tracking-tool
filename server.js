@@ -7,6 +7,10 @@ const { CookieAuditScanner } = require('./scanner');
 
 const PORT = process.env.PORT || 3000;
 
+// Detect if running on Railway or other headless server
+const IS_RAILWAY = !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_SERVICE_NAME;
+const IS_HEADLESS_SERVER = IS_RAILWAY || (!process.env.DISPLAY && process.platform === 'linux');
+
 // === FORM TEST LIVE SESSION ===
 class FormTestSession {
   constructor(url, sessionId) {
@@ -21,6 +25,11 @@ class FormTestSession {
   }
 
   async start() {
+    // Check if Live Monitor is available on this environment
+    if (IS_HEADLESS_SERVER) {
+      throw new Error('LIVE_MONITOR_NOT_AVAILABLE: Il Live Monitor richiede un ambiente con display grafico. Questa funzione è disponibile solo in locale.');
+    }
+
     try {
       this.browser = await chromium.launch({
         headless: false,

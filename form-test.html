@@ -950,7 +950,13 @@
         const data = await response.json();
 
         if (!data.success) {
-          throw new Error(data.error || 'Errore avvio sessione');
+          const errorMsg = data.error || 'Errore avvio sessione';
+          if (errorMsg.includes('LIVE_MONITOR_NOT_AVAILABLE')) {
+            hideLoading();
+            showServerNotSupportedMessage();
+            return;
+          }
+          throw new Error(errorMsg);
         }
 
         sessionId = data.sessionId;
@@ -959,7 +965,13 @@
       } catch (err) {
         console.error('Errore avvio sessione:', err);
         hideLoading();
-        showToast('Errore', err.message, 'danger');
+
+        // Check if Live Monitor not available on server
+        if (err.message && err.message.includes('LIVE_MONITOR_NOT_AVAILABLE')) {
+          showServerNotSupportedMessage();
+        } else {
+          showToast('Errore', err.message, 'danger');
+        }
       }
     }
 
@@ -1044,6 +1056,33 @@
 
     function hideLoading() {
       document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    function showServerNotSupportedMessage() {
+      // Replace main content with message
+      document.querySelector('.main').innerHTML = `
+        <div style="max-width: 600px; margin: 0 auto; text-align: center; padding: 60px 20px;">
+          <div style="font-size: 64px; margin-bottom: 24px;">🖥️</div>
+          <h2 style="font-size: 24px; color: var(--primary); margin-bottom: 16px;">Live Monitor non disponibile</h2>
+          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
+            Il <strong>Live Monitor</strong> richiede un browser visibile con cui interagire,
+            quindi funziona solo quando l'applicazione è eseguita <strong>in locale</strong>.
+          </p>
+          <div style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 24px; text-align: left; margin-bottom: 24px;">
+            <h4 style="color: var(--primary); margin-bottom: 12px;">Come usare il Live Monitor:</h4>
+            <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 20px;">
+              <li>Clona il repository in locale</li>
+              <li>Esegui <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">npm install</code></li>
+              <li>Avvia con <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">node server.js</code></li>
+              <li>Apri <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">http://localhost:3000</code></li>
+            </ol>
+          </div>
+          <a href="/" class="btn btn-primary" style="text-decoration: none; display: inline-block; padding: 14px 28px;">
+            ← Torna alla Home
+          </a>
+        </div>
+      `;
+      updateStatus('disconnected', 'Non disponibile');
     }
 
     function updateUI() {
@@ -1257,6 +1296,14 @@
       if (reportId) {
         // Add to existing report
         try {
+          // Count specific form events
+          const formSubmitCount = selectedData.filter(e =>
+            e.event && e.event.toLowerCase().includes('form_submit')
+          ).length;
+          const generateLeadCount = selectedData.filter(e =>
+            e.event && (e.event.toLowerCase().includes('generate_lead') || e.event === 'Lead')
+          ).length;
+
           const results = {
             url: targetUrl,
             timestamp: new Date().toISOString(),
@@ -1266,11 +1313,11 @@
               data: { tracker: e.tracker, event: e.event, url: e.url }
             })),
             formEventCounts: {
-              total: selectedData.filter(e =>
-                e.event && FORM_EVENTS.some(fe => e.event.toLowerCase().includes(fe.toLowerCase()))
-              ).length
+              total: selectedData.length,
+              form_submit: formSubmitCount,
+              generate_lead: generateLeadCount
             },
-            success: true
+            success: selectedData.length > 0
           };
 
           const response = await fetch(`/api/report/${reportId}/form-test`, {
@@ -1283,6 +1330,19 @@
 
           if (data.success) {
             showToast('Aggiunto al Report', `${data.eventsAdded} eventi aggiunti`, 'success');
+            // Notify report page to refresh via BroadcastChannel
+            try {
+              const channel = new BroadcastChannel('audit-report-update');
+              channel.postMessage({ type: 'form-test-updated', reportId: reportId });
+              channel.close();
+            } catch (e) {
+              // BroadcastChannel not supported, fallback to localStorage
+              localStorage.setItem('audit-report-update', JSON.stringify({
+                type: 'form-test-updated',
+                reportId: reportId,
+                timestamp: Date.now()
+              }));
+            }
             // Clear selection after successful add
             selectedEvents.clear();
             updateEventFeed();
