@@ -674,22 +674,6 @@
         </div>
       </div>
 
-      <!-- Trackers Post-Consent -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon blue">&#128200;</span>
-            Tracker Post-Consenso
-          </h3>
-          <span id="trackersBadge" class="badge badge-neutral"></span>
-        </div>
-        <div id="trackersList"></div>
-        <div id="trackersEmpty" class="empty-state" style="display:none;">
-          <div class="icon">&#128064;</div>
-          <p>Nessun tracker rilevato dopo il consenso</p>
-        </div>
-      </div>
-
       <!-- Eventi (tutti i tracker) -->
       <div class="card">
         <div class="card-header">
@@ -949,91 +933,6 @@
         });
       }
 
-      // Trackers post-consent
-      const trackersList = document.getElementById('trackersList');
-      const trackersEmpty = document.getElementById('trackersEmpty');
-      const postRequests = report.postConsent?.requests || [];
-
-      // Raggruppa richieste per tracker
-      const trackerRequests = {};
-      postRequests.forEach(r => {
-        if (!trackerRequests[r.tracker]) {
-          trackerRequests[r.tracker] = [];
-        }
-        trackerRequests[r.tracker].push(r);
-      });
-      const trackersArr = Object.entries(trackerRequests);
-
-      document.getElementById('trackersBadge').textContent = trackersArr.length + ' tracker';
-
-      if (trackersArr.length === 0) {
-        trackersList.style.display = 'none';
-        trackersEmpty.style.display = 'block';
-      } else {
-        trackersList.innerHTML = '';
-        trackersArr.forEach(([tracker, requests]) => {
-          const trackerId = tracker.replace(/[^a-zA-Z0-9]/g, '_');
-          const div = document.createElement('div');
-          div.className = 'tracker-item';
-          div.style.marginBottom = '8px';
-
-          // Header cliccabile
-          const header = document.createElement('div');
-          header.className = 'tracker-header';
-          header.style.cssText = 'display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--bg);border-radius:12px;cursor:pointer;';
-          header.innerHTML = `
-            <span class="dot green"></span>
-            <span class="tracker-name" style="flex:1;">${tracker}</span>
-            <span class="tracker-detail">${requests.length} richieste</span>
-            <span class="arrow" style="transition:transform 0.2s;">&#9660;</span>
-          `;
-
-          // Contenuto dettagli
-          const content = document.createElement('div');
-          content.id = 'tracker-' + trackerId;
-          content.style.cssText = 'display:none;margin-top:4px;padding:12px 20px;background:#f9f9f7;border-radius:0 0 12px 12px;max-height:300px;overflow-y:auto;';
-
-          // Lista dettagli richieste
-          let detailsHtml = '<ul style="list-style:none;font-size:13px;">';
-          requests.forEach((req, idx) => {
-            let info = '';
-            if (req.event) {
-              info = `<strong>${req.event}</strong>`;
-              if (req.consentMode) info += ` <span style="color:var(--text-light);">(${req.gcsRaw || req.consentMode})</span>`;
-            }
-            if (req.destinationUrl) {
-              const shortUrl = req.destinationUrl.length > 60 ? req.destinationUrl.substring(0, 60) + '...' : req.destinationUrl;
-              info += info ? '<br>' : '';
-              info += `<span style="color:var(--text-light);">URL: ${shortUrl}</span>`;
-            }
-            if (req.params && Object.keys(req.params).length > 0) {
-              const paramsStr = Object.entries(req.params).map(([k,v]) => `${k}=${v}`).join(', ');
-              info += info ? '<br>' : '';
-              info += `<span style="color:var(--text-light);">Params: ${paramsStr}</span>`;
-            }
-            if (!info) {
-              const shortUrl = req.url ? (req.url.length > 80 ? req.url.substring(0, 80) + '...' : req.url) : '-';
-              info = `<span style="color:var(--text-light);">${shortUrl}</span>`;
-            }
-            detailsHtml += `<li style="padding:8px 0;border-bottom:1px solid #eee;">${info}</li>`;
-          });
-          detailsHtml += '</ul>';
-          content.innerHTML = detailsHtml;
-
-          // Toggle
-          header.onclick = () => {
-            const isOpen = content.style.display !== 'none';
-            content.style.display = isOpen ? 'none' : 'block';
-            header.querySelector('.arrow').style.transform = isOpen ? '' : 'rotate(180deg)';
-            header.style.borderRadius = isOpen ? '12px' : '12px 12px 0 0';
-          };
-
-          div.appendChild(header);
-          div.appendChild(content);
-          trackersList.appendChild(div);
-        });
-      }
-
       // Cookies
       document.getElementById('cookiesPre').textContent = report.summary?.cookiesPreConsent || 0;
       document.getElementById('cookiesPost').textContent = report.summary?.cookiesPostConsent || 0;
@@ -1177,13 +1076,26 @@
         allEvents.forEach(e => {
           const li = document.createElement('li');
           let dotColor = 'gray';
-          if (e.phase === 'Post') dotColor = 'green';
-          else if (e.phase === 'Interaction') dotColor = 'blue';
-          else if (e.phase === 'Form Test') dotColor = 'orange';
+          let extraStyle = '';
+          let phaseLabel = e.phase;
+
+          if (e.phase === 'Pre') {
+            dotColor = 'red';
+            extraStyle = 'background: rgba(255, 79, 80, 0.1); border-left: 3px solid var(--danger); padding-left: 12px; margin-left: -12px;';
+            phaseLabel = 'PRE-CONSENSO';
+          } else if (e.phase === 'Post') {
+            dotColor = 'green';
+          } else if (e.phase === 'Interaction') {
+            dotColor = 'blue';
+          } else if (e.phase === 'Form Test') {
+            dotColor = 'orange';
+          }
+
+          li.style.cssText = extraStyle;
           li.innerHTML = `
             <span class="dot ${dotColor}"></span>
             <span class="tracker-name">${e.tracker}: ${e.event}</span>
-            <span class="tracker-detail">${e.phase}${e.consentMode ? ' - ' + e.consentMode : ''}</span>
+            <span class="tracker-detail" ${e.phase === 'Pre' ? 'style="color: var(--danger); font-weight: 600;"' : ''}>${phaseLabel}${e.consentMode ? ' - ' + e.consentMode : ''}</span>
           `;
           allEventsList.appendChild(li);
         });
