@@ -1519,6 +1519,7 @@ async function scanSingleUrlWithPhases(batchId, index, result, bulkStore, report
   });
 
   const report = await scanner.run();
+  report.scanMode = 'full'; // Bulk scan sempre in modalità completa
   const reportId = generateId();
   reportStore.set(reportId, report);
 
@@ -1647,6 +1648,7 @@ async function handleRequest(req, res, reportStore, bulkStore) {
       });
 
       const report = await scanner.run();
+      report.scanMode = body.fastMode !== false ? 'fast' : 'full';
       const reportId = generateId();
       reportStore.set(reportId, report);
 

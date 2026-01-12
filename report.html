@@ -740,7 +740,7 @@
       </div>
 
       <!-- Form -->
-      <div class="card">
+      <div class="card" id="formCard">
         <div class="card-header">
           <h3 class="card-title">
             <span class="icon green">&#128221;</span>
@@ -1189,16 +1189,20 @@
         });
       }
 
-      // Form
-      const forms = report.forms?.found || [];
-      const formsList = document.getElementById('formsList');
-      const formsEmpty = document.getElementById('formsEmpty');
-      document.getElementById('formBadge').textContent = forms.length + ' form validi';
-
-      if (forms.length === 0) {
-        formsList.style.display = 'none';
-        formsEmpty.style.display = 'block';
+      // Form - nascosto in Fast Mode
+      const formCard = document.getElementById('formCard');
+      if (report.scanMode === 'fast') {
+        formCard.style.display = 'none';
       } else {
+        const forms = report.forms?.found || [];
+        const formsList = document.getElementById('formsList');
+        const formsEmpty = document.getElementById('formsEmpty');
+        document.getElementById('formBadge').textContent = forms.length + ' form validi';
+
+        if (forms.length === 0) {
+          formsList.style.display = 'none';
+          formsEmpty.style.display = 'block';
+        } else {
         formsList.innerHTML = '';
         forms.forEach(f => {
           const li = document.createElement('li');
@@ -1257,6 +1261,7 @@
           eventsList.innerHTML = '<li style="color:var(--text-light);font-style:italic;padding:12px 0;">Nessun evento</li>';
         }
       }
+      } // Fine else scanMode !== 'fast'
 
     }
 
