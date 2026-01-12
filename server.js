@@ -1480,7 +1480,9 @@ async function handleRequest(req, res, reportStore, bulkStore) {
       }
 
       const limitedUrls = urls.slice(0, 50);
-      const batchId = generateId();
+
+      const batch = bulkStore.createBatch(limitedUrls);
+      const batchId = batch.batchId;
 
       // Verifica se già in esecuzione
       if (bulkStore.isLocked(batchId)) {
@@ -1489,7 +1491,6 @@ async function handleRequest(req, res, reportStore, bulkStore) {
         return;
       }
 
-      const batch = bulkStore.createBatch(limitedUrls);
       bulkStore.lock(batchId);
 
       console.log(`Bulk scan avviato: ${batchId} con ${limitedUrls.length} URL`);
