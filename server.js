@@ -2,9 +2,232 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const { chromium } = require('playwright');
 const { CookieAuditScanner } = require('./scanner');
 
 const PORT = process.env.PORT || 3000;
+
+// === FORM TEST LIVE SESSION ===
+class FormTestSession {
+  constructor(url, sessionId) {
+    this.url = url;
+    this.sessionId = sessionId;
+    this.browser = null;
+    this.page = null;
+    this.events = [];
+    this.sseClients = [];
+    this.isRunning = false;
+    this.startTime = Date.now();
+  }
+
+  async start() {
+    try {
+      this.browser = await chromium.launch({
+        headless: false,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+
+      const context = await this.browser.newContext({
+        viewport: { width: 1280, height: 800 },
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      });
+
+      this.page = await context.newPage();
+      this.isRunning = true;
+
+      // Intercetta TUTTE le richieste di rete (come scanner.js)
+      this.page.on('request', (request) => this.handleRequest(request));
+
+      // Monitor dataLayer via CDP
+      await this.setupDataLayerMonitor();
+
+      // Naviga alla pagina
+      await this.page.goto(this.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+      this.sendEvent({ type: 'session_started', url: this.url });
+      console.log(`[FormTest] Sessione ${this.sessionId} avviata per ${this.url}`);
+
+      return true;
+    } catch (error) {
+      console.error(`[FormTest] Errore avvio sessione:`, error);
+      this.sendEvent({ type: 'error', message: error.message });
+      return false;
+    }
+  }
+
+  async setupDataLayerMonitor() {
+    // Inietta script per monitorare dataLayer
+    await this.page.exposeFunction('__attDataLayerPush', (data) => {
+      this.sendEvent({
+        type: 'dataLayer',
+        data: data,
+        timestamp: Date.now()
+      });
+    });
+
+    await this.page.addInitScript(() => {
+      const checkDataLayer = () => {
+        if (!window.dataLayer) {
+          window.dataLayer = [];
+        }
+        if (!window.dataLayer.__attMonitored) {
+          const original = window.dataLayer.push.bind(window.dataLayer);
+          window.dataLayer.push = function(...args) {
+            args.forEach(item => {
+              if (item && typeof item === 'object' && item.event) {
+                window.__attDataLayerPush({ event: item.event, data: item });
+              }
+            });
+            return original(...args);
+          };
+          window.dataLayer.__attMonitored = true;
+          // Processa eventi esistenti
+          window.dataLayer.forEach(item => {
+            if (item && typeof item === 'object' && item.event) {
+              window.__attDataLayerPush({ event: item.event, data: item });
+            }
+          });
+        }
+      };
+      checkDataLayer();
+      setInterval(checkDataLayer, 100);
+    });
+  }
+
+  handleRequest(request) {
+    const url = request.url();
+    const tracker = this.identifyTracker(url);
+
+    if (!tracker) return;
+
+    const postData = request.postData();
+    const details = this.extractDetails(url, tracker, postData);
+
+    this.sendEvent({
+      type: 'network',
+      tracker: tracker,
+      url: url,
+      event: details.event,
+      eventCategory: details.eventCategory,
+      params: details.params,
+      timestamp: Date.now()
+    });
+  }
+
+  identifyTracker(url) {
+    const u = url.toLowerCase();
+
+    // Facebook Pixel
+    if (u.includes('facebook.com/tr')) return 'Facebook Pixel';
+    if (u.includes('connect.facebook.net') && u.includes('fbevents')) return 'Facebook SDK';
+
+    // Google
+    if (u.includes('google-analytics.com/g/collect') || u.includes('analytics.google.com/g/collect')) return 'GA4';
+    if (u.includes('google-analytics.com') && !u.includes('/g/collect')) return 'GA4';
+    if (u.includes('googletagmanager.com/gtm.js')) return 'GTM';
+    if (u.includes('googletagmanager.com/gtag/js')) return 'GTM';
+    if (u.includes('googleadservices.com') || u.includes('googlesyndication.com')) return 'Google Ads';
+    if (u.includes('doubleclick.net')) return 'Google Ads';
+
+    // Microsoft
+    if (u.includes('clarity.ms')) return 'Clarity';
+    if (u.includes('bat.bing.com')) return 'Bing Ads';
+
+    // Social
+    if (u.includes('linkedin.com/px') || u.includes('snap.licdn.com')) return 'LinkedIn Insight';
+    if (u.includes('analytics.tiktok.com')) return 'TikTok Pixel';
+
+    // Altri
+    if (u.includes('hotjar.com')) return 'Hotjar';
+    if (u.includes('criteo.com') || u.includes('criteo.net')) return 'Criteo';
+
+    // CMP
+    if (u.includes('cookiebot.com') || u.includes('consentcdn.cookiebot.com')) return 'Cookiebot';
+    if (u.includes('onetrust.com') || u.includes('cookielaw.org')) return 'OneTrust';
+    if (u.includes('iubenda.com')) return 'iubenda';
+
+    return null;
+  }
+
+  extractDetails(url, tracker, postData) {
+    const details = { event: null, eventCategory: 'custom', params: {} };
+
+    try {
+      const urlObj = new URL(url);
+
+      // Facebook Pixel
+      if (tracker === 'Facebook Pixel') {
+        details.event = urlObj.searchParams.get('ev');
+        const standardEvents = ['PageView', 'ViewContent', 'AddToCart', 'Purchase', 'Lead', 'CompleteRegistration'];
+        details.eventCategory = standardEvents.includes(details.event) ? 'standard' : 'custom';
+      }
+
+      // GA4
+      if (tracker === 'GA4') {
+        details.event = urlObj.searchParams.get('en');
+        if (!details.event && postData) {
+          const match = postData.match(/en=([^&]+)/);
+          if (match) details.event = decodeURIComponent(match[1]);
+        }
+        const standardEvents = ['page_view', 'scroll', 'click', 'view_item', 'purchase', 'generate_lead'];
+        details.eventCategory = standardEvents.includes(details.event) ? 'standard' : 'custom';
+      }
+
+      // Clarity
+      if (tracker === 'Clarity') {
+        details.event = 'Recording';
+        details.eventCategory = 'session';
+      }
+
+    } catch (e) {
+      // Ignore parsing errors
+    }
+
+    return details;
+  }
+
+  sendEvent(event) {
+    event.sessionId = this.sessionId;
+    event.timestamp = event.timestamp || Date.now();
+    this.events.push(event);
+
+    // Invia a tutti i client SSE
+    const message = `data: ${JSON.stringify(event)}\n\n`;
+    this.sseClients = this.sseClients.filter(client => {
+      try {
+        client.write(message);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    });
+  }
+
+  addSSEClient(res) {
+    this.sseClients.push(res);
+    res.on('close', () => {
+      this.sseClients = this.sseClients.filter(c => c !== res);
+    });
+
+    // Invia eventi precedenti
+    this.events.forEach(event => {
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    });
+  }
+
+  async stop() {
+    this.isRunning = false;
+    if (this.browser) {
+      await this.browser.close();
+      this.browser = null;
+    }
+    this.sendEvent({ type: 'session_stopped' });
+    console.log(`[FormTest] Sessione ${this.sessionId} terminata`);
+  }
+}
+
+// Store per sessioni form-test
+const formTestSessions = new Map();
 
 // Script da iniettare per monitorare dataLayer e richieste
 const MONITOR_SCRIPT = `
@@ -93,6 +316,64 @@ const MONITOR_SCRIPT = `
     console.log('[ATT Monitor] dataLayer polling attivato');
   }
 
+  function setupFacebookPixelMonitor() {
+    // Intercetta le chiamate fbq() per catturare eventi prima che Meta li blocchi
+    const processedFbEvents = new Set();
+
+    function interceptFbq() {
+      if (!window.fbq) return false;
+      if (window.fbq.__attMonitored) return true;
+
+      const originalFbq = window.fbq;
+      window.fbq = function() {
+        const args = Array.from(arguments);
+        const command = args[0]; // 'track', 'trackCustom', 'init', etc.
+        const eventName = args[1]; // 'PageView', 'Purchase', etc.
+
+        // Evita duplicati
+        const key = command + '|' + eventName + '|' + Math.floor(Date.now() / 1000);
+        if (!processedFbEvents.has(key)) {
+          processedFbEvents.add(key);
+          setTimeout(() => processedFbEvents.delete(key), 2000);
+
+          if (command === 'track' || command === 'trackCustom') {
+            console.log('[ATT Monitor] Facebook fbq() call:', command, eventName);
+            sendToParent('network', {
+              tracker: 'Facebook Pixel',
+              url: 'fbq(' + command + ')',
+              event: eventName || command,
+              params: args[2] || null
+            });
+          } else if (command === 'init') {
+            console.log('[ATT Monitor] Facebook Pixel init:', eventName);
+            sendToParent('network', {
+              tracker: 'Facebook Pixel',
+              url: 'fbq(init)',
+              event: 'init',
+              params: { pixelId: eventName }
+            });
+          }
+        }
+
+        return originalFbq.apply(this, arguments);
+      };
+      window.fbq.__attMonitored = true;
+      console.log('[ATT Monitor] Facebook fbq() interceptor attivo');
+      return true;
+    }
+
+    // Prova subito e poi ogni 100ms per 10 secondi
+    if (!interceptFbq()) {
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        if (interceptFbq() || attempts > 100) {
+          clearInterval(interval);
+        }
+      }, 100);
+    }
+  }
+
   function setupNetworkMonitor() {
     const processedRequests = new Set();
 
@@ -100,10 +381,13 @@ const MONITOR_SCRIPT = `
       let eventName = '';
       try {
         const urlObj = new URL(url);
-        eventName = urlObj.searchParams.get('en') || '';
+        // Supporta sia GA4 (en) che Facebook Pixel (ev)
+        eventName = urlObj.searchParams.get('en') || urlObj.searchParams.get('ev') || '';
       } catch(e) {
-        const match = url.match(/[&?]en=([^&]+)/);
-        if (match) eventName = match[1];
+        const matchEn = url.match(/[&?]en=([^&]+)/);
+        const matchEv = url.match(/[&?]ev=([^&]+)/);
+        if (matchEn) eventName = matchEn[1];
+        else if (matchEv) eventName = matchEv[1];
       }
 
       const urlBase = url.split('?')[0].substring(0, 100);
@@ -192,6 +476,27 @@ const MONITOR_SCRIPT = `
       return img;
     };
     window.Image.prototype = OriginalImage.prototype;
+
+    // Intercetta anche document.createElement('img') per Facebook Pixel
+    const originalCreateElement = document.createElement.bind(document);
+    document.createElement = function(tagName, options) {
+      const element = originalCreateElement(tagName, options);
+      if (tagName.toLowerCase() === 'img') {
+        const originalSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+        Object.defineProperty(element, 'src', {
+          set: function(val) {
+            if (!isDuplicate(val)) {
+              checkTrackingRequest(val, null);
+            }
+            return originalSrcDescriptor.set.call(this, val);
+          },
+          get: function() {
+            return originalSrcDescriptor.get.call(this);
+          }
+        });
+      }
+      return element;
+    };
   }
 
   function checkTrackingRequest(url, body) {
@@ -255,9 +560,10 @@ const MONITOR_SCRIPT = `
     if (!tracker) return;
 
     let eventNames = [];
+
+    // Prima prova con URL object
     try {
       const urlObj = new URL(url);
-
       const eventParams = ['en', 'ev', 'event', 'e', 'ea', 'ec'];
       for (const param of eventParams) {
         const val = urlObj.searchParams.get(param);
@@ -265,20 +571,46 @@ const MONITOR_SCRIPT = `
           eventNames.push(val);
         }
       }
-
-      if (body && typeof body === 'string') {
-        const matches = body.match(/en=([^&\\r\\n]+)/g);
-        if (matches) {
-          matches.forEach(m => {
-            const evName = decodeURIComponent(m.replace('en=', ''));
-            if (!eventNames.includes(evName)) {
-              eventNames.push(evName);
-            }
-          });
-        }
-      }
     } catch(e) {
-      console.log('[ATT Monitor] Errore parsing URL:', e);
+      // Se URL parsing fallisce, usa regex
+      console.log('[ATT Monitor] URL parsing fallito, uso regex');
+    }
+
+    // Fallback: cerca parametri con regex direttamente nell'URL
+    if (eventNames.length === 0) {
+      const evMatch = url.match(/[?&]ev=([^&]+)/);
+      const enMatch = url.match(/[?&]en=([^&]+)/);
+      const eventMatch = url.match(/[?&]event=([^&]+)/);
+
+      if (evMatch) eventNames.push(decodeURIComponent(evMatch[1]));
+      if (enMatch) eventNames.push(decodeURIComponent(enMatch[1]));
+      if (eventMatch) eventNames.push(decodeURIComponent(eventMatch[1]));
+    }
+
+    // Estrai da body se presente
+    if (body && typeof body === 'string') {
+      const patterns = [/[&?]en=([^&\\r\\n]+)/g, /[&?]ev=([^&\\r\\n]+)/g];
+      patterns.forEach(pattern => {
+        let match;
+        while ((match = pattern.exec(body)) !== null) {
+          const evName = decodeURIComponent(match[1]);
+          if (evName && !eventNames.includes(evName)) {
+            eventNames.push(evName);
+          }
+        }
+      });
+    }
+
+    // Per Facebook: identifica tipo di richiesta
+    if (eventNames.length === 0 && tracker === 'Facebook') {
+      const lowerUrl = url.toLowerCase();
+      if (lowerUrl.includes('facebook.com/tr')) {
+        eventNames.push('PixelRequest');
+      } else if (lowerUrl.includes('fbevents.js')) {
+        eventNames.push('SDK Load');
+      } else if (lowerUrl.includes('signals/config')) {
+        eventNames.push('Config');
+      }
     }
 
     if (eventNames.length === 0) {
@@ -381,7 +713,8 @@ const MONITOR_SCRIPT = `
   function init() {
     setupDataLayerMonitor();
     setupNetworkMonitor();
-    console.log('[ATT Monitor] Network e DataLayer monitor attivati');
+    setupFacebookPixelMonitor();
+    console.log('[ATT Monitor] Network, DataLayer e Facebook monitor attivati');
 
     window.addEventListener('beforeunload', function(e) {
       console.log('[ATT Monitor] !!! BEFOREUNLOAD - pagina sta per uscire');
@@ -951,6 +1284,73 @@ async function handleRequest(req, res, reportStore, bulkStore) {
       res.end(JSON.stringify({ success: false, error: err.message }));
     }
   }
+  // === FORM TEST LIVE API ===
+  else if (url.pathname === '/api/form-test/start' && req.method === 'POST') {
+    try {
+      const body = await parseBody(req);
+      const targetUrl = body.url;
+
+      if (!targetUrl) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'URL richiesto' }));
+        return;
+      }
+
+      const sessionId = generateId();
+      const session = new FormTestSession(targetUrl, sessionId);
+      formTestSessions.set(sessionId, session);
+
+      // Avvia in background
+      session.start().catch(err => {
+        console.error(`[FormTest] Errore sessione ${sessionId}:`, err);
+      });
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, sessionId }));
+    } catch (err) {
+      console.error('Errore avvio form-test:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: err.message }));
+    }
+  }
+  else if (url.pathname.match(/^\/api\/form-test\/[^/]+\/events$/) && req.method === 'GET') {
+    // SSE endpoint per streaming eventi
+    const sessionId = url.pathname.split('/')[3];
+    const session = formTestSessions.get(sessionId);
+
+    if (!session) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Sessione non trovata' }));
+      return;
+    }
+
+    // Setup SSE
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': '*'
+    });
+
+    res.write(`data: ${JSON.stringify({ type: 'connected', sessionId })}\n\n`);
+    session.addSSEClient(res);
+  }
+  else if (url.pathname.match(/^\/api\/form-test\/[^/]+\/stop$/) && req.method === 'POST') {
+    const sessionId = url.pathname.split('/')[3];
+    const session = formTestSessions.get(sessionId);
+
+    if (!session) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Sessione non trovata' }));
+      return;
+    }
+
+    await session.stop();
+    formTestSessions.delete(sessionId);
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true }));
+  }
   else if (url.pathname.match(/^\/api\/report\/[^/]+\/form-test$/) && req.method === 'POST') {
     const reportId = url.pathname.split('/')[3];
     const report = reportStore.get(reportId);
@@ -991,11 +1391,19 @@ async function handleRequest(req, res, reportStore, bulkStore) {
           eventCategory = 'conversion';
         }
 
+        // Handle missing or invalid timestamp
+        let timestamp;
+        try {
+          timestamp = e.timestamp ? new Date(e.timestamp).toISOString() : new Date().toISOString();
+        } catch {
+          timestamp = new Date().toISOString();
+        }
+
         return {
           tracker,
           event: eventName,
           eventCategory,
-          timestamp: new Date(e.timestamp).toISOString(),
+          timestamp,
           phase: 'FORM_TEST',
           source: 'form_test',
           rawData: e.data

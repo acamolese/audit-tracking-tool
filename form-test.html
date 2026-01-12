@@ -3,188 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Audit Dashboard - AuditTrackingTool</title>
+  <title>Live Monitor - AuditTrackingTool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #1c3738;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --info: #3b82f6;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text-light: #64748b;
+      --primary-light: #2a4a4b;
+      --accent: #06e89f;
+      --accent-hover: #05c989;
+      --bg: #f3f1ee;
+      --surface: #ffffff;
+      --surface-2: #f9f8f6;
+      --surface-3: #eae8e4;
+      --border: #e0ddd8;
+      --text: #111d0c;
+      --text-secondary: #5a6a5c;
+      --text-muted: #8a9a8c;
+      --success: #06e89f;
+      --warning: #ffb84d;
+      --danger: #ff4f50;
+      --facebook: #1877f2;
+      --google: #ea4335;
+      --gtm: #4285f4;
+      --clarity: #7c3aed;
+      --linkedin: #0a66c2;
+      --tiktok: #000000;
+      --cookiebot: #00a0d6;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
     }
 
     /* Header */
     .header {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
+      background: var(--primary);
+      border-bottom: none;
       padding: 16px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .header-content {
+    .header-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 16px;
     }
 
     .logo {
       font-family: 'DM Serif Display', serif;
-      font-weight: 700;
       font-size: 20px;
-      color: var(--primary);
+      font-weight: 400;
+      color: #ffffff;
       text-decoration: none;
     }
 
-    .logo span {
+    .logo span { color: var(--accent); }
+
+    .back-link {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: #ffffff; }
+
+    .session-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+    }
+
+    .status-badge.connected {
+      background: rgba(6, 232, 159, 0.2);
       color: var(--accent);
     }
 
-    /* Navigation */
-    .nav-links {
-      display: flex;
-      gap: 24px;
+    .status-badge.connecting {
+      background: rgba(255, 184, 77, 0.2);
+      color: var(--warning);
     }
 
-    .nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-      padding: 8px 0;
-      font-weight: 600;
+    .status-badge.disconnected {
+      background: rgba(255, 79, 80, 0.2);
+      color: var(--danger);
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      opacity: 1;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 2s infinite;
     }
 
-    .nav-links a.active {
-      border-bottom: 2px solid var(--accent);
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
-    /* Header Info - Allineato con index */
-    .header-info {
+    .header-url {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      background: var(--bg);
+      gap: 12px;
+      background: rgba(255,255,255,0.1);
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
-    .url-badge {
-      background: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--text-light);
-      max-width: 400px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border: 1px solid var(--border);
-    }
+    .url-icon { font-size: 16px; }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      padding: 10px 18px;
-      border-radius: 6px;
+    .url-text {
+      flex: 1;
       font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #152a2b;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--bg);
-      transform: translateY(-1px);
-    }
-
-    /* Mobile menu button */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--primary);
-      margin: 5px 0;
-      transition: 0.3s;
-    }
-
-    /* Header Info (URL + Actions) */
-    .header-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .url-badge {
-      background: var(--bg);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--text-light);
-      max-width: 400px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      color: #ffffff;
+      font-weight: 500;
     }
 
     .header-actions {
@@ -198,1165 +157,1195 @@
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
       border: none;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #152a2b;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--bg);
-    }
-
-    /* Main Container */
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: calc(100vh - 65px);
-      gap: 1px;
-      background: var(--border);
-    }
-
-    /* Left Panel - Site Preview */
-    .preview-panel {
-      background: var(--card-bg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .panel-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .panel-title {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .connection-status {
+      transition: all 0.15s;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
-      color: var(--text-light);
     }
 
-    .status-dot {
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.2);
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #e04546;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 24px rgba(28, 55, 56, 0.08);
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-card.highlight .stat-value {
+      color: var(--accent);
+    }
+
+    /* Tracker Summary */
+    .tracker-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tracker-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    .tracker-chip:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .tracker-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--primary);
+    }
+
+    .tracker-chip .count {
+      background: var(--surface-3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    .tracker-chip.active .count {
+      background: rgba(28,55,56,0.2);
+    }
+
+    /* Event Feed */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .live-indicator {
       width: 8px;
       height: 8px;
+      background: var(--accent);
       border-radius: 50%;
-      background: var(--text-light);
+      animation: pulse 1.5s infinite;
     }
 
-    .status-dot.connected {
-      background: var(--success);
-      animation: pulse 2s infinite;
+    .event-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .status-dot.waiting {
-      background: var(--warning);
-      animation: pulse 1s infinite;
+    .event-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: auto auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      transition: all 0.2s ease;
+      animation: slideIn 0.2s ease-out;
+      box-shadow: 0 2px 8px rgba(28, 55, 56, 0.04);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .iframe-container {
-      flex: 1;
-      position: relative;
-      background: #f1f5f9;
+    .event-card:hover {
+      border-color: var(--primary-light);
+      background: var(--surface-2);
     }
 
-    .iframe-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .event-card.new {
+      border-left: 4px solid var(--accent);
     }
 
-    .iframe-loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-
-    .spinner {
+    .tracker-icon {
       width: 40px;
       height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .tracker-icon.facebook { background: rgba(24, 119, 242, 0.15); color: var(--facebook); }
+    .tracker-icon.ga4 { background: rgba(234, 67, 53, 0.15); color: var(--google); }
+    .tracker-icon.gtm { background: rgba(66, 133, 244, 0.15); color: var(--gtm); }
+    .tracker-icon.clarity { background: rgba(124, 58, 237, 0.15); color: var(--clarity); }
+    .tracker-icon.cookiebot { background: rgba(0, 160, 214, 0.15); color: var(--cookiebot); }
+    .tracker-icon.linkedin { background: rgba(10, 102, 194, 0.15); color: var(--linkedin); }
+    .tracker-icon.datalayer { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+    .tracker-icon.default { background: var(--surface-2); color: var(--text-secondary); }
+
+    .event-content {
+      min-width: 0;
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .event-tracker {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .event-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(6, 232, 159, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .event-category {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .event-url {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .event-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border-radius: 16px;
+      border: 2px dashed var(--border);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      font-size: 14px;
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Alert Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 40px rgba(28, 55, 56, 0.15);
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.warning { border-left: 4px solid var(--warning); }
+    .toast.danger { border-left: 4px solid var(--danger); }
+
+    .toast-icon { font-size: 20px; }
+    .toast-content { flex: 1; }
+    .toast-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; color: var(--primary); }
+    .toast-text { font-size: 12px; color: var(--text-secondary); }
+
+    /* Loading State */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
       border: 3px solid var(--border);
-      border-top-color: var(--primary);
+      border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 0 auto 12px;
+      margin-bottom: 24px;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    .iframe-error {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: var(--danger);
-      padding: 20px;
+    .loading-text {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--primary);
     }
 
-    /* Right Panel - Dashboard */
-    .dashboard-panel {
-      background: var(--bg);
+    .loading-subtext {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Instruction Banner */
+    .instruction-banner {
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      align-items: flex-start;
+      gap: 16px;
+      background: linear-gradient(135deg, rgba(6, 232, 159, 0.1) 0%, rgba(28, 55, 56, 0.05) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
     }
 
-    .dashboard-content {
+    .instruction-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .instruction-content {
       flex: 1;
-      overflow-y: auto;
-      padding: 20px;
     }
 
-    /* Status Cards */
-    .status-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
+    .instruction-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
     }
 
-    .status-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
+    .instruction-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .instruction-text strong {
+      color: var(--primary);
+    }
+
+    .instruction-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .instruction-close:hover {
+      color: var(--primary);
+    }
+
+    .instruction-banner.hidden {
+      display: none;
+    }
+
+    /* Event Selection */
+    .event-card {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .event-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+
+    .event-checkbox::after {
+      content: '✓';
+      color: transparent;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .event-card.selected .event-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .event-card.selected .event-checkbox::after {
+      color: var(--primary);
+    }
+
+    .event-card.selected {
+      border-color: var(--accent);
+      background: rgba(6, 232, 159, 0.05);
+    }
+
+    .event-card:hover .event-checkbox {
+      border-color: var(--primary-light);
+    }
+
+    /* Selection Action Bar */
+    .selection-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      border-radius: 16px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 10px 40px rgba(28, 55, 56, 0.3);
+      z-index: 150;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .selection-bar.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .selection-info {
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
-    .status-card.success {
-      border-left: 4px solid var(--success);
-    }
-
-    .status-card.warning {
-      border-left: 4px solid var(--warning);
-    }
-
-    .status-card.danger {
-      border-left: 4px solid var(--danger);
-    }
-
-    .status-card.info {
-      border-left: 4px solid var(--info);
-    }
-
-    .card-icon {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
-
-    .card-title {
-      font-weight: 600;
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .card-value {
-      font-size: 24px;
+    .selection-count {
+      background: var(--accent);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 12px;
       font-weight: 700;
-      color: var(--text);
     }
 
-    .card-description {
-      font-size: 11px;
-      color: var(--text-light);
-    }
-
-    /* Alert Box */
-    .alert-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      display: none;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .alert-box.show {
+    .selection-actions {
       display: flex;
+      gap: 8px;
     }
 
-    .alert-box.success {
-      border-left: 4px solid var(--success);
-      background: #f0fdf4;
-    }
-
-    .alert-box.warning {
-      border-left: 4px solid var(--warning);
-      background: #fffbeb;
-    }
-
-    .alert-box.danger {
-      border-left: 4px solid var(--danger);
-      background: #fef2f2;
-    }
-
-    .alert-icon {
-      font-size: 18px;
-    }
-
-    .alert-content {
-      flex: 1;
-    }
-
-    .alert-title {
-      font-weight: 600;
-      font-size: 13px;
-      margin-bottom: 2px;
-    }
-
-    .alert-text {
-      font-size: 12px;
-      color: var(--text-light);
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 16px;
-      background: var(--card-bg);
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    .tab {
-      flex: 1;
-      padding: 8px 12px;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 6px;
-      cursor: pointer;
-      color: var(--text-light);
-      transition: all 0.2s;
-    }
-
-    .tab:hover {
-      background: var(--bg);
-    }
-
-    .tab.active {
-      background: var(--primary);
-      color: white;
-    }
-
-    .tab .count {
-      font-size: 10px;
-      opacity: 0.8;
-      margin-left: 4px;
-    }
-
-    /* Event List */
-    .event-list {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .event-list-header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 600;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .event-list-content {
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .event-item {
+    .selection-bar .btn {
       padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
     }
 
-    .event-item:last-child {
-      border-bottom: none;
+    .btn-success {
+      background: var(--accent);
+      color: var(--primary);
     }
 
-    .event-item.highlight {
-      background: #f0fdf4;
+    .btn-success:hover {
+      background: var(--accent-hover);
     }
 
-    .event-item.warning {
-      background: #fffbeb;
-    }
-
-    .event-icon {
-      font-size: 14px;
-      margin-top: 1px;
-    }
-
-    .event-content {
-      flex: 1;
-    }
-
-    .event-name {
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .event-details {
-      font-size: 11px;
-      color: var(--text-light);
-      margin-top: 2px;
-    }
-
-    .event-time {
-      font-size: 10px;
-      color: var(--text-light);
-      white-space: nowrap;
-    }
-
-    .empty-state {
-      padding: 30px;
-      text-align: center;
-      color: var(--text-light);
-      font-size: 13px;
-    }
-
-    /* Tracker Grid */
-    .tracker-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .tracker-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .tracker-header {
-      padding: 10px 14px;
-      background: var(--primary);
-      color: white;
+    /* Select All Header */
+    .select-all-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
-      font-weight: 600;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
     }
 
-    .tracker-events {
-      padding: 10px 14px;
+    .select-all-left {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      align-items: center;
+      gap: 12px;
     }
 
-    .event-badge {
-      background: var(--bg);
-      border: 1px solid var(--border);
+    .select-all-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
       border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
+      transition: all 0.15s ease;
+      background: var(--surface);
     }
 
-    .event-badge:hover {
-      background: white;
-      border-color: var(--primary);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .select-all-checkbox::after {
+      content: '✓';
+      color: transparent;
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .event-badge.has-params {
-      border-left: 3px solid var(--info);
+    .select-all-checkbox.checked {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
-    .badge-count {
-      background: var(--primary);
-      color: white;
-      padding: 1px 5px;
-      border-radius: 4px;
-      font-size: 10px;
-      margin-left: 4px;
+    .select-all-checkbox.checked::after {
+      color: var(--primary);
     }
 
-    .badge-source {
-      font-size: 9px;
-      text-transform: uppercase;
-      opacity: 0.6;
-      margin-left: 4px;
+    .select-all-checkbox.partial {
+      background: var(--surface-3);
+      border-color: var(--primary-light);
     }
 
-    .params-tooltip {
-      display: none;
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      background: var(--primary);
-      color: white;
-      padding: 8px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-family: 'Courier New', monospace;
-      white-space: nowrap;
-      z-index: 1000;
-      margin-bottom: 4px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    .select-all-checkbox.partial::after {
+      content: '−';
+      color: var(--primary);
     }
 
-    .event-badge:hover .params-tooltip {
-      display: block;
+    .select-all-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
     }
 
-    .event-badge.click-tooltip .params-tooltip {
-      display: block;
-      bottom: auto;
-      top: 100%;
-      margin-top: 4px;
-      margin-bottom: 0;
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 1024px) {
-      .container {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
-        height: auto;
-        min-height: calc(100vh - 120px);
-      }
-    }
-
+    /* Responsive */
     @media (max-width: 768px) {
-      .header {
-        padding: 14px 16px;
+      .header { padding: 12px 16px; }
+      .main { padding: 16px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-value { font-size: 24px; }
+      .event-card { grid-template-columns: auto auto 1fr; }
+      .event-time { display: none; }
+      .selection-bar {
+        left: 16px;
+        right: 16px;
+        transform: translateX(0) translateY(100px);
+        padding: 12px 16px;
+        flex-direction: column;
         gap: 12px;
       }
-
-      .logo {
-        font-size: 18px;
+      .selection-bar.show {
+        transform: translateX(0) translateY(0);
       }
-
-      .menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--card-bg);
-        flex-direction: column;
-        padding: 16px 24px;
-        gap: 0;
-        border-top: 1px solid var(--border);
-        z-index: 100;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 12px 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .nav-links a.active {
-        border-bottom: 1px solid var(--border);
-      }
-
-      .header-info {
-        flex-direction: column;
-        gap: 8px;
-        align-items: stretch;
-      }
-
-      .url-badge {
-        max-width: 100%;
-      }
-
-      .header-actions {
+      .selection-actions {
         width: 100%;
+        justify-content: stretch;
       }
-
-      .btn {
+      .selection-actions .btn {
         flex: 1;
-      }
-
-      .status-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .tabs {
-        flex-direction: column;
-      }
-
-      .container {
-        height: auto;
-        min-height: calc(100vh - 140px);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header {
-        padding: 12px 12px;
-      }
-
-      .logo {
-        font-size: 16px;
-      }
-
-      .header-content {
-        flex-wrap: wrap;
-      }
-
-      .nav-links {
-        width: 100%;
-      }
-
-      .status-cards {
-        grid-template-columns: 1fr;
-      }
-
-      .dashboard-content {
-        padding: 12px;
-      }
-
-      .status-card {
-        padding: 12px;
-      }
-
-      .card-value {
-        font-size: 20px;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Avvio Browser</div>
+    <div class="loading-subtext">Il sito si aprirà in una finestra separata...</div>
+  </div>
+
   <!-- Header -->
   <header class="header">
-    <div class="header-content">
-      <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav-links" id="navLinks">
-        <a href="/">Scansione</a>
-        <a href="/bulk-scan.html">Bulk Scan</a>
-        <a href="/form-test.html" class="active">Form Test</a>
-      </nav>
+    <div class="header-top">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
+        <span style="color: rgba(255,255,255,0.5); font-size: 14px;">/ Live Monitor</span>
+      </div>
+      <div class="session-status">
+        <div class="status-badge connecting" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">Connessione...</span>
+        </div>
+      </div>
     </div>
-    <div class="header-info">
-      <div class="url-badge" id="urlDisplay">Caricamento...</div>
+    <div class="header-url">
+      <span class="url-icon">🌐</span>
+      <span class="url-text" id="urlDisplay">Caricamento...</span>
       <div class="header-actions">
-        <button class="btn btn-secondary" onclick="clearEvents()">Pulisci</button>
-        <button class="btn btn-primary" onclick="saveResults()">Salva Report</button>
+        <button class="btn btn-ghost" onclick="clearEvents()">
+          🗑️ Pulisci
+        </button>
+        <button class="btn btn-danger" onclick="stopSession()">
+          ⏹️ Chiudi
+        </button>
+        <a class="btn btn-primary" id="viewReportBtn" href="#" style="display: none; text-decoration: none;">
+          📊 Vai al Report
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <div class="container">
-    <!-- Left Panel: Site Preview -->
-    <div class="preview-panel">
-      <div class="panel-header">
-        <div class="panel-title">Anteprima Sito</div>
-        <div class="connection-status">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">In attesa...</span>
-        </div>
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Instruction Banner -->
+    <div class="instruction-banner" id="instructionBanner">
+      <div class="instruction-icon">💡</div>
+      <div class="instruction-content">
+        <div class="instruction-title">Come funziona il Live Monitor</div>
+        <div class="instruction-text">Interagisci con il sito nella <strong>finestra del browser appena aperta</strong> per vedere comparire gli eventi di tracking qui sotto in tempo reale. Clicca, scrolla, compila form e osserva quali dati vengono inviati.</div>
       </div>
-      <div class="iframe-container">
-        <div class="iframe-loading" id="iframeLoading">
-          <div class="spinner"></div>
-          <div>Caricamento sito in corso...</div>
-        </div>
-        <div class="iframe-error" id="iframeError" style="display:none;">
-          <div>⚠️ Impossibile caricare il sito</div>
-          <div style="font-size:12px; margin-top:8px;">Il sito potrebbe bloccare l'embedding</div>
-        </div>
-        <iframe id="siteFrame" style="display:none;"></iframe>
+      <button class="instruction-close" onclick="closeBanner()">×</button>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">📊 Eventi Totali</div>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">🌐 Network</div>
+        <div class="stat-value" id="statNetwork">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">📦 DataLayer</div>
+        <div class="stat-value" id="statDataLayer">0</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-header">📝 Form Events</div>
+        <div class="stat-value" id="statForm">0</div>
       </div>
     </div>
 
-    <!-- Right Panel: Dashboard -->
-    <div class="dashboard-panel">
-      <div class="dashboard-content">
-        <!-- Status Cards -->
-        <div class="status-cards" id="statusCards">
-          <div class="status-card info">
-            <div class="card-icon">📊</div>
-            <div class="card-title">Eventi Totali</div>
-            <div class="card-value" id="cardTotal">0</div>
-            <div class="card-description">Monitorati in tempo reale</div>
-          </div>
-          <div class="status-card info">
-            <div class="card-icon">📝</div>
-            <div class="card-title">Form Submit</div>
-            <div class="card-value" id="cardForm">0</div>
-            <div class="card-description">Azioni utente</div>
-          </div>
-          <div class="status-card info">
-            <div class="card-icon">📈</div>
-            <div class="card-title">Tracking GA4</div>
-            <div class="card-value" id="cardGA4">0</div>
-            <div class="card-description">Eventi inviati</div>
-          </div>
-          <div class="status-card info">
-            <div class="card-icon">📦</div>
-            <div class="card-title">DataLayer</div>
-            <div class="card-value" id="cardDL">0</div>
-            <div class="card-description">Eventi pushati</div>
-          </div>
-        </div>
+    <!-- Tracker Summary -->
+    <div class="tracker-summary" id="trackerSummary">
+      <!-- Populated dynamically -->
+    </div>
 
-        <!-- Alert Box -->
-        <div class="alert-box" id="alertBox">
-          <div class="alert-icon" id="alertIcon">⚠️</div>
-          <div class="alert-content">
-            <div class="alert-title" id="alertTitle">Titolo Alert</div>
-            <div class="alert-text" id="alertText">Testo descrittivo</div>
-          </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tabs">
-          <div class="tab active" data-tab="all" onclick="switchTab('all')">
-            Tutti <span class="count" id="countAll">0</span>
-          </div>
-          <div class="tab" data-tab="dataLayer" onclick="switchTab('dataLayer')">
-            DataLayer <span class="count" id="countDataLayer">0</span>
-          </div>
-          <div class="tab" data-tab="network" onclick="switchTab('network')">
-            Network <span class="count" id="countNetwork">0</span>
-          </div>
-        </div>
-
-        <!-- Event List -->
-        <div class="event-list">
-          <div class="event-list-header">
-            <span>Eventi Live</span>
-            <span style="font-size:11px; color:var(--text-light); font-weight:400;">Ultimi 10</span>
-          </div>
-          <div class="event-list-content" id="eventList">
-            <div class="empty-state">In attesa di eventi...</div>
-          </div>
-        </div>
-
-        <!-- Tracker Grid -->
-        <div class="tracker-grid" id="trackerGrid">
-          <div class="empty-state">Nessun tracker rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>
-        </div>
+    <!-- Event Feed -->
+    <div class="section-header">
+      <div class="section-title">
+        <span class="live-indicator"></span>
+        Eventi Live
       </div>
+    </div>
+
+    <div class="event-feed" id="eventFeed">
+      <div class="empty-state">
+        <div class="empty-icon">📡</div>
+        <div class="empty-title">In attesa di eventi</div>
+        <div class="empty-text">Interagisci con il sito nella finestra del browser per vedere gli eventi di tracking qui.</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div class="toast-icon" id="toastIcon">✅</div>
+    <div class="toast-content">
+      <div class="toast-title" id="toastTitle">Titolo</div>
+      <div class="toast-text" id="toastText">Messaggio</div>
+    </div>
+  </div>
+
+  <!-- Selection Action Bar -->
+  <div class="selection-bar" id="selectionBar">
+    <div class="selection-info">
+      <span class="selection-count" id="selectionCount">0</span>
+      <span>eventi selezionati</span>
+    </div>
+    <div class="selection-actions">
+      <button class="btn btn-ghost" onclick="deselectAll()">
+        Deseleziona
+      </button>
+      <button class="btn btn-success" onclick="addSelectedToReport()" id="addToReportBtn">
+        📋 Aggiungi al Report
+      </button>
     </div>
   </div>
 
   <script>
-    // Stato
+    // State
     let events = [];
-    let currentTab = 'all';
-    let monitorConnected = false;
+    let sessionId = '';
+    let eventSource = null;
+    let activeFilter = null;
     let targetUrl = '';
     let reportId = '';
+    let selectedEvents = new Set(); // Track selected event IDs
 
-    // Contatori
-    const formEventCounts = {
-      form_submit_dom: 0,
-      form_submit_ga4: 0,
-      generate_lead: 0,
-      form_start: 0,
-      purchase: 0
+    const TRACKER_ICONS = {
+      'Facebook Pixel': { icon: 'f', class: 'facebook' },
+      'Facebook SDK': { icon: 'f', class: 'facebook' },
+      'GA4': { icon: 'G', class: 'ga4' },
+      'GTM': { icon: 'T', class: 'gtm' },
+      'Clarity': { icon: 'C', class: 'clarity' },
+      'Cookiebot': { icon: '🍪', class: 'cookiebot' },
+      'LinkedIn Insight': { icon: 'in', class: 'linkedin' },
+      'DataLayer': { icon: '{ }', class: 'datalayer' },
+      'Google Ads': { icon: 'G', class: 'ga4' },
+      'Bing Ads': { icon: 'B', class: 'default' },
+      'Hotjar': { icon: 'H', class: 'default' },
+      'TikTok Pixel': { icon: 'T', class: 'default' },
     };
 
-    const FORM_EVENTS = ['form_submit', 'generate_lead', 'form_start', 'purchase', 'Lead', 'CompleteRegistration', 'Contact', 'SubmitApplication'];
+    const FORM_EVENTS = ['form_submit', 'generate_lead', 'Lead', 'Purchase', 'CompleteRegistration', 'Contact'];
 
     // Init
-    function init() {
+    async function init() {
       const params = new URLSearchParams(window.location.search);
       targetUrl = params.get('url');
       reportId = params.get('reportId');
 
       if (!targetUrl) {
-        document.getElementById('urlDisplay').textContent = 'URL mancante';
-        document.getElementById('iframeLoading').style.display = 'none';
-        document.getElementById('iframeError').style.display = 'block';
+        hideLoading();
+        showToast('Errore', 'URL mancante nei parametri', 'danger');
         return;
       }
 
       document.getElementById('urlDisplay').textContent = targetUrl;
-      loadIframe(targetUrl);
-      window.addEventListener('message', handleMessage);
+
+      // Show report link if we have a reportId
+      if (reportId) {
+        const reportBtn = document.getElementById('viewReportBtn');
+        reportBtn.href = `/report.html?id=${reportId}`;
+        reportBtn.style.display = 'flex';
+      }
+
+      await startSession(targetUrl);
     }
 
-    function loadIframe(url) {
-      const iframe = document.getElementById('siteFrame');
-      const proxyUrl = `/proxy?url=${encodeURIComponent(url)}`;
+    async function startSession(url) {
+      try {
+        const response = await fetch('/api/form-test/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
 
-      iframe.onload = () => {
-        document.getElementById('iframeLoading').style.display = 'none';
-        iframe.style.display = 'block';
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Errore avvio sessione');
+        }
+
+        sessionId = data.sessionId;
+        connectToEventStream(sessionId);
+
+      } catch (err) {
+        console.error('Errore avvio sessione:', err);
+        hideLoading();
+        showToast('Errore', err.message, 'danger');
+      }
+    }
+
+    function connectToEventStream(sid) {
+      eventSource = new EventSource(`/api/form-test/${sid}/events`);
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          handleEvent(data);
+        } catch (e) {
+          console.error('Errore parsing SSE:', e);
+        }
       };
 
-      iframe.onerror = () => {
-        document.getElementById('iframeLoading').style.display = 'none';
-        document.getElementById('iframeError').style.display = 'block';
+      eventSource.onerror = () => {
+        updateStatus('disconnected', 'Disconnesso');
       };
-
-      setTimeout(() => {
-        if (!monitorConnected) {
-          document.getElementById('statusDot').className = 'status-dot waiting';
-          document.getElementById('statusText').textContent = 'Connessione lenta...';
-        }
-      }, 5000);
-
-      iframe.src = proxyUrl;
     }
 
-    function handleMessage(event) {
-      const { type, data, timestamp } = event.data || {};
-      if (!type) return;
+    function handleEvent(event) {
+      const { type } = event;
 
-      if (type === 'monitor_ready') {
-        monitorConnected = true;
-        document.getElementById('statusDot').className = 'status-dot connected';
-        document.getElementById('statusText').textContent = 'Connesso';
+      if (type === 'connected') {
+        updateStatus('connecting', 'Connesso SSE');
         return;
       }
 
-      if (type === 'navigate' && data?.url) {
-        document.getElementById('urlDisplay').textContent = data.url;
-        document.getElementById('statusDot').className = 'status-dot waiting';
-        document.getElementById('statusText').textContent = 'Navigazione...';
-        monitorConnected = false;
-        loadIframe(data.url);
+      if (type === 'session_started') {
+        hideLoading();
+        updateStatus('connected', 'Browser Attivo');
+        showToast('Sessione Avviata', 'Interagisci con il sito per vedere gli eventi', 'success');
         return;
       }
 
-      const eventObj = { type, data, timestamp: timestamp || Date.now(), id: events.length };
-      events.push(eventObj);
-      checkFormEvent(eventObj);
-      updateUI();
-    }
-
-    function checkFormEvent(eventObj) {
-      if (eventObj.type === 'form_submit') {
-        formEventCounts.form_submit_dom++;
-        showAlert('📝 Form Inviato', `L'utente ha inviato il form "${eventObj.data.formId || 'senza ID'}"`, 'warning');
+      if (type === 'session_stopped') {
+        updateStatus('disconnected', 'Sessione terminata');
         return;
       }
 
-      let eventName = null;
-      let source = '';
-
-      if (eventObj.type === 'dataLayer' && eventObj.data?.event) {
-        eventName = eventObj.data.event;
-        source = 'dataLayer';
-      } else if (eventObj.type === 'network' && eventObj.data?.event) {
-        eventName = eventObj.data.event;
-        source = eventObj.data.tracker || 'Network';
+      if (type === 'error') {
+        hideLoading();
+        showToast('Errore', event.message, 'danger');
+        return;
       }
 
-      if (eventName) {
-        const normalizedName = eventName.toLowerCase();
+      // Network & DataLayer events
+      if (type === 'network' || type === 'dataLayer') {
+        const eventObj = {
+          id: events.length,
+          type: type,
+          tracker: event.tracker || (type === 'dataLayer' ? 'DataLayer' : 'Unknown'),
+          event: event.event || event.data?.event || null,
+          eventCategory: event.eventCategory || 'custom',
+          url: event.url || '',
+          timestamp: event.timestamp || Date.now(),
+          isNew: true
+        };
 
-        if (normalizedName === 'form_submit' || normalizedName.includes('form_submit')) {
-          formEventCounts.form_submit_ga4++;
-          const isCorrect = formEventCounts.form_submit_dom > 0;
-          showAlert('✅ Tracking Attivo', `${source} ha inviato form_submit a GA4. ${isCorrect ? 'Tutto ok!' : ''}`, 'success');
-        }
-        if (normalizedName === 'generate_lead' || normalizedName.includes('generate_lead') || normalizedName === 'lead') {
-          formEventCounts.generate_lead++;
-          showAlert('✅ generate_lead Rilevato', `${source} ha inviato l'evento`, 'success');
-        }
-        if (normalizedName === 'form_start' || normalizedName.includes('form_start')) {
-          formEventCounts.form_start++;
-        }
-        if (normalizedName === 'purchase' || normalizedName.includes('purchase')) {
-          formEventCounts.purchase++;
-          showAlert('✅ purchase Rilevato', `${source} ha inviato l'evento`, 'success');
+        events.unshift(eventObj); // Add to beginning
+        updateUI();
+
+        // Remove "new" status after animation
+        setTimeout(() => {
+          eventObj.isNew = false;
+        }, 500);
+
+        // Check for form events
+        if (eventObj.event && FORM_EVENTS.some(fe =>
+          eventObj.event.toLowerCase().includes(fe.toLowerCase())
+        )) {
+          showToast('Form Event', `${eventObj.tracker}: ${eventObj.event}`, 'success');
         }
       }
     }
 
-    function showAlert(title, text, type) {
-      const alertBox = document.getElementById('alertBox');
-      const alertIcon = document.getElementById('alertIcon');
-      const alertTitle = document.getElementById('alertTitle');
-      const alertText = document.getElementById('alertText');
+    function updateStatus(status, text) {
+      const badge = document.getElementById('statusBadge');
+      badge.className = `status-badge ${status}`;
+      document.getElementById('statusText').textContent = text;
+    }
 
-      alertBox.className = `alert-box show ${type}`;
-      
-      const icons = { success: '✅', warning: '⚠️', danger: '❌' };
-      alertIcon.textContent = icons[type] || 'ℹ️';
-      alertTitle.textContent = title;
-      alertText.textContent = text;
-
-      setTimeout(() => {
-        alertBox.classList.remove('show');
-      }, 5000);
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
     }
 
     function updateUI() {
-      updateCards();
-      updateEventList();
-      updateCounts();
-      updateTrackerGrid();
+      updateStats();
+      updateTrackerSummary();
+      updateEventFeed();
     }
 
-    function updateCards() {
-      document.getElementById('cardTotal').textContent = events.length;
-      document.getElementById('cardForm').textContent = formEventCounts.form_submit_dom;
-      document.getElementById('cardGA4').textContent = formEventCounts.form_submit_ga4;
-      document.getElementById('cardDL').textContent = events.filter(e => e.type === 'dataLayer').length;
+    function updateStats() {
+      const networkEvents = events.filter(e => e.type === 'network');
+      const dataLayerEvents = events.filter(e => e.type === 'dataLayer');
+      const formEvents = events.filter(e =>
+        e.event && FORM_EVENTS.some(fe => e.event.toLowerCase().includes(fe.toLowerCase()))
+      );
+
+      document.getElementById('statTotal').textContent = events.length;
+      document.getElementById('statNetwork').textContent = networkEvents.length;
+      document.getElementById('statDataLayer').textContent = dataLayerEvents.length;
+      document.getElementById('statForm').textContent = formEvents.length;
     }
 
-    function updateEventList() {
-      const list = document.getElementById('eventList');
-      const filteredEvents = currentTab === 'all' ? events : events.filter(e => e.type === currentTab);
+    function updateTrackerSummary() {
+      const trackerCounts = {};
+      events.forEach(e => {
+        const tracker = e.tracker || 'Unknown';
+        trackerCounts[tracker] = (trackerCounts[tracker] || 0) + 1;
+      });
 
-      if (filteredEvents.length === 0) {
-        list.innerHTML = '<div class="empty-state">Nessun evento</div>';
+      const container = document.getElementById('trackerSummary');
+
+      if (Object.keys(trackerCounts).length === 0) {
+        container.innerHTML = '';
         return;
       }
 
-      const recentEvents = filteredEvents.slice(-10).reverse();
-      
-      list.innerHTML = recentEvents.map(e => {
-        const isFormEvent = FORM_EVENTS.some(fe => e.data?.event?.toLowerCase()?.includes(fe.toLowerCase())) || e.type === 'form_submit';
-        
-        let icon = '📊';
-        let name = e.type;
-        let details = '';
-        
-        if (e.type === 'dataLayer') {
-          icon = '📦';
-          name = e.data.event || 'unknown';
-          details = e.data.data ? JSON.stringify(e.data.data).substring(0, 60) : '';
-        } else if (e.type === 'network') {
-          icon = '🌐';
-          name = e.data.event || 'request';
-          details = e.data.tracker || '';
-        } else if (e.type === 'form_submit') {
-          icon = '📝';
-          name = 'Form Submit';
-          details = e.data.formId || '';
-        }
+      // Sort by count
+      const sorted = Object.entries(trackerCounts).sort((a, b) => b[1] - a[1]);
 
+      container.innerHTML = sorted.map(([tracker, count]) => {
+        const isActive = activeFilter === tracker;
+        return `
+          <div class="tracker-chip ${isActive ? 'active' : ''}" onclick="filterByTracker('${tracker}')">
+            ${tracker}
+            <span class="count">${count}</span>
+          </div>
+        `;
+      }).join('') + `
+        <div class="tracker-chip ${activeFilter === null ? 'active' : ''}" onclick="filterByTracker(null)">
+          Tutti
+          <span class="count">${events.length}</span>
+        </div>
+      `;
+    }
+
+    function filterByTracker(tracker) {
+      activeFilter = tracker;
+      updateTrackerSummary();
+      updateEventFeed();
+    }
+
+    function updateEventFeed() {
+      const container = document.getElementById('eventFeed');
+
+      let filteredEvents = events;
+      if (activeFilter) {
+        filteredEvents = events.filter(e => e.tracker === activeFilter);
+      }
+
+      if (filteredEvents.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📡</div>
+            <div class="empty-title">In attesa di eventi</div>
+            <div class="empty-text">Interagisci con il sito nella finestra del browser per vedere gli eventi di tracking qui.</div>
+          </div>
+        `;
+        return;
+      }
+
+      // Show last 50 events
+      const displayEvents = filteredEvents.slice(0, 50);
+
+      // Build select all row
+      const allSelected = displayEvents.every(e => selectedEvents.has(e.id));
+      const someSelected = displayEvents.some(e => selectedEvents.has(e.id));
+      const selectAllClass = allSelected ? 'checked' : (someSelected ? 'partial' : '');
+
+      let html = `
+        <div class="select-all-row">
+          <div class="select-all-left">
+            <div class="select-all-checkbox ${selectAllClass}" onclick="toggleSelectAll()"></div>
+            <span class="select-all-label" onclick="toggleSelectAll()">Seleziona tutti (${displayEvents.length})</span>
+          </div>
+        </div>
+      `;
+
+      html += displayEvents.map(e => {
+        const iconInfo = TRACKER_ICONS[e.tracker] || { icon: '?', class: 'default' };
         const time = new Date(e.timestamp).toLocaleTimeString('it-IT');
-        const highlightClass = isFormEvent ? 'highlight' : '';
+        const shortUrl = e.url ? e.url.substring(0, 80) + (e.url.length > 80 ? '...' : '') : '';
+        const isSelected = selectedEvents.has(e.id);
 
         return `
-          <div class="event-item ${highlightClass}">
-            <div class="event-icon">${icon}</div>
+          <div class="event-card ${e.isNew ? 'new' : ''} ${isSelected ? 'selected' : ''}" onclick="toggleSelection(${e.id})">
+            <div class="event-checkbox"></div>
+            <div class="tracker-icon ${iconInfo.class}">${iconInfo.icon}</div>
             <div class="event-content">
-              <div class="event-name">${name}</div>
-              ${details ? `<div class="event-details">${details}</div>` : ''}
+              <div class="event-header">
+                <span class="event-tracker">${e.tracker}</span>
+                ${e.event ? `<span class="event-name">${e.event}</span>` : ''}
+                <span class="event-category">${e.eventCategory}</span>
+              </div>
+              ${shortUrl ? `<div class="event-url">${shortUrl}</div>` : ''}
             </div>
             <div class="event-time">${time}</div>
           </div>
         `;
       }).join('');
+
+      container.innerHTML = html;
+      updateSelectionBar();
     }
 
-    function updateCounts() {
-      document.getElementById('countAll').textContent = events.length;
-      document.getElementById('countDataLayer').textContent = events.filter(e => e.type === 'dataLayer').length;
-      document.getElementById('countNetwork').textContent = events.filter(e => e.type === 'network').length;
-    }
+    function showToast(title, text, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icons = { success: '✅', warning: '⚠️', danger: '❌' };
 
-    function updateTrackerGrid() {
-      const grid = document.getElementById('trackerGrid');
-      
-      // Filtra eventi utili - ALLINEATO CON SCANNER.JS
-      const SYSTEM_EVENTS = ['gtm.js', 'gtm.dom', 'gtm.load'];
-      
-      const formSubmitEvents = events.filter(e => e.type === 'form_submit');
-      
-      // Eventi network: mantieni tutti tranne quelli di sistema
-      const networkEvents = events.filter(e => 
-        e.type === 'network' && e.data?.event && 
-        !SYSTEM_EVENTS.includes(e.data.event)
-      );
-      
-      // Eventi dataLayer: mantieni tutti tranne quelli di sistema
-      const dataLayerEvents = events.filter(e => 
-        e.type === 'dataLayer' && e.data?.event && 
-        !SYSTEM_EVENTS.includes(e.data.event)
-      );
+      document.getElementById('toastIcon').textContent = icons[type] || '📢';
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastText').textContent = text;
 
-      if (formSubmitEvents.length === 0 && networkEvents.length === 0 && dataLayerEvents.length === 0) {
-        grid.innerHTML = '<div class="empty-state">Nessun tracker rilevato<br>Interagisci con il form per vedere gli eventi raggruppati</div>';
-        return;
-      }
+      toast.className = `toast show ${type}`;
 
-      // Raggruppa per tracker
-      const grouped = {};
-      
-      // DOM events
-      if (formSubmitEvents.length > 0) {
-        grouped['DOM'] = formSubmitEvents.map(e => ({
-          name: 'Form Submit',
-          details: `${e.data?.formId || 'ID'} → ${e.data?.formAction || 'N/A'}`,
-          count: 1,
-          source: 'user'
-        }));
-      }
-
-      // Network events - LOGICA ALLINEATA CON SCANNER.JS
-      networkEvents.forEach(e => {
-        let tracker = e.data.tracker || 'Unknown';
-        const url = e.data.url || '';
-        const eventName = e.data.event || '';
-        
-        // === LOGICA DI RILEVAMENTO ALLINEATA CON SCANNER.JS ===
-        
-        // Facebook Pixel (pattern: facebook.com/tr)
-        if (url.match(/facebook\.com\/tr/i) || 
-            url.match(/connect\.facebook\.net|facebook\.net/i) ||
-            tracker.toLowerCase().includes('facebook') ||
-            eventName.toLowerCase().includes('fb_') ||
-            eventName.toLowerCase().includes('facebook')) {
-          tracker = 'Facebook';
-        }
-        // Facebook PageView specifico
-        else if (url.includes('facebook.com/tr') && eventName === 'PageView') {
-          tracker = 'Facebook';
-        }
-        // Google Analytics 4
-        else if (url.match(/google-analytics\.com|analytics\.google\.com|\/g\/collect|stape\.net|stape\.io|sgtm\./i) ||
-                 tracker.toLowerCase().includes('ga4')) {
-          tracker = 'GA4';
-        }
-        // Google Tag Manager
-        else if (url.match(/googletagmanager\.com\/gtm\.js|googletagmanager\.com\/gtag\/js/i) ||
-                 tracker.toLowerCase().includes('gtm')) {
-          tracker = 'GTM';
-        }
-        // Google Ads
-        else if (url.match(/googleadservices\.com|googlesyndication\.com|doubleclick\.net|googleads\./i)) {
-          tracker = 'Google Ads';
-        }
-        // Facebook SDK
-        else if (url.match(/connect\.facebook\.net|facebook\.net/i)) {
-          tracker = 'Facebook SDK';
-        }
-        // Clarity
-        else if (url.match(/clarity\.ms/i)) {
-          tracker = 'Clarity';
-        }
-        // Bing Ads
-        else if (url.match(/bat\.bing\.com/i)) {
-          tracker = 'Bing Ads';
-        }
-        // LinkedIn Insight
-        else if (url.match(/snap\.licdn\.com|linkedin\.com\/px|licdn\.com|px\.ads\.linkedin/i)) {
-          tracker = 'LinkedIn Insight';
-        }
-        // TikTok Pixel
-        else if (url.match(/analytics\.tiktok\.com|tiktok\.com\/i18n\/pixel/i)) {
-          tracker = 'TikTok Pixel';
-        }
-        // Hotjar
-        else if (url.match(/hotjar\.com|static\.hotjar\.com/i)) {
-          tracker = 'Hotjar';
-        }
-        // Criteo
-        else if (url.match(/criteo\.com|criteo\.net/i)) {
-          tracker = 'Criteo';
-        }
-        // Taboola
-        else if (url.match(/taboola\.com|trc\.taboola\.com/i)) {
-          tracker = 'Taboola';
-        }
-        // Outbrain
-        else if (url.match(/outbrain\.com/i)) {
-          tracker = 'Outbrain';
-        }
-        // Yahoo/Verizon
-        else if (url.match(/analytics\.yahoo\.com|ads\.yahoo\.com/i)) {
-          tracker = 'Yahoo/Verizon';
-        }
-        // Adobe Analytics
-        else if (url.match(/omtrdc\.net|demdex\.net|2o7\.net/i)) {
-          tracker = 'Adobe Analytics';
-        }
-        // CMP
-        else if (url.match(/cookiebot\.com|consentcdn\.cookiebot\.com/i)) {
-          tracker = 'Cookiebot';
-        }
-        else if (url.match(/onetrust\.com|cdn\.cookielaw\.org/i)) {
-          tracker = 'OneTrust';
-        }
-        else if (url.match(/iubenda\.com/i)) {
-          tracker = 'iubenda';
-        }
-        else if (url.match(/tagcommander\.com|commander1\.com|tC\.cmp/i)) {
-          tracker = 'Commanders Act';
-        }
-        else if (url.match(/didomi\.io|sdk\.privacy-center\.org/i)) {
-          tracker = 'Didomi';
-        }
-        else if (url.match(/axeptio\.eu|client\.axept\.io/i)) {
-          tracker = 'Axeptio';
-        }
-        else if (url.match(/usercentrics\.eu|app\.usercentrics\.eu/i)) {
-          tracker = 'Usercentrics';
-        }
-        else if (url.match(/quantcast\.com|quantserve\.com/i)) {
-          tracker = 'Quantcast';
-        }
-
-        if (!grouped[tracker]) grouped[tracker] = [];
-        grouped[tracker].push({
-          name: e.data.event,
-          details: e.data.params ? JSON.stringify(e.data.params) : '',
-          count: 1,
-          source: 'network'
-        });
-      });
-
-      // DataLayer events
-      if (dataLayerEvents.length > 0) {
-        grouped['DataLayer'] = dataLayerEvents.map(e => ({
-          name: e.data.event,
-          details: e.data.data ? JSON.stringify(e.data.data) : '',
-          count: 1,
-          source: 'datalayer'
-        }));
-      }
-
-      // Raggruppa per nome
-      const groupByName = (items) => {
-        const grouped = {};
-        items.forEach(item => {
-          const key = item.name;
-          if (!grouped[key]) {
-            grouped[key] = { ...item, count: 0, allDetails: [] };
-          }
-          grouped[key].count++;
-          if (item.details) grouped[key].allDetails.push(item.details);
-        });
-        return Object.values(grouped);
-      };
-
-      // Genera HTML
-      const icons = { 'DOM': '📝', 'GA4': '📈', 'GTM': '🏷️', 'Facebook': '📘', 'DataLayer': '📦' };
-      const order = ['DOM', 'GA4', 'GTM', 'Facebook', 'DataLayer'];
-      const sortedTrackers = Object.keys(grouped).sort((a, b) => {
-        const indexA = order.indexOf(a);
-        const indexB = order.indexOf(b);
-        if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-      });
-
-      grid.innerHTML = sortedTrackers.map(tracker => {
-        const events = groupByName(grouped[tracker]);
-        const totalEvents = grouped[tracker].length;
-
-        return `
-          <div class="tracker-card">
-            <div class="tracker-header">
-              <span>${icons[tracker] || '📡'} ${tracker}</span>
-              <span>${totalEvents} eventi</span>
-            </div>
-            <div class="tracker-events">
-              ${events.map(event => {
-                const hasParams = event.allDetails.length > 0;
-                const paramsText = hasParams ? event.allDetails[0].substring(0, 50) : '';
-                return `
-                  <div class="event-badge ${hasParams ? 'has-params' : ''}">
-                    ${event.name}
-                    ${event.count > 1 ? `<span class="badge-count">${event.count}</span>` : ''}
-                    <span class="badge-source">${event.source}</span>
-                    ${hasParams ? `<div class="params-tooltip">${paramsText}</div>` : ''}
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function switchTab(tab) {
-      currentTab = tab;
-      document.querySelectorAll('.tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tab);
-      });
-      updateEventList();
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
     }
 
     function clearEvents() {
       events = [];
-      Object.keys(formEventCounts).forEach(k => formEventCounts[k] = 0);
+      activeFilter = null;
+      selectedEvents.clear();
       updateUI();
-      document.getElementById('statusDot').className = 'status-dot';
-      document.getElementById('statusText').textContent = 'In attesa...';
+    }
+
+    function closeBanner() {
+      document.getElementById('instructionBanner').classList.add('hidden');
+    }
+
+    // Selection functions
+    function toggleSelection(eventId) {
+      if (selectedEvents.has(eventId)) {
+        selectedEvents.delete(eventId);
+      } else {
+        selectedEvents.add(eventId);
+      }
+      updateEventFeed();
+    }
+
+    function toggleSelectAll() {
+      let filteredEvents = events;
+      if (activeFilter) {
+        filteredEvents = events.filter(e => e.tracker === activeFilter);
+      }
+      const displayEvents = filteredEvents.slice(0, 50);
+
+      const allSelected = displayEvents.every(e => selectedEvents.has(e.id));
+
+      if (allSelected) {
+        // Deselect all
+        displayEvents.forEach(e => selectedEvents.delete(e.id));
+      } else {
+        // Select all
+        displayEvents.forEach(e => selectedEvents.add(e.id));
+      }
+      updateEventFeed();
+    }
+
+    function deselectAll() {
+      selectedEvents.clear();
+      updateEventFeed();
+    }
+
+    function updateSelectionBar() {
+      const bar = document.getElementById('selectionBar');
+      const count = selectedEvents.size;
+      const countEl = document.getElementById('selectionCount');
+      const addBtn = document.getElementById('addToReportBtn');
+
+      countEl.textContent = count;
+
+      if (count > 0) {
+        bar.classList.add('show');
+        // Update button text based on whether we have a reportId
+        if (reportId) {
+          addBtn.textContent = '📋 Aggiungi al Report';
+        } else {
+          addBtn.textContent = '💾 Scarica Selezione';
+        }
+      } else {
+        bar.classList.remove('show');
+      }
+    }
+
+    async function addSelectedToReport() {
+      if (selectedEvents.size === 0) return;
+
+      // Get selected events data
+      const selectedData = events.filter(e => selectedEvents.has(e.id));
+
+      if (reportId) {
+        // Add to existing report
+        try {
+          const results = {
+            url: targetUrl,
+            timestamp: new Date().toISOString(),
+            events: selectedData.map(e => ({
+              type: e.type,
+              timestamp: e.timestamp || Date.now(),
+              data: { tracker: e.tracker, event: e.event, url: e.url }
+            })),
+            formEventCounts: {
+              total: selectedData.filter(e =>
+                e.event && FORM_EVENTS.some(fe => e.event.toLowerCase().includes(fe.toLowerCase()))
+              ).length
+            },
+            success: true
+          };
+
+          const response = await fetch(`/api/report/${reportId}/form-test`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(results)
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showToast('Aggiunto al Report', `${data.eventsAdded} eventi aggiunti`, 'success');
+            // Clear selection after successful add
+            selectedEvents.clear();
+            updateEventFeed();
+            return;
+          } else {
+            throw new Error(data.error || 'Errore');
+          }
+        } catch (err) {
+          console.error('Errore salvataggio:', err);
+          showToast('Errore', err.message, 'danger');
+        }
+      } else {
+        // No reportId - download as JSON
+        const exportData = {
+          url: targetUrl,
+          timestamp: new Date().toISOString(),
+          selectedEvents: selectedData.map(e => ({
+            tracker: e.tracker,
+            event: e.event,
+            eventCategory: e.eventCategory,
+            type: e.type,
+            url: e.url,
+            timestamp: e.timestamp
+          }))
+        };
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `selected-events-${Date.now()}.json`;
+        a.click();
+        showToast('Download', `${selectedData.length} eventi esportati`, 'success');
+      }
+    }
+
+    async function stopSession() {
+      if (sessionId) {
+        try {
+          await fetch(`/api/form-test/${sessionId}/stop`, { method: 'POST' });
+        } catch (e) {
+          console.error('Errore stop:', e);
+        }
+      }
+      if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+      }
+      updateStatus('disconnected', 'Sessione terminata');
+      showToast('Sessione Chiusa', 'Il browser è stato chiuso', 'warning');
     }
 
     async function saveResults() {
       const results = {
         url: targetUrl,
         timestamp: new Date().toISOString(),
-        events: events,
-        formEventCounts: formEventCounts,
-        success: formEventCounts.form_submit > 0 || formEventCounts.generate_lead > 0
+        events: events.map(e => ({
+          type: e.type,
+          data: { tracker: e.tracker, event: e.event, url: e.url }
+        })),
+        formEventCounts: { total: events.filter(e =>
+          e.event && FORM_EVENTS.some(fe => e.event.toLowerCase().includes(fe.toLowerCase()))
+        ).length },
+        success: true
       };
 
       if (reportId) {
@@ -1370,80 +1359,31 @@
           const data = await response.json();
 
           if (data.success) {
-            if (window.opener && !window.opener.closed) {
-              window.opener.postMessage({ type: 'formTestComplete', reportId, eventsAdded: data.eventsAdded }, '*');
-              window.opener.location.reload();
-            }
-            showAlert('✅ Report Salvato', `${data.eventsAdded} eventi aggiunti al report`, 'success');
-            setTimeout(() => window.close(), 2000);
+            showToast('Salvato', `${data.eventsAdded} eventi aggiunti al report`, 'success');
             return;
-          } else {
-            showAlert('❌ Errore', data.error || 'Errore sconosciuto', 'danger');
           }
         } catch (e) {
-          showAlert('❌ Errore di Connessione', e.message, 'danger');
+          console.error('Errore salvataggio:', e);
         }
       }
 
+      // Fallback: download JSON
       const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `form-audit-${Date.now()}.json`;
+      a.download = `live-events-${Date.now()}.json`;
       a.click();
-      showAlert('✅ Report Scaricato', 'File JSON salvato localmente', 'success');
+      showToast('Scaricato', 'File JSON salvato', 'success');
     }
 
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    if (menuToggle) {
-      menuToggle.addEventListener('click', () => {
-        document.getElementById('navLinks').classList.toggle('open');
-      });
-    }
-
-    // Gestione click sui badge per tooltip
-    function setupBadgeClickHandlers() {
-      // Rimuovi vecchi event listeners
-      const oldContainer = document.getElementById('trackerGrid');
-      if (oldContainer) {
-        const newContainer = oldContainer.cloneNode(true);
-        oldContainer.parentNode.replaceChild(newContainer, oldContainer);
+    // Cleanup on page close
+    window.addEventListener('beforeunload', () => {
+      if (sessionId) {
+        navigator.sendBeacon(`/api/form-test/${sessionId}/stop`, '');
       }
+    });
 
-      // Aggiungi nuovi event listeners
-      document.addEventListener('click', function(e) {
-        const badge = e.target.closest('.event-badge');
-        if (badge) {
-          e.stopPropagation();
-          
-          // Chiudi tutti gli altri tooltip aperti
-          document.querySelectorAll('.event-badge.click-tooltip').forEach(b => {
-            if (b !== badge) b.classList.remove('click-tooltip');
-          });
-          
-          // Toggle tooltip cliccato
-          badge.classList.toggle('click-tooltip');
-        }
-      });
-
-      // Chiudi tooltip quando si clicca fuori
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.event-badge')) {
-          document.querySelectorAll('.event-badge.click-tooltip').forEach(b => {
-            b.classList.remove('click-tooltip');
-          });
-        }
-      });
-    }
-
-    // Modifica updateTrackerGrid per aggiungere gestione click
-    const originalUpdateTrackerGrid = updateTrackerGrid;
-    updateTrackerGrid = function() {
-      originalUpdateTrackerGrid();
-      setupBadgeClickHandlers();
-    };
-
-    // Avvia
+    // Start
     init();
   </script>
 </body>
