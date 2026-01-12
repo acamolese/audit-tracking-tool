@@ -909,7 +909,7 @@
       document.getElementById('cmpBadge').className = 'badge ' + (cmpDetected ? 'badge-success' : 'badge-neutral');
       document.getElementById('consentState').textContent = JSON.stringify(report.cmp?.consentState || {}, null, 2);
 
-      // Violations + Eventi Pre-Consenso raggruppati per tracker
+      // Violations - raggruppa eventi pre-consenso per tracker
       const violationsList = document.getElementById('violationsList');
       const violationsEmpty = document.getElementById('violationsEmpty');
 
@@ -927,8 +927,8 @@
         preConsentByTracker[e.tracker].push(e);
       });
 
-      const totalViolations = violations + Object.keys(preConsentByTracker).length;
-      document.getElementById('violationsBadge').textContent = totalViolations + ' violazioni';
+      const totalViolations = Object.keys(preConsentByTracker).length;
+      document.getElementById('violationsBadge').textContent = totalViolations + ' tracker';
       document.getElementById('violationsBadge').className = 'badge ' + (totalViolations > 0 ? 'badge-danger' : 'badge-success');
 
       if (totalViolations === 0) {
@@ -937,64 +937,44 @@
       } else {
         violationsList.innerHTML = '';
 
-        // Mostra violazioni classiche
-        (report.violations || []).forEach(v => {
-          const li = document.createElement('li');
-          let detail = v.details?.event || v.details?.url?.substring(0, 60) || '';
-          if (v.details?.gcsRaw) {
-            detail += ` <strong style="color:var(--danger);">(${v.details.gcsRaw})</strong>`;
-          }
-          li.innerHTML = `
-            <span class="dot red"></span>
-            <span class="tracker-name">${v.tracker}</span>
-            <span class="tracker-detail">${detail}</span>
-          `;
-          violationsList.appendChild(li);
-        });
-
-        // Mostra eventi pre-consenso raggruppati per tracker (box espandibili)
+        // Mostra tracker con eventi pre-consenso (box grigi espandibili)
         Object.entries(preConsentByTracker).forEach(([tracker, events]) => {
           const trackerDiv = document.createElement('div');
-          trackerDiv.style.cssText = 'margin-top: 12px; background: rgba(255, 79, 80, 0.08); border-radius: 8px; border-left: 3px solid var(--danger); overflow: hidden;';
+          trackerDiv.style.cssText = 'margin-bottom: 8px; background: var(--bg); border-radius: 8px; overflow: hidden;';
 
           // Header cliccabile
           const header = document.createElement('div');
-          header.style.cssText = 'display: flex; align-items: center; gap: 8px; padding: 12px; cursor: pointer; transition: background 0.2s;';
+          header.style.cssText = 'display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; transition: background 0.2s;';
           header.innerHTML = `
             <span class="dot red"></span>
-            <strong style="color: var(--danger); flex: 1;">${tracker}</strong>
-            <span style="font-size: 12px; color: var(--text-light);">${events.length} eventi</span>
-            <span class="arrow" style="transition: transform 0.2s; font-size: 12px;">&#9660;</span>
+            <span style="font-weight: 600; color: var(--text); flex: 1;">${tracker}</span>
+            <span style="font-size: 12px; color: var(--text-light);">${events.length} eventi pre-consenso</span>
+            <span class="arrow" style="transition: transform 0.2s; font-size: 10px; color: var(--text-light);">&#9660;</span>
           `;
 
           // Contenuto espandibile (nascosto di default)
           const content = document.createElement('div');
-          content.style.cssText = 'display: none; padding: 0 12px 12px 12px; border-top: 1px solid rgba(255, 79, 80, 0.2);';
+          content.style.cssText = 'display: none; padding: 0 16px 12px 42px; font-size: 13px;';
 
-          const eventsList = document.createElement('ul');
-          eventsList.style.cssText = 'list-style: none; margin: 0; padding: 8px 0 0 20px; font-size: 13px;';
           events.forEach(e => {
-            const eventLi = document.createElement('li');
-            eventLi.style.cssText = 'padding: 6px 0; color: var(--text); border-bottom: 1px solid rgba(0,0,0,0.05);';
-            let eventInfo = `<strong>${e.event}</strong>`;
-            if (e.eventCategory) eventInfo += ` <span style="background: rgba(0,0,0,0.08); padding: 2px 6px; border-radius: 4px; font-size: 11px;">${e.eventCategory}</span>`;
-            if (e.consentMode) eventInfo += ` <span style="color: var(--text-light); font-size: 11px;">(${e.consentMode})</span>`;
-            eventLi.innerHTML = eventInfo;
-            eventsList.appendChild(eventLi);
+            const eventDiv = document.createElement('div');
+            eventDiv.style.cssText = 'padding: 6px 0; border-bottom: 1px solid var(--border);';
+            let eventInfo = `<span style="color: var(--text);">${e.event}</span>`;
+            if (e.eventCategory) eventInfo += ` <span style="background: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 11px; color: var(--text-light);">${e.eventCategory}</span>`;
+            eventDiv.innerHTML = eventInfo;
+            content.appendChild(eventDiv);
           });
-          content.appendChild(eventsList);
 
           // Toggle al click
           header.onclick = () => {
             const isOpen = content.style.display !== 'none';
             content.style.display = isOpen ? 'none' : 'block';
             header.querySelector('.arrow').style.transform = isOpen ? '' : 'rotate(180deg)';
-            header.style.background = isOpen ? '' : 'rgba(255, 79, 80, 0.05)';
           };
 
           // Hover effect
-          header.onmouseenter = () => { if (content.style.display === 'none') header.style.background = 'rgba(255, 79, 80, 0.05)'; };
-          header.onmouseleave = () => { if (content.style.display === 'none') header.style.background = ''; };
+          header.onmouseenter = () => { header.style.background = 'var(--surface)'; };
+          header.onmouseleave = () => { header.style.background = ''; };
 
           trackerDiv.appendChild(header);
           trackerDiv.appendChild(content);
