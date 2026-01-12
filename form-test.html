@@ -175,6 +175,17 @@
       color: #ffffff;
     }
 
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--primary);
+      border: 2px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-2);
+      border-color: var(--primary-light);
+    }
+
     .btn-danger {
       background: var(--danger);
       color: white;
@@ -1130,13 +1141,13 @@
                 <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Naviga la Pagina</h5>
                 <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Simula lo scroll dell'utente per attivare eventi come scroll tracking, lazy loading, e impression dei contenuti.</p>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  <button class="btn btn-ghost" onclick="executeAction('scroll', {amount: 500})">
+                  <button class="btn btn-secondary" onclick="executeAction('scroll', {amount: 500})">
                     Scroll (500px)
                   </button>
-                  <button class="btn btn-ghost" onclick="executeAction('scrollToBottom')">
+                  <button class="btn btn-secondary" onclick="executeAction('scrollToBottom')">
                     Vai a Fine Pagina
                   </button>
-                  <button class="btn btn-ghost" onclick="executeAction('wait', {ms: 3000})">
+                  <button class="btn btn-secondary" onclick="executeAction('wait', {ms: 3000})">
                     Attendi 3 secondi
                   </button>
                 </div>
@@ -1152,7 +1163,7 @@
                 <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Testa i Form</h5>
                 <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Compila automaticamente i form con dati di test e inviali per verificare gli eventi di conversione (generate_lead, form_submit, ecc.).</p>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  <button class="btn btn-ghost" onclick="executeAction('fillForm')">
+                  <button class="btn btn-secondary" onclick="executeAction('fillForm')">
                     Compila Form
                   </button>
                   <button class="btn btn-primary" onclick="executeAction('submitForm')">
@@ -1172,8 +1183,8 @@
                 <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Clicca su un elemento specifico usando un selettore CSS. Utile per testare pulsanti WhatsApp, telefono, CTA specifiche.</p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <input type="text" id="customSelector" placeholder="es: .btn-whatsapp, a[href*='tel:'], #cta-button"
-                    style="flex: 1; min-width: 200px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg);">
-                  <button class="btn btn-ghost" onclick="executeAction('click', {selector: document.getElementById('customSelector').value})">
+                    style="flex: 1; min-width: 200px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg); color: var(--text);">
+                  <button class="btn btn-secondary" onclick="executeAction('click', {selector: document.getElementById('customSelector').value})">
                     Esegui Click
                   </button>
                 </div>
@@ -1188,7 +1199,7 @@
               <div style="flex: 1;">
                 <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Cattura Screenshot</h5>
                 <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Scatta una foto della pagina corrente per vedere lo stato attuale del sito nel browser headless.</p>
-                <button class="btn btn-ghost" onclick="executeAction('screenshot')">
+                <button class="btn btn-secondary" onclick="executeAction('screenshot')">
                   Scatta Screenshot
                 </button>
               </div>
