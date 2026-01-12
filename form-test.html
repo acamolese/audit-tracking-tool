@@ -897,6 +897,7 @@
     let targetUrl = '';
     let reportId = '';
     let selectedEvents = new Set(); // Track selected event IDs
+    let isHeadlessMode = false; // True when running on Railway
 
     const TRACKER_ICONS = {
       'Facebook Pixel': { icon: 'f', class: 'facebook' },
@@ -936,7 +937,26 @@
         reportBtn.style.display = 'flex';
       }
 
-      await startSession(targetUrl);
+      // Check environment to decide which mode to use
+      try {
+        const envResponse = await fetch('/api/environment');
+        const envData = await envResponse.json();
+
+        if (envData.success && !envData.isLocal) {
+          // Server mode (Railway) - use headless
+          isHeadlessMode = true;
+          showHeadlessUI();
+          await startHeadlessSession(targetUrl);
+        } else {
+          // Local mode - use visual browser
+          isHeadlessMode = false;
+          await startSession(targetUrl);
+        }
+      } catch (err) {
+        // Fallback to visual mode
+        console.error('Errore check environment:', err);
+        await startSession(targetUrl);
+      }
     }
 
     async function startSession(url) {
@@ -1059,30 +1079,250 @@
     }
 
     function showServerNotSupportedMessage() {
-      // Replace main content with message
-      document.querySelector('.main').innerHTML = `
-        <div style="max-width: 600px; margin: 0 auto; text-align: center; padding: 60px 20px;">
-          <div style="font-size: 64px; margin-bottom: 24px;">🖥️</div>
-          <h2 style="font-size: 24px; color: var(--primary); margin-bottom: 16px;">Live Monitor non disponibile</h2>
-          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;">
-            Il <strong>Live Monitor</strong> richiede un browser visibile con cui interagire,
-            quindi funziona solo quando l'applicazione è eseguita <strong>in locale</strong>.
-          </p>
-          <div style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 24px; text-align: left; margin-bottom: 24px;">
-            <h4 style="color: var(--primary); margin-bottom: 12px;">Come usare il Live Monitor:</h4>
-            <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 20px;">
-              <li>Clona il repository in locale</li>
-              <li>Esegui <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">npm install</code></li>
-              <li>Avvia con <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">node server.js</code></li>
-              <li>Apri <code style="background: var(--surface-3); padding: 2px 6px; border-radius: 4px;">http://localhost:3000</code></li>
-            </ol>
+      // This is now handled by headless mode - kept for backwards compatibility
+      updateStatus('disconnected', 'Non disponibile');
+    }
+
+    // === HEADLESS MODE FUNCTIONS ===
+    function showHeadlessUI() {
+      // Update instruction banner for headless mode
+      document.getElementById('instructionBanner').innerHTML = `
+        <div class="instruction-icon">🤖</div>
+        <div class="instruction-content">
+          <div class="instruction-title">Modalità Automatica (Server)</div>
+          <div class="instruction-text">Stai usando la versione server. Usa i <strong>pulsanti azione</strong> qui sotto per interagire con la pagina e vedere gli eventi catturati in tempo reale.</div>
+        </div>
+        <button class="instruction-close" onclick="closeBanner()">×</button>
+      `;
+
+      // Add action panel after stats grid
+      const statsGrid = document.querySelector('.stats-grid');
+      const actionPanel = document.createElement('div');
+      actionPanel.id = 'actionPanel';
+      actionPanel.innerHTML = `
+        <div style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+          <h4 style="color: var(--primary); margin-bottom: 16px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
+            🎮 Azioni Disponibili
+          </h4>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+            <button class="btn btn-primary" onclick="executeAction('acceptCookies')" id="btnAcceptCookies">
+              🍪 Accetta Cookie
+            </button>
+            <button class="btn btn-ghost" onclick="executeAction('scroll', {amount: 500})">
+              ⬇️ Scroll
+            </button>
+            <button class="btn btn-ghost" onclick="executeAction('scrollToBottom')">
+              ⏬ Scroll Fine
+            </button>
+            <button class="btn btn-ghost" onclick="executeAction('wait', {ms: 3000})">
+              ⏱️ Attendi 3s
+            </button>
+            <button class="btn btn-ghost" onclick="executeAction('screenshot')">
+              📸 Screenshot
+            </button>
           </div>
-          <a href="/" class="btn btn-primary" style="text-decoration: none; display: inline-block; padding: 14px 28px;">
-            ← Torna alla Home
-          </a>
+          <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+            <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">Test Form</h5>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button class="btn btn-ghost" onclick="executeAction('fillForm')">
+                📝 Compila Form
+              </button>
+              <button class="btn btn-primary" onclick="executeAction('submitForm')">
+                📤 Invia Form
+              </button>
+            </div>
+          </div>
+          <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px;">
+            <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">Click Personalizzato</h5>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="customSelector" placeholder="Selettore CSS (es: .btn-whatsapp)"
+                style="flex: 1; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--bg);">
+              <button class="btn btn-ghost" onclick="executeAction('click', {selector: document.getElementById('customSelector').value})">
+                👆 Click
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="screenshotPreview" style="display: none; margin-bottom: 24px;">
+          <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">📸 Ultimo Screenshot</h5>
+          <img id="screenshotImg" style="max-width: 100%; border-radius: 8px; border: 2px solid var(--border);">
+        </div>
+        <div id="actionsLog" style="background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+          <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">📋 Log Azioni</h5>
+          <div id="actionsLogContent" style="font-family: monospace; font-size: 12px; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
+            In attesa di azioni...
+          </div>
         </div>
       `;
-      updateStatus('disconnected', 'Non disponibile');
+      statsGrid.parentNode.insertBefore(actionPanel, statsGrid.nextSibling);
+    }
+
+    async function startHeadlessSession(url) {
+      try {
+        const response = await fetch('/api/form-test-headless/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Errore avvio sessione headless');
+        }
+
+        sessionId = data.sessionId;
+        connectToHeadlessEventStream(sessionId);
+
+      } catch (err) {
+        console.error('Errore avvio sessione headless:', err);
+        hideLoading();
+        showToast('Errore', err.message, 'danger');
+      }
+    }
+
+    function connectToHeadlessEventStream(sid) {
+      eventSource = new EventSource(`/api/form-test-headless/${sid}/events`);
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          handleHeadlessEvent(data);
+        } catch (e) {
+          console.error('Errore parsing SSE:', e);
+        }
+      };
+
+      eventSource.onerror = () => {
+        updateStatus('disconnected', 'Disconnesso');
+      };
+    }
+
+    function handleHeadlessEvent(event) {
+      const { type } = event;
+
+      if (type === 'connected') {
+        updateStatus('connecting', 'Connesso SSE');
+        return;
+      }
+
+      if (type === 'session_started') {
+        hideLoading();
+        updateStatus('connected', 'Headless Attivo');
+        showToast('Sessione Avviata', 'Browser headless pronto. Usa le azioni per interagire.', 'success');
+        return;
+      }
+
+      if (type === 'session_stopped') {
+        updateStatus('disconnected', 'Sessione terminata');
+        return;
+      }
+
+      if (type === 'error') {
+        hideLoading();
+        showToast('Errore', event.message, 'danger');
+        return;
+      }
+
+      if (type === 'action') {
+        logActionToUI(event.action);
+        return;
+      }
+
+      // Network & DataLayer events
+      if (type === 'network' || type === 'dataLayer') {
+        const eventObj = {
+          id: events.length,
+          type: type,
+          tracker: event.tracker || (type === 'dataLayer' ? 'DataLayer' : 'Unknown'),
+          event: event.event || event.data?.event || null,
+          eventCategory: event.eventCategory || 'custom',
+          url: event.url || '',
+          timestamp: event.timestamp || Date.now(),
+          isNew: true
+        };
+
+        events.unshift(eventObj);
+        updateUI();
+
+        setTimeout(() => {
+          eventObj.isNew = false;
+        }, 500);
+
+        if (eventObj.event && FORM_EVENTS.some(fe =>
+          eventObj.event.toLowerCase().includes(fe.toLowerCase())
+        )) {
+          showToast('Form Event', `${eventObj.tracker}: ${eventObj.event}`, 'success');
+        }
+      }
+    }
+
+    function logActionToUI(action) {
+      const logContent = document.getElementById('actionsLogContent');
+      if (!logContent) return;
+
+      const time = new Date().toLocaleTimeString('it-IT');
+      const entry = document.createElement('div');
+      entry.style.cssText = 'padding: 4px 0; border-bottom: 1px solid var(--border);';
+      entry.innerHTML = `<span style="color: var(--text-muted);">${time}</span> → ${action}`;
+
+      if (logContent.textContent === 'In attesa di azioni...') {
+        logContent.innerHTML = '';
+      }
+      logContent.insertBefore(entry, logContent.firstChild);
+    }
+
+    async function executeAction(actionName, params = {}) {
+      if (!sessionId) {
+        showToast('Errore', 'Sessione non attiva', 'danger');
+        return;
+      }
+
+      try {
+        showToast('Azione', `Esecuzione: ${actionName}...`, 'warning');
+
+        const response = await fetch(`/api/form-test-headless/${sessionId}/action`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: actionName, params })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('Completato', result.message || actionName, 'success');
+
+          // Handle screenshot
+          if (result.screenshot) {
+            const preview = document.getElementById('screenshotPreview');
+            const img = document.getElementById('screenshotImg');
+            if (preview && img) {
+              img.src = result.screenshot;
+              preview.style.display = 'block';
+            }
+          }
+        } else {
+          showToast('Errore', result.error || 'Azione fallita', 'danger');
+        }
+      } catch (err) {
+        showToast('Errore', err.message, 'danger');
+      }
+    }
+
+    async function stopHeadlessSession() {
+      if (sessionId) {
+        try {
+          await fetch(`/api/form-test-headless/${sessionId}/stop`, { method: 'POST' });
+        } catch (e) {
+          console.error('Errore stop:', e);
+        }
+      }
+      if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+      }
+      updateStatus('disconnected', 'Sessione terminata');
+      showToast('Sessione Chiusa', 'Browser headless chiuso', 'warning');
     }
 
     function updateUI() {
@@ -1381,7 +1621,11 @@
     async function stopSession() {
       if (sessionId) {
         try {
-          await fetch(`/api/form-test/${sessionId}/stop`, { method: 'POST' });
+          // Use correct endpoint based on mode
+          const endpoint = isHeadlessMode
+            ? `/api/form-test-headless/${sessionId}/stop`
+            : `/api/form-test/${sessionId}/stop`;
+          await fetch(endpoint, { method: 'POST' });
         } catch (e) {
           console.error('Errore stop:', e);
         }
@@ -1439,7 +1683,10 @@
     // Cleanup on page close
     window.addEventListener('beforeunload', () => {
       if (sessionId) {
-        navigator.sendBeacon(`/api/form-test/${sessionId}/stop`, '');
+        const endpoint = isHeadlessMode
+          ? `/api/form-test-headless/${sessionId}/stop`
+          : `/api/form-test/${sessionId}/stop`;
+        navigator.sendBeacon(endpoint, '');
       }
     });
 
