@@ -1100,57 +1100,114 @@
       const actionPanel = document.createElement('div');
       actionPanel.id = 'actionPanel';
       actionPanel.innerHTML = `
-        <div style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
-          <h4 style="color: var(--primary); margin-bottom: 16px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">
-            🎮 Azioni Disponibili
+        <div style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+          <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 16px; font-weight: 700;">
+            Pannello Comandi
           </h4>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
-            <button class="btn btn-primary" onclick="executeAction('acceptCookies')" id="btnAcceptCookies">
-              🍪 Accetta Cookie
-            </button>
-            <button class="btn btn-ghost" onclick="executeAction('scroll', {amount: 500})">
-              ⬇️ Scroll
-            </button>
-            <button class="btn btn-ghost" onclick="executeAction('scrollToBottom')">
-              ⏬ Scroll Fine
-            </button>
-            <button class="btn btn-ghost" onclick="executeAction('wait', {ms: 3000})">
-              ⏱️ Attendi 3s
-            </button>
-            <button class="btn btn-ghost" onclick="executeAction('screenshot')">
-              📸 Screenshot
-            </button>
-          </div>
-          <div style="border-top: 1px solid var(--border); padding-top: 16px;">
-            <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">Test Form</h5>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              <button class="btn btn-ghost" onclick="executeAction('fillForm')">
-                📝 Compila Form
-              </button>
-              <button class="btn btn-primary" onclick="executeAction('submitForm')">
-                📤 Invia Form
-              </button>
+          <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
+            Usa questi pulsanti per simulare le interazioni utente sulla pagina. Ogni azione viene eseguita sul browser in background e gli eventi di tracking catturati appariranno nella lista sottostante.
+          </p>
+
+          <!-- STEP 1: Cookie -->
+          <div style="background: linear-gradient(135deg, rgba(6, 232, 159, 0.08) 0%, rgba(28, 55, 56, 0.04) 100%); border: 1px solid var(--accent); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <span style="background: var(--accent); color: var(--primary); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">1</span>
+              <div style="flex: 1;">
+                <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Accetta i Cookie</h5>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Clicca sul banner cookie per accettare e attivare i tracker. Questo simula l'azione dell'utente che accetta il consenso.</p>
+                <button class="btn btn-primary" onclick="executeAction('acceptCookies')" id="btnAcceptCookies">
+                  Accetta Cookie
+                </button>
+              </div>
             </div>
           </div>
-          <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px;">
-            <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">Click Personalizzato</h5>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="customSelector" placeholder="Selettore CSS (es: .btn-whatsapp)"
-                style="flex: 1; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--bg);">
-              <button class="btn btn-ghost" onclick="executeAction('click', {selector: document.getElementById('customSelector').value})">
-                👆 Click
-              </button>
+
+          <!-- STEP 2: Navigate -->
+          <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <span style="background: var(--primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">2</span>
+              <div style="flex: 1;">
+                <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Naviga la Pagina</h5>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Simula lo scroll dell'utente per attivare eventi come scroll tracking, lazy loading, e impression dei contenuti.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <button class="btn btn-ghost" onclick="executeAction('scroll', {amount: 500})">
+                    Scroll (500px)
+                  </button>
+                  <button class="btn btn-ghost" onclick="executeAction('scrollToBottom')">
+                    Vai a Fine Pagina
+                  </button>
+                  <button class="btn btn-ghost" onclick="executeAction('wait', {ms: 3000})">
+                    Attendi 3 secondi
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Form Test -->
+          <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <span style="background: var(--primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">3</span>
+              <div style="flex: 1;">
+                <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Testa i Form</h5>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Compila automaticamente i form con dati di test e inviali per verificare gli eventi di conversione (generate_lead, form_submit, ecc.).</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <button class="btn btn-ghost" onclick="executeAction('fillForm')">
+                    Compila Form
+                  </button>
+                  <button class="btn btn-primary" onclick="executeAction('submitForm')">
+                    Invia Form
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: Custom Click -->
+          <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <span style="background: var(--primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">4</span>
+              <div style="flex: 1;">
+                <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Click Personalizzato</h5>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Clicca su un elemento specifico usando un selettore CSS. Utile per testare pulsanti WhatsApp, telefono, CTA specifiche.</p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <input type="text" id="customSelector" placeholder="es: .btn-whatsapp, a[href*='tel:'], #cta-button"
+                    style="flex: 1; min-width: 200px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg);">
+                  <button class="btn btn-ghost" onclick="executeAction('click', {selector: document.getElementById('customSelector').value})">
+                    Esegui Click
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Screenshot -->
+          <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <span style="background: var(--text-muted); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">📷</span>
+              <div style="flex: 1;">
+                <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Cattura Screenshot</h5>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Scatta una foto della pagina corrente per vedere lo stato attuale del sito nel browser headless.</p>
+                <button class="btn btn-ghost" onclick="executeAction('screenshot')">
+                  Scatta Screenshot
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div id="screenshotPreview" style="display: none; margin-bottom: 24px;">
-          <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">📸 Ultimo Screenshot</h5>
-          <img id="screenshotImg" style="max-width: 100%; border-radius: 8px; border: 2px solid var(--border);">
+
+        <!-- Screenshot Preview -->
+        <div id="screenshotPreview" style="display: none; background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+          <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 12px;">Anteprima Screenshot</h5>
+          <img id="screenshotImg" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border);">
         </div>
-        <div id="actionsLog" style="background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
-          <h5 style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">📋 Log Azioni</h5>
-          <div id="actionsLogContent" style="font-family: monospace; font-size: 12px; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
-            In attesa di azioni...
+
+        <!-- Actions Log -->
+        <div id="actionsLog" style="background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+          <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Cronologia Azioni</h5>
+          <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 12px;">Registro delle azioni eseguite sul browser.</p>
+          <div id="actionsLogContent" style="font-family: 'DM Sans', monospace; font-size: 12px; color: var(--text-secondary); max-height: 150px; overflow-y: auto; background: var(--bg); padding: 12px; border-radius: 8px;">
+            In attesa della prima azione...
           </div>
         </div>
       `;
