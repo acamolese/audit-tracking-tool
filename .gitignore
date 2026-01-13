@@ -9,13 +9,16 @@ Thumbs.db
 *.har
 *.log
 
-# Generated reports (keep only templates)
+# Generated reports and test files
 report-*.json
 report.json
+form-test-*.json
+audit-*.json
+serianaform-*.json
 
 # IDE
 .vscode/
 .idea/
 
-# Claude Code
+# Local config
 .claude/
