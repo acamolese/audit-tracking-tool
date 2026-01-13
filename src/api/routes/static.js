@@ -23,6 +23,11 @@ function handleStaticRoutes(req, res) {
         serveStatic(res, path.join(PUBLIC_DIR, 'bulk-scan.html'));
         return true;
     }
+    else if (pathname === '/favicon.ico') {
+        res.writeHead(204); // No Content
+        res.end();
+        return true;
+    }
 
     return false;
 }

@@ -734,36 +734,70 @@
         const result = await response.json();
 
         if (result.success) {
-          // Se la scansione è avviata, connetti SSE per progresso
+          // Se la scansione è avviata, connetti SSE per progresso reale
           status.textContent = 'Analisi in corso...';
           
-          // Usa EventSource per ricevere aggiornamenti in tempo reale
           if (result.reportId) {
-            // Simula progresso per ora (SSE richiederebbe endpoint dedicato)
-            let currentStep = 1;
-            progressInterval = setInterval(() => {
-              currentStep++;
-              if (currentStep <= 6) {
-                const phases = ['starting', 'loading', 'pre_consent', 'consent', 'post_consento', 'interactions', 'finalizing'];
-                updateProgress(phases[currentStep - 1]);
-              } else {
-                cleanupIntervals();
-                // Vai al report
-                window.location.href = `/report.html?id=${result.reportId}`;
-              }
-            }, 1500); // Simula progresso ogni 1.5s
+            // Connetti all'endpoint SSE
+            eventSource = new EventSource(`/api/scan/${result.reportId}/events`);
+            
+            eventSource.onmessage = (event) => {
+              try {
+                const data = JSON.parse(event.data);
+                
+                if (data.phase === 'error') {
+                   status.className = 'status error';
+                   status.textContent = data.error || 'Errore durante la scansione';
+                   eventSource.close();
+                   submitBtn.disabled = false;
+                   submitBtn.textContent = 'Riprova Scansione';
+                   return;
+                }
 
-            // Dopo il tempo stimato, vai al report
-            const estimatedTime = fastMode ? 12000 : 25000;
-            timeoutId = setTimeout(() => {
-              cleanupIntervals();
-              updateProgress('done', 'Scansione completata!');
-              setTimeout(() => {
-                window.location.href = `/report.html?id=${result.reportId}`;
-              }, 1000);
-            }, estimatedTime);
+                if (data.phase === 'done' || data.phase === 'completed') {
+                   updateProgress('done', 'Scansione completata!');
+                   eventSource.close();
+                   setTimeout(() => {
+                     window.location.href = `/report.html?id=${result.reportId}`;
+                   }, 500);
+                   return;
+                }
+
+                // Aggiorna UI con fase reale
+                updateProgress(data.phase, data.label);
+
+              } catch (e) {
+                console.error('Errore parsing SSE', e);
+              }
+            };
+
+            eventSource.onerror = () => {
+              // Non mostrare errore immediato, potrebbe essere solo chiusura connessione
+              console.log('SSE connection closed or error');
+              eventSource.close();
+              
+              // Fallback: controlla se il report esiste già
+               setTimeout(() => {
+                 fetch(`/api/report/${result.reportId}`)
+                   .then(res => res.json())
+                   .then(data => {
+                     if (data.success) {
+                       window.location.href = `/report.html?id=${result.reportId}`;
+                     } else {
+                       status.textContent = 'Connessione persa, riprova...';
+                       submitBtn.disabled = false;
+                     }
+                   })
+                   .catch(() => {
+                      status.className = 'status error';
+                      status.textContent = 'Errore di connessione al server';
+                      submitBtn.disabled = false;
+                   });
+               }, 2000);
+            };
+
           } else {
-            // Fallback se non c'è reportId
+            // Fallback se non c'è reportId (non dovrebbe accadere)
             timeoutId = setTimeout(() => {
               cleanupIntervals();
               window.location.href = `/report.html?id=${result.reportId}`;

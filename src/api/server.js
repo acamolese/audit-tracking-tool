@@ -16,7 +16,8 @@ const context = {
     reportStore,
     bulkStore,
     formTestSessions,
-    headlessFormTestSessions
+    headlessFormTestSessions,
+    activeScans: new Map() // Store active scan emitters
 };
 
 // === GRACEFUL SHUTDOWN ===
