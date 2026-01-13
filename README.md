@@ -309,38 +309,35 @@ Gli eventi GA4 con consent mode "denied" **non sono considerati violazioni** poi
 
 ```
 AuditTrackingTool/
-├── server.js              # Server HTTP principale e API
-├── scanner.js             # Core scanner con Playwright
-├── index.html             # UI scansione singola
-├── bulk-scan.html         # UI scansione multipla
+├── server.js              # Server bootstrapper
+├── report.html            # UI Report (Single Page App)
+├── bulk-scan.html         # UI Scansione Multipla
+├── index.html             # UI Home (Scansione Singola)
 ├── form-test.html         # UI Live Monitor
-├── report.html            # Visualizzazione report
-├── package.json           # Dipendenze npm
-├── Procfile               # Configurazione Railway
-└── README.md              # Documentazione
+├── src/
+│   ├── api/               # Router e controller HTTP
+│   ├── core/
+│   │   ├── scanner/       # Motore di scansione Playwright
+│   │   ├── events/        # Logica deduplicazione e analisi
+│   │   └── storage/       # Gestione memoria report e batch
+│   └── utils/             # Helper comuni
+└── package.json           # Dipendenze npm
 ```
-
----
-
-## Limitazioni Note
-
-- Alcuni siti potrebbero bloccare l'accesso automatizzato (bot detection)
-- Il rilevamento CMP dipende dalla corretta implementazione lato sito
-- I tempi di scansione variano in base alla complessità del sito (5-30 secondi)
-- Siti con autenticazione richiesta non sono completamente analizzabili
-- Il Live Monitor visuale richiede un ambiente con display grafico
 
 ---
 
 ## Changelog
 
+### v1.1.0 (Gennaio 2026) - UI/UX & Intelligence Update
+- **Deep Scan Mode**: Supporto per analisi aggregata di interi domini nel Bulk Scan.
+- **Log Engine "Matrix Mode"**: Terminale live durante la scansione per feedback tecnico istantaneo.
+- **AI Prompt Export**: Template avanzato per analisi con ChatGPT/Gemini (Specialista Tracking & GDPR).
+- **Event Enrichment**: Decodifica automatica dei parametri Google Consent Mode (GCS/GCD).
+- **Deduplicazione Throttled**: Riduzione del rumore per tracker ad alta frequenza (Clarity/Hotjar).
+- **Refactoring Modulare**: Nuova architettura backend per una migliore manutenibilità.
+
 ### v1.0.0 (Gennaio 2026)
-- Scansione singola con Fast/Full mode
-- Bulk scan fino a 50 URL
-- Live Monitor dual-mode (visuale/headless)
-- Report dettagliato con violazioni espandibili
-- Export CSV/JSON
-- Deploy Railway supportato
+- Rilascio iniziale: Scansione singola e Bulk, Live Monitor.
 
 ---
 

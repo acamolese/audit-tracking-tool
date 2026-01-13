@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AuditTrackingTool - GDPR Compliance Scanner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #1c3738;
@@ -222,7 +225,7 @@
       color: var(--primary);
     }
 
-    .radio-option input[type="radio"]:checked + label {
+    .radio-option input[type="radio"]:checked+label {
       border-color: var(--accent);
       background: var(--accent);
       color: var(--primary);
@@ -256,7 +259,7 @@
       border: 1px solid var(--warning);
     }
 
-    .radio-option input[type="radio"]:checked ~ .info-box {
+    .radio-option input[type="radio"]:checked~.info-box {
       display: block;
     }
 
@@ -329,7 +332,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* Progress Bar */
@@ -382,6 +387,87 @@
       color: var(--accent);
     }
 
+    /* Matrix Terminal */
+    .terminal-container {
+      margin-top: 24px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .terminal-header {
+      background: #161b22;
+      padding: 8px 12px;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background: #ff5f56;
+    }
+
+    .dot-yellow {
+      background: #ffbd2e;
+    }
+
+    .dot-green {
+      background: #27c93f;
+    }
+
+    .terminal-title {
+      font-family: monospace;
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .terminal-body {
+      height: 200px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #3fb950;
+      /* Matrix Green */
+      overflow-y: auto;
+      line-height: 1.5;
+      text-shadow: 0 0 5px rgba(63, 185, 80, 0.5);
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .terminal-line::before {
+      content: '> ';
+      opacity: 0.5;
+    }
+
+    .terminal-line.warn {
+      color: #d29922;
+    }
+
+    .terminal-line.error {
+      color: #f85149;
+    }
+
+    .terminal-line.success {
+      color: #58a6ff;
+    }
+
     /* Footer */
     .footer {
       text-align: center;
@@ -419,7 +505,7 @@
         flex-direction: column;
         padding: 16px 24px;
         gap: 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .nav-links.open {
@@ -428,7 +514,7 @@
 
       .nav-links a {
         padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .nav-links a:last-child {
@@ -436,7 +522,7 @@
       }
 
       .nav-links a.active {
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .main {
@@ -487,6 +573,7 @@
     }
   </style>
 </head>
+
 <body>
   <header class="header">
     <div class="header-content">
@@ -514,25 +601,12 @@
         <form id="scanForm">
           <div class="form-group">
             <label for="url">URL del sito</label>
-            <input
-              type="url"
-              id="url"
-              name="url"
-              placeholder="https://esempio.com"
-              required
-            >
+            <input type="url" id="url" name="url" placeholder="https://esempio.com" required>
           </div>
 
           <div class="form-group">
             <label for="timeout">Timeout (ms)</label>
-            <input
-              type="number"
-              id="timeout"
-              name="timeout"
-              value="10000"
-              min="5000"
-              max="60000"
-            >
+            <input type="number" id="timeout" name="timeout" value="10000" min="5000" max="60000">
           </div>
 
           <div class="form-group">
@@ -570,7 +644,7 @@
 
         <!-- Status & Progress -->
         <div id="status" class="status"></div>
-        
+
         <div id="progressContainer" class="progress-container">
           <div class="progress-bar">
             <div id="progressFill" class="progress-fill"></div>
@@ -584,12 +658,24 @@
             <div id="step6" class="progress-step">Report</div>
           </div>
         </div>
+
+        <!-- Matrix Terminal -->
+        <div id="terminalContainer" class="terminal-container">
+          <div class="terminal-header">
+            <div class="terminal-dot dot-red"></div>
+            <div class="terminal-dot dot-yellow"></div>
+            <div class="terminal-dot dot-green"></div>
+            <span class="terminal-title">Live Scan Engine Logs</span>
+          </div>
+          <div id="terminalBody" class="terminal-body"></div>
+        </div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank">Andrea Camolese</a>
+    AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank">Andrea
+      Camolese</a>
   </footer>
 
   <script>
@@ -633,15 +719,15 @@
     function updateProgress(phase, label) {
       const step = phaseToStep[phase] || 1;
       const progress = (step / 6) * 100;
-      
+
       // Aggiorna barra
       progressFill.style.width = progress + '%';
-      
+
       // Aggiorna steps
       Object.keys(steps).forEach(key => {
         const stepNum = parseInt(key);
         steps[key].classList.remove('active', 'completed');
-        
+
         if (stepNum < step) {
           steps[key].classList.add('completed');
         } else if (stepNum === step) {
@@ -703,7 +789,7 @@
       const url = document.getElementById('url').value;
       const timeout = document.getElementById('timeout').value;
       const scanMode = document.querySelector('input[name="scanMode"]:checked').value;
-      
+
       const fastMode = scanMode === 'fast';
       const skipInteractions = scanMode === 'fast';
 
@@ -713,6 +799,8 @@
       status.className = 'status loading';
       status.textContent = 'Avvio scansione...';
       progressContainer.style.display = 'block';
+      document.getElementById('terminalContainer').style.display = 'block';
+      document.getElementById('terminalBody').innerHTML = ''; // Clear terminal
       resetProgress();
 
       // Pulisci eventuali intervalli precedenti
@@ -723,8 +811,8 @@
         const response = await fetch('/scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            url, 
+          body: JSON.stringify({
+            url,
             timeout: parseInt(timeout),
             fastMode: fastMode,
             skipInteractions: skipInteractions
@@ -736,31 +824,41 @@
         if (result.success) {
           // Se la scansione è avviata, connetti SSE per progresso reale
           status.textContent = 'Analisi in corso...';
-          
+
           if (result.reportId) {
             // Connetti all'endpoint SSE
             eventSource = new EventSource(`/api/scan/${result.reportId}/events`);
-            
+
             eventSource.onmessage = (event) => {
               try {
                 const data = JSON.parse(event.data);
-                
+
+                if (data.phase === 'log') {
+                  const terminalBody = document.getElementById('terminalBody');
+                  const line = document.createElement('div');
+                  line.className = `terminal-line ${data.level || 'info'}`;
+                  line.textContent = data.message;
+                  terminalBody.appendChild(line);
+                  terminalBody.scrollTop = terminalBody.scrollHeight;
+                  return;
+                }
+
                 if (data.phase === 'error') {
-                   status.className = 'status error';
-                   status.textContent = data.error || 'Errore durante la scansione';
-                   eventSource.close();
-                   submitBtn.disabled = false;
-                   submitBtn.textContent = 'Riprova Scansione';
-                   return;
+                  status.className = 'status error';
+                  status.textContent = data.error || 'Errore durante la scansione';
+                  eventSource.close();
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Riprova Scansione';
+                  return;
                 }
 
                 if (data.phase === 'done' || data.phase === 'completed') {
-                   updateProgress('done', 'Scansione completata!');
-                   eventSource.close();
-                   setTimeout(() => {
-                     window.location.href = `/report.html?id=${result.reportId}`;
-                   }, 500);
-                   return;
+                  updateProgress('done', 'Scansione completata!');
+                  eventSource.close();
+                  setTimeout(() => {
+                    window.location.href = `/report.html?id=${result.reportId}`;
+                  }, 500);
+                  return;
                 }
 
                 // Aggiorna UI con fase reale
@@ -775,25 +873,25 @@
               // Non mostrare errore immediato, potrebbe essere solo chiusura connessione
               console.log('SSE connection closed or error');
               eventSource.close();
-              
+
               // Fallback: controlla se il report esiste già
-               setTimeout(() => {
-                 fetch(`/api/report/${result.reportId}`)
-                   .then(res => res.json())
-                   .then(data => {
-                     if (data.success) {
-                       window.location.href = `/report.html?id=${result.reportId}`;
-                     } else {
-                       status.textContent = 'Connessione persa, riprova...';
-                       submitBtn.disabled = false;
-                     }
-                   })
-                   .catch(() => {
-                      status.className = 'status error';
-                      status.textContent = 'Errore di connessione al server';
+              setTimeout(() => {
+                fetch(`/api/report/${result.reportId}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    if (data.success) {
+                      window.location.href = `/report.html?id=${result.reportId}`;
+                    } else {
+                      status.textContent = 'Connessione persa, riprova...';
                       submitBtn.disabled = false;
-                   });
-               }, 2000);
+                    }
+                  })
+                  .catch(() => {
+                    status.className = 'status error';
+                    status.textContent = 'Errore di connessione al server';
+                    submitBtn.disabled = false;
+                  });
+              }, 2000);
             };
 
           } else {
@@ -822,4 +920,5 @@
     });
   </script>
 </body>
+
 </html>

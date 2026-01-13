@@ -44,6 +44,10 @@ async function runBulkScan(batchId, bulkStore, reportStore) {
         }
 
         if (running === 0 && batch.completed >= batch.total) {
+            if (batch.mode === 'deep-scan') {
+                console.log(`[Bulk ${batchId}] Generazione report riassuntivo per Deep Scan...`);
+                bulkStore.calculateDeepScanSummary(batchId, reportStore);
+            }
             bulkStore.unlock(batchId);
         }
     }

@@ -7,16 +7,25 @@ class BulkScanStore {
         this.batchLocks = new Set(); // Lock per prevenire race conditions
     }
 
-    createBatch(urls) {
+    createBatch(urls, mode = 'multi-site') {
         const batchId = generateId();
         const batch = {
             batchId,
+            mode, // 'multi-site' o 'deep-scan'
             status: 'running',
             total: urls.length,
             completed: 0,
             startTime: Date.now(),
             avgScanTime: null,
             sseClients: [],
+            summary: mode === 'deep-scan' ? {
+                totalCookies: 0,
+                uniqueTrackers: [],
+                globalVerdict: 'CONFORME',
+                violations: [],
+                aggregatedCookies: [],
+                lastUpdate: null
+            } : null,
             results: urls.map(u => ({
                 url: u,
                 status: 'pending',
@@ -34,6 +43,72 @@ class BulkScanStore {
         };
         this.batches.set(batchId, batch);
         return batch;
+    }
+
+    calculateDeepScanSummary(batchId, reportStore) {
+        const batch = this.batches.get(batchId);
+        if (!batch || batch.mode !== 'deep-scan') return null;
+
+        const summary = {
+            totalCookies: new Set(),
+            uniqueTrackers: new Set(),
+            globalVerdict: 'CONFORME',
+            violations: [],
+            aggregatedCookies: [], // Dettaglio deduplicato
+            pagesAnalyzed: 0
+        };
+
+        batch.results.forEach(res => {
+            if (res.status !== 'completed' || !res.reportId) return;
+
+            summary.pagesAnalyzed++;
+            const report = reportStore.get(res.reportId);
+            if (!report) return;
+
+            // 1. Aggrega Cookie (Deduplicati per nome e dominio)
+            const allCookies = [
+                ...(report.preConsent?.cookies || []),
+                ...(report.postConsent?.cookies || [])
+            ];
+
+            allCookies.forEach(c => {
+                const key = `${c.name}|${c.domain}`;
+                if (!summary.totalCookies.has(key)) {
+                    summary.totalCookies.add(key);
+                    summary.aggregatedCookies.push(c);
+                }
+            });
+
+            // 2. Aggrega Tracker
+            (res.trackers || []).forEach(t => summary.uniqueTrackers.add(t));
+
+            // 3. Verdetto Globale (Pessimistico)
+            if (res.verdict === 'NON CONFORME') {
+                summary.globalVerdict = 'NON CONFORME';
+            } else if (res.verdict === 'DA VERIFICARE' && summary.globalVerdict === 'CONFORME') {
+                summary.globalVerdict = 'DA VERIFICARE';
+            }
+
+            // 4. Aggrega Violazioni (Deduplicate per tipo)
+            (report.violations || []).forEach(v => {
+                if (!summary.violations.some(sv => sv.type === v.type)) {
+                    summary.violations.push(v);
+                }
+            });
+        });
+
+        batch.summary = {
+            ...batch.summary,
+            totalCookies: summary.totalCookies.size,
+            uniqueTrackers: Array.from(summary.uniqueTrackers),
+            globalVerdict: summary.globalVerdict,
+            violations: summary.violations,
+            aggregatedCookies: summary.aggregatedCookies,
+            pagesAnalyzed: summary.pagesAnalyzed,
+            lastUpdate: Date.now()
+        };
+
+        return batch.summary;
     }
 
     getBatch(batchId) {

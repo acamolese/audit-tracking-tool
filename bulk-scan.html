@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulk Scan - AuditTrackingTool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #1c3738;
@@ -259,6 +262,98 @@
       font-size: 13px;
     }
 
+    /* Scan Mode Selector in Bulk */
+    .mode-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      background: var(--bg);
+      padding: 6px;
+      border-radius: 12px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--white);
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .mode-info {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+
+    /* Summary Section */
+    .summary-report-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #2a4a4b 100%);
+      color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      margin-bottom: 32px;
+      display: none;
+    }
+
+    .summary-report-card.active {
+      display: block;
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-stat {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-stat-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+
+    .summary-stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .summary-stat-value.danger {
+      color: #ff8e8f;
+    }
+
+    .summary-stat-value.success {
+      color: #06e89f;
+    }
+
     /* Progress */
     .progress-container {
       margin-top: 24px;
@@ -429,11 +524,25 @@
       font-weight: 500;
     }
 
-    .tracker-badge.ga4 { background: #4285f4; }
-    .tracker-badge.facebook { background: #1877f2; }
-    .tracker-badge.linkedin { background: #0a66c2; }
-    .tracker-badge.tiktok { background: #000000; }
-    .tracker-badge.hotjar { background: #fd3a5c; }
+    .tracker-badge.ga4 {
+      background: #4285f4;
+    }
+
+    .tracker-badge.facebook {
+      background: #1877f2;
+    }
+
+    .tracker-badge.linkedin {
+      background: #0a66c2;
+    }
+
+    .tracker-badge.tiktok {
+      background: #000000;
+    }
+
+    .tracker-badge.hotjar {
+      background: #fd3a5c;
+    }
 
     /* Violations count */
     .violations-count {
@@ -527,9 +636,17 @@
       margin-top: 4px;
     }
 
-    .stat-card.success .stat-value { color: #059669; }
-    .stat-card.danger .stat-value { color: #dc2626; }
-    .stat-card.warning .stat-value { color: #d97706; }
+    .stat-card.success .stat-value {
+      color: #059669;
+    }
+
+    .stat-card.danger .stat-value {
+      color: #dc2626;
+    }
+
+    .stat-card.warning .stat-value {
+      color: #d97706;
+    }
 
     /* Spinner */
     .spinner {
@@ -543,7 +660,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* Footer */
@@ -583,7 +702,7 @@
         flex-direction: column;
         padding: 16px 24px;
         gap: 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .nav-links.open {
@@ -592,7 +711,7 @@
 
       .nav-links a {
         padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .nav-links a:last-child {
@@ -600,7 +719,7 @@
       }
 
       .nav-links a.active {
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .main {
@@ -646,7 +765,8 @@
         font-size: 12px;
       }
 
-      th, td {
+      th,
+      td {
         padding: 10px 8px;
       }
 
@@ -664,8 +784,10 @@
       }
 
       /* Hide some columns on mobile */
-      th:nth-child(5), td:nth-child(5),
-      th:nth-child(7), td:nth-child(7) {
+      th:nth-child(5),
+      td:nth-child(5),
+      th:nth-child(7),
+      td:nth-child(7) {
         display: none;
       }
     }
@@ -680,12 +802,14 @@
       }
 
       /* Hide more columns on very small screens */
-      th:nth-child(6), td:nth-child(6) {
+      th:nth-child(6),
+      td:nth-child(6) {
         display: none;
       }
     }
   </style>
 </head>
+
 <body>
   <header class="header">
     <div class="header-content">
@@ -711,17 +835,23 @@
     <div class="content-grid">
       <!-- Input Panel -->
       <div class="card">
-        <h2>Lista URL</h2>
+        <h2>Configurazione</h2>
+
+        <div class="mode-selector">
+          <button class="mode-btn active" data-mode="multi-site" onclick="setMode('multi-site')">Multi-Sito</button>
+          <button class="mode-btn" data-mode="deep-scan" onclick="setMode('deep-scan')">Sito Singolo</button>
+        </div>
+
+        <div id="modeInfo" class="mode-info">
+          Analisi indipendente per ogni URL inserito.
+        </div>
+
         <form id="bulkForm">
           <div class="form-group">
             <label for="urls">Inserisci gli URL (uno per riga)</label>
-            <textarea
-              id="urls"
-              name="urls"
-              placeholder="https://esempio1.com
+            <textarea id="urls" name="urls" placeholder="https://esempio1.com
 https://esempio2.com
-https://esempio3.com"
-            ></textarea>
+https://esempio3.com"></textarea>
             <div class="url-count">
               <span id="urlCount">0</span> URL inseriti
             </div>
@@ -750,7 +880,34 @@ https://esempio3.com"
 
       <!-- Results Panel -->
       <div class="card results-card" id="resultsCard">
-        <h2>Risultati</h2>
+
+        <!-- Summary Report Card (Deep Scan only) -->
+        <div id="summaryReportCard" class="summary-report-card">
+          <div class="summary-header">
+            <h2 style="margin:0; color:white; font-size: 1.2rem;">📊 Report Riassuntivo Dominio</h2>
+            <div id="globalVerdictBadge" class="verdict verdict-da-verificare">Analisi in corso...</div>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-stat">
+              <div class="summary-stat-label">Pagine Analizzate</div>
+              <div id="summaryPages" class="summary-stat-value">-</div>
+            </div>
+            <div class="summary-stat">
+              <div class="summary-stat-label">Cookie Totali (Unici)</div>
+              <div id="summaryCookies" class="summary-stat-value">-</div>
+            </div>
+            <div class="summary-stat">
+              <div class="summary-stat-label">Tracker Rilevati</div>
+              <div id="summaryTrackers" class="summary-stat-value">-</div>
+            </div>
+            <div class="summary-stat">
+              <div class="summary-stat-label">Violazioni Uniche</div>
+              <div id="summaryViolations" class="summary-stat-value">-</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Lista Risultati</h2>
 
         <!-- Summary Stats -->
         <div class="summary-stats" id="summaryStats">
@@ -796,7 +953,8 @@ https://esempio3.com"
   </main>
 
   <footer class="footer">
-    AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank">Andrea Camolese</a>
+    AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank">Andrea
+      Camolese</a>
   </footer>
 
   <script>
@@ -804,6 +962,24 @@ https://esempio3.com"
     let currentBatchId = null;
     let eventSource = null;
     let scanStartTime = null;
+    let currentMode = 'multi-site';
+
+    // Handle Scan Mode
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      const info = document.getElementById('modeInfo');
+      if (mode === 'multi-site') {
+        info.textContent = 'Analisi indipendente per ogni URL inserito. Ideale per comparare siti diversi.';
+      } else {
+        info.textContent = 'Analisi aggregata di più pagine dello stesso dominio. Genera un report unico riassuntivo.';
+      }
+
+      document.getElementById('summaryReportCard').classList.remove('active');
+    }
 
     // DOM Elements
     const urlsTextarea = document.getElementById('urls');
@@ -869,7 +1045,10 @@ https://esempio3.com"
         const response = await fetch('/api/bulk-scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ urls })
+          body: JSON.stringify({
+            urls: urls,
+            mode: currentMode
+          })
         });
 
         const result = await response.json();
@@ -922,6 +1101,18 @@ https://esempio3.com"
       eventSource.addEventListener('done', (e) => {
         const data = JSON.parse(e.data);
         disconnectSSE();
+
+        // Se Deep Scan, richiedi il summary finale
+        if (currentMode === 'deep-scan') {
+          fetch(`/api/bulk-scan/${currentBatchId}`)
+            .then(r => r.json())
+            .then(d => {
+              if (d.success && d.summary) {
+                renderDeepScanSummary(d.summary);
+              }
+            });
+        }
+
         onScanComplete(data.totalTime);
       });
 
@@ -1132,7 +1323,7 @@ https://esempio3.com"
       return '';
     }
 
-    // Update stats
+    // Aggiorna stats
     function updateStats(data) {
       const { total, results } = data;
 
@@ -1152,6 +1343,28 @@ https://esempio3.com"
       statConforme.textContent = conforme;
       statNonConforme.textContent = nonConforme;
       statPending.textContent = pending + daVerificare; // mostra da verificare come "in corso"
+    }
+
+    // Render Deep Scan Summary
+    function renderDeepScanSummary(summary) {
+      const card = document.getElementById('summaryReportCard');
+      card.classList.add('active');
+
+      document.getElementById('summaryPages').textContent = summary.pagesAnalyzed;
+      document.getElementById('summaryCookies').textContent = summary.totalCookies;
+      document.getElementById('summaryTrackers').textContent = summary.uniqueTrackers.length;
+      document.getElementById('summaryViolations').textContent = summary.violations.length;
+
+      const badge = document.getElementById('globalVerdictBadge');
+      badge.textContent = summary.globalVerdict;
+      badge.className = `verdict verdict-${summary.globalVerdict.toLowerCase().replace(/ /g, '-')}`;
+
+      // Highlight violations if present
+      if (summary.globalVerdict === 'NON CONFORME') {
+        document.getElementById('summaryViolations').classList.add('danger');
+      } else {
+        document.getElementById('summaryViolations').classList.remove('danger');
+      }
     }
 
     // Scan complete
@@ -1202,4 +1415,5 @@ https://esempio3.com"
     });
   </script>
 </body>
+
 </html>

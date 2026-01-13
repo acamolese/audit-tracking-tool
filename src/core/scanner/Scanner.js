@@ -19,6 +19,7 @@ class Scanner {
             outputFile: options.outputFile || null,
             verbose: options.verbose || false,
             onPhase: options.onPhase || null,
+            onLog: options.onLog || null, // Nuovo: callback per log real-time
             maxRetries: options.maxRetries || 3,
             skipInteractions: options.skipInteractions || false,
             fastMode: options.fastMode || false,
@@ -26,6 +27,16 @@ class Scanner {
         };
 
         this.logger = new Logger(this.options.verbose);
+
+        // Intercetta i log per lo streaming SSE
+        const originalLog = this.logger.log.bind(this.logger);
+        this.logger.log = (msg, level = 'info') => {
+            originalLog(msg, level);
+            if (this.options.onLog && msg && typeof msg === 'string') {
+                this.options.onLog(msg.trim(), level);
+            }
+        };
+
         this.deduplicator = new EventDeduplicator();
         this.notifyPhase = (phase, label) => {
             if (this.options.onPhase) {
@@ -306,6 +317,19 @@ class Scanner {
             return null;
         }
 
+        // Filter out noisy technical events if they are not critical
+        const IGNORED_EVENTS = [
+            'gtm.js', 'gtm.dom', 'gtm.load', 'gtm.click', 'gtm.linkClick', 'gtm.scrollDepth',
+            'set', 'consent', 'js',
+            'cookie_consent_update', 'cookie_consent_preferences', 'cookie_consent_statistics', 'cookie_consent_marketing',
+            'audit_verification'
+        ];
+
+        if (IGNORED_EVENTS.includes(details.event)) {
+            this.logger.log(`   [SKIPPED] ${details.tracker}: ${details.event} (Technical/Noise)`);
+            return null;
+        }
+
         const eventData = {
             tracker: details.tracker || 'unknown',
             event: details.event || 'unknown',
@@ -322,7 +346,11 @@ class Scanner {
             params: details.params || null,
             productName: details.productName || null,
             productPrice: details.productPrice || null,
-            customData: details.customData || null
+            customData: details.customData || null,
+            data: {
+                gcs: details.gcsRaw || null,
+                gcd: details.gcd || null
+            }
         };
 
         // Rimuovi campi null

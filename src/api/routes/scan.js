@@ -32,12 +32,17 @@ async function handleScanRoutes(req, res, { reportStore, activeScans }) {
                 eventEmitter.emit('phase', { phase, label });
             };
 
+            const onLog = (message, level) => {
+                eventEmitter.emit('phase', { phase: 'log', message, level }); // Reuse channel 'phase' or 'log'
+            };
+
             const scanner = new CookieAuditScanner(targetUrl, {
                 headless: !visible,
                 timeout: timeout || 25000,
                 fastMode: body.fastMode !== undefined ? body.fastMode : true,
                 skipInteractions: body.skipInteractions !== undefined ? body.skipInteractions : true,
-                onPhase: onPhase
+                onPhase: onPhase,
+                onLog: onLog
             });
 
             // Start scan in background

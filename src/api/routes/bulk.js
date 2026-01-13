@@ -7,7 +7,7 @@ async function handleBulkRoutes(req, res, { bulkStore, reportStore }) {
     if (url.pathname === '/api/bulk-scan' && req.method === 'POST') {
         try {
             const body = await parseBody(req);
-            const { urls } = body;
+            const { urls, mode } = body;
 
             if (!urls || !Array.isArray(urls) || urls.length === 0) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -17,7 +17,7 @@ async function handleBulkRoutes(req, res, { bulkStore, reportStore }) {
 
             const limitedUrls = urls.slice(0, 50);
 
-            const batch = bulkStore.createBatch(limitedUrls);
+            const batch = bulkStore.createBatch(limitedUrls, mode || 'multi-site');
             const batchId = batch.batchId;
 
             // Verifica se già in esecuzione

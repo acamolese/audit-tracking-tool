@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report Audit</title>
+  <title>Audit Report - Compliance Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
   <style>
     :root {
+      /* Palette */
       --primary: #1c3738;
-      --primary-light: #2a4a4b;
+      --primary-rgb: 28, 55, 56;
       --accent: #06e89f;
-      --accent-hover: #05c989;
-      --danger: #ff4f50;
-      --warning: #ffb84d;
-      --success: #06e89f;
-      --bg: #f3f1ee;
-      --bg-dark: #1c3738;
-      --text: #111d0c;
-      --text-light: #5a6a5c;
-      --white: #ffffff;
-      --border-radius: 16px;
-      --shadow: 0 4px 24px rgba(28, 55, 56, 0.08);
-      --shadow-lg: 0 8px 40px rgba(28, 55, 56, 0.12);
+      --accent-rgb: 6, 232, 159;
+      --bg-page: #f8f9fa;
+      --bg-card: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-light: #e5e7eb;
+
+      /* Status Colors */
+      --success: #10b981;
+      --success-bg: #d1fae5;
+      --warning: #f59e0b;
+      --warning-bg: #fef3c7;
+      --danger: #ef4444;
+      --danger-bg: #fee2e2;
+      --neutral: #6b7280;
+      --neutral-bg: #f3f4f6;
+
+      /* Spacing & Radius */
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
     * {
@@ -33,1281 +47,1506 @@
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
     }
 
-    /* Header */
+    /* === Header === */
     .header {
       background: var(--primary);
-      padding: 16px 24px;
+      color: white;
+      padding: 1rem 2rem;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 50;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .header-content {
-      max-width: 1320px;
+    .header-inner {
+      max-width: 1400px;
       margin: 0 auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
 
     .logo {
       font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      color: var(--white);
+      font-size: 1.5rem;
       text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .logo span {
       color: var(--accent);
     }
 
-    /* Navigation */
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 14px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-      padding: 8px 0;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      opacity: 1;
-    }
-
-    .nav-links a.active {
-      border-bottom: 2px solid var(--accent);
-    }
-
-    /* Mobile menu button */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      margin: 5px 0;
-      transition: 0.3s;
-    }
-
     .header-actions {
       display: flex;
-      gap: 12px;
+      gap: 1rem;
     }
 
     .btn-header {
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      border: none;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       text-decoration: none;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 2px solid rgba(255,255,255,0.3);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--white);
-      background: rgba(255,255,255,0.1);
-    }
-
-    .btn-accent {
-      background: var(--accent);
-      color: var(--primary);
-    }
-
-    .btn-accent:hover {
-      background: var(--accent-hover);
-    }
-
-    /* Main */
-    .main {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 24px 80px;
-    }
-
-    /* Loading */
-    .loading {
-      text-align: center;
-      padding: 100px 24px;
-    }
-
-    .loading-spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid var(--primary);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 24px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Verdict Banner */
-    .verdict-banner {
-      padding: 32px 40px;
-      border-radius: var(--border-radius);
-      margin-bottom: 32px;
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 0.5rem;
     }
 
-    .verdict-banner.success {
-      background: linear-gradient(135deg, #06e89f 0%, #05c989 100%);
+    .btn-header:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--accent);
       color: var(--primary);
+      border: none;
+      font-weight: 600;
     }
 
-    .verdict-banner.danger {
-      background: linear-gradient(135deg, #ff4f50 0%, #e63e3f 100%);
-      color: var(--white);
+    .btn-primary:hover {
+      background: #05c989;
+      transform: translateY(-1px);
     }
 
-    .verdict-banner.warning {
-      background: linear-gradient(135deg, #ffb84d 0%, #f5a623 100%);
-      color: var(--primary);
+    /* === Main Container === */
+    .main-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    /* === Hero Verdict Section === */
+    .verdict-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .verdict-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
     .verdict-icon {
       width: 64px;
       height: 64px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      flex-shrink: 0;
+      font-size: 2rem;
     }
 
-    .verdict-content h2 {
+    .verdict-text h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: 32px;
-      font-weight: 400;
-      margin-bottom: 8px;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
     }
 
-    .verdict-content p {
-      font-size: 16px;
-      opacity: 0.9;
+    .verdict-text p {
+      color: var(--text-muted);
+      font-size: 1rem;
     }
 
-    /* Meta info */
-    .meta-info {
+    .verdict-meta {
       display: flex;
-      gap: 32px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
+      gap: 2rem;
+      text-align: right;
     }
 
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: var(--text-light);
+    .meta-box span {
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
     }
 
-    .meta-item strong {
-      color: var(--text);
+    .meta-box strong {
+      font-size: 1.125rem;
+      color: var(--primary);
     }
 
-    /* Cards */
+    /* === Dashboard Grid (Bento) === */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
     .card {
-      background: var(--white);
-      border-radius: var(--border-radius);
-      padding: 32px;
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-      cursor: pointer;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
     }
 
     .card-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 24px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .card-title .icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-
-    .card-title .icon.green { background: rgba(6, 232, 159, 0.15); }
-    .card-title .icon.red { background: rgba(255, 79, 80, 0.15); }
-    .card-title .icon.blue { background: rgba(0, 109, 255, 0.15); }
-    .card-title .icon.purple { background: rgba(182, 136, 255, 0.15); }
-
-    .badge {
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .badge-success { background: rgba(6, 232, 159, 0.15); color: #05a06d; }
-    .badge-danger { background: rgba(255, 79, 80, 0.15); color: var(--danger); }
-    .badge-neutral { background: var(--bg); color: var(--text-light); }
-
-    /* Lists */
-    .item-list {
-      list-style: none;
-    }
-
-    .item-list li {
-      padding: 16px 20px;
-      background: var(--bg);
-      border-radius: 12px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 15px;
-    }
-
-    .item-list li:last-child {
-      margin-bottom: 0;
-    }
-
-    .item-list .tracker-name {
+      font-size: 1.125rem;
       font-weight: 600;
       color: var(--primary);
-      min-width: 140px;
-    }
-
-    .item-list .tracker-detail {
-      color: var(--text-light);
-      font-size: 13px;
-      word-break: break-all;
-    }
-
-    .item-list .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .item-list .dot.red { background: var(--danger); }
-    .item-list .dot.green { background: var(--success); }
-    .item-list .dot.gray { background: #ccc; }
-    .item-list .dot.blue { background: #006dff; }
-    .item-list .dot.purple { background: #8b5cf6; }
-    .item-list .dot.orange { background: #f59e0b; }
-
-    /* Stats grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .stat-item {
-      padding: 24px;
-      background: var(--bg);
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 36px;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 14px;
-      color: var(--text-light);
-    }
-
-    /* Collapsible */
-    .collapsible-header {
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      cursor: pointer;
-      padding: 16px 0;
-      border-top: 1px solid #eee;
-      margin-top: 24px;
     }
 
-    .collapsible-header h4 {
-      font-size: 16px;
+    /* Specific Grid Areas */
+    .area-cmp {
+      grid-column: span 4;
+    }
+
+    .area-stats {
+      grid-column: span 4;
+    }
+
+    .area-violations {
+      grid-column: span 4;
+    }
+
+    .area-cookies {
+      grid-column: span 4;
+    }
+
+    .area-events {
+      grid-column: span 4;
+    }
+
+    /* CMP Card */
+    .cmp-status {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .cmp-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      border-radius: 99px;
       font-weight: 600;
+      font-size: 0.875rem;
+      width: fit-content;
+    }
+
+    .cmp-detail {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* Stats Bars */
+    .stat-bars {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .stat-group {
+      flex: 1;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bar-bg {
+      height: 8px;
+      background: var(--neutral-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    .bar-fill.accent {
+      background: var(--accent);
+    }
+
+    .bar-fill.danger {
+      background: var(--danger);
+    }
+
+    /* Violations List */
+    .violation-item {
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--danger-bg);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .violation-item.empty {
+      background: var(--success-bg);
+      color: #065f46;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* === Tabs & Detailed View === */
+    .details-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-page);
+    }
+
+    .tab-btn {
+      padding: 1rem 1.5rem;
+      background: transparent;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
       color: var(--primary);
+      background: white;
+      font-weight: 600;
     }
 
-    .collapsible-header .arrow {
-      transition: transform 0.2s ease;
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
     }
 
-    .collapsible-header.open .arrow {
-      transform: rotate(180deg);
-    }
-
-    .collapsible-content {
+    .tab-content {
+      padding: 1.5rem;
       display: none;
-      padding-top: 16px;
     }
 
-    .collapsible-content.open {
+    .tab-content.active {
       display: block;
     }
 
-    /* Code block */
-    .code-block {
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--bg-page);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-main);
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      background: var(--neutral-bg);
+      color: var(--neutral);
+    }
+
+    .tag.domain {
+      font-family: monospace;
+      background: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .tag.tracker {
+      background: #fce7f3;
+      color: #be185d;
+      font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .area-cmp,
+      .area-stats,
+      .area-violations,
+      .area-cookies,
+      .area-events {
+        grid-column: span 2;
+      }
+    }
+
+    /* === Event List Styles === */
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .event-name {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .event-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .badge.neutral {
+      background: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+    }
+
+    .badge.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge.info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    /* Tags */
+    .tag {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 99px;
+      font-weight: 500;
+    }
+
+    .tag-safe {
+      background: #f3f4f6;
+      color: var(--text-muted);
+      border: 1px solid var(--border-light);
+    }
+
+    .tag-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .tag-neutral {
+      background: var(--neutral-bg);
+      color: var(--text);
+      border: 1px solid var(--border-light);
+    }
+
+    /* Parameters */
+    .params-box {
+      background: var(--neutral-bg);
+      border-radius: 4px;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .params-box.important {
+      border-left: 3px solid var(--accent);
+      background: #fcfdfd;
+    }
+
+    .param-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0.5rem;
+      margin-bottom: 2px;
+    }
+
+    .param-key {
+      color: var(--text-muted);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .param-val {
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    /* === Form Card Styles === */
+    .form-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+    }
+
+    .form-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .form-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-idx {
       background: var(--primary);
-      color: var(--accent);
-      padding: 20px;
-      border-radius: 12px;
-      font-family: 'Monaco', 'Consolas', monospace;
-      font-size: 13px;
-      overflow-x: auto;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .form-type {
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.05em;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      margin-bottom: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .form-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .form-val {
+      color: var(--text);
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+
+    .form-val.code {
+      font-family: monospace;
+      background: var(--neutral-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .form-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--neutral-bg);
+    }
+
+    .field-chip {
+      background: #f1f5f9;
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      border: 1px solid #e2e8f0;
+      font-family: monospace;
+    }
+
+    @media (max-width: 768px) {
+      .verdict-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .verdict-info {
+        flex-direction: column;
+      }
+
+      .verdict-meta {
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .tabs-header {
+        overflow-x: auto;
+      }
+
+      .tab-btn {
+        white-space: nowrap;
+      }
+    }
+
+    /* Loading Overlay */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-page);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--primary);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Matrix Terminal */
+    .terminal-container {
+      margin-top: 24px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: left;
+    }
+
+    .terminal-header {
+      background: #161b22;
+      padding: 8px 12px;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red {
+      background: #ff5f56;
+    }
+
+    .dot-yellow {
+      background: #ffbd2e;
+    }
+
+    .dot-green {
+      background: #27c93f;
+    }
+
+    .terminal-title {
+      font-family: monospace;
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .terminal-body {
+      height: 180px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      color: #3fb950;
+      /* Matrix Green */
+      overflow-y: auto;
+      line-height: 1.4;
+      text-shadow: 0 0 5px rgba(63, 185, 80, 0.5);
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
       white-space: pre-wrap;
       word-break: break-all;
     }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-light);
-    }
-
-    .empty-state .icon {
-      font-size: 48px;
-      margin-bottom: 16px;
+    .terminal-line::before {
+      content: '> ';
       opacity: 0.5;
     }
 
-    /* Footer actions */
-    .footer-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 48px;
+    .terminal-line.warn {
+      color: #d29922;
     }
 
-    .btn {
-      padding: 16px 32px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .terminal-line.error {
+      color: #f85149;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: var(--primary);
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: var(--white);
-      color: var(--primary);
-      border: 2px solid #e5e5e5;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--primary);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header {
-        padding: 14px 16px;
-      }
-
-      .logo {
-        font-size: 20px;
-      }
-
-      .menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--primary);
-        flex-direction: column;
-        padding: 16px 24px;
-        gap: 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .nav-links a.active {
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-      }
-
-      .header-actions {
-        display: none;
-      }
-
-      .verdict-banner {
-        flex-direction: column;
-        text-align: center;
-        padding: 24px;
-      }
-
-      .verdict-content h2 {
-        font-size: 24px;
-      }
-
-      .meta-info {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .main {
-        padding: 32px 16px 60px;
-      }
-
-      .card {
-        padding: 24px 20px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .item-list li {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .item-list .tracker-name {
-        min-width: auto;
-      }
-
-      .footer-actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .verdict-content h2 {
-        font-size: 20px;
-      }
-
-      .card {
-        padding: 20px 16px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media print {
-      .header, .footer-actions { display: none; }
-      .card { box-shadow: none; border: 1px solid #eee; }
+    .terminal-line.success {
+      color: #58a6ff;
     }
   </style>
 </head>
+
 <body>
+
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <p style="color:var(--text-muted); margin-bottom: 1rem;">Caricamento report...</p>
+
+    <!-- Matrix Terminal for Live Progress -->
+    <div id="loadingTerminal" class="terminal-container" style="display:none;">
+      <div class="terminal-header">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+        <span class="terminal-title">Scan Engine Logs</span>
+      </div>
+      <div id="loadingTerminalBody" class="terminal-body"></div>
+    </div>
+  </div>
+
   <header class="header">
-    <div class="header-content">
+    <div class="header-inner">
       <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav-links" id="navLinks">
-        <a href="/">Scansione</a>
-        <a href="/bulk-scan.html">Bulk Scan</a>
-      </nav>
+      <div class="header-actions">
+        <a href="/" class="btn-header">← Nuova Scansione</a>
+        <button onclick="openFormTest()" class="btn-header">
+          <span style="margin-right:4px;">🔴</span> Live Preview
+        </button>
+        <button onclick="downloadAIPrompt()" class="btn-header" style="background:var(--accent); color:var(--primary);"
+          title="Scarica un file .txt con i dati tecnici da incollare su ChatGPT o Gemini per un'analisi dettagliata">
+          <span style="margin-right:4px;">📥</span> Scarica Prompt AI
+        </button>
+        <button onclick="window.print()" class="btn-header">Stampa PDF</button>
+      </div>
     </div>
   </header>
 
-  <main class="main">
-    <!-- Loading -->
-    <div id="loading" class="loading">
-      <div class="loading-spinner"></div>
-      <p>Caricamento report...</p>
-    </div>
+  <script>
+    // ... (existing code)
 
-    <!-- Report Content -->
-    <div id="report" style="display:none;">
+    // === AI AUDIT EXPORT ===
+    function downloadAIPrompt() {
+      if (!window.reportData) {
+        alert("Dati del report non ancora caricati.");
+        return;
+      }
 
-      <!-- Verdict Banner -->
-      <div id="verdictBanner" class="verdict-banner">
+      const r = window.reportData;
+
+      // Preparazione dati semplificati per l'AI
+      const aiData = {
+        meta: {
+          url: r.url,
+          date: r.timestamp,
+          score: r.score
+        },
+        cmp: r.cmp,
+        violations: r.violations,
+        googleConsent: {
+          gcs_detected: r.events?.preConsent?.find(e => e.data?.gcs)?.data?.gcs || 'Not Found',
+          gcd_detected: r.events?.preConsent?.find(e => e.data?.gcd)?.data?.gcd || 'Not Found'
+        },
+        preConsentEventsSummary: r.events?.preConsent?.map(e => ({
+          tracker: e.tracker,
+          event: e.event,
+          isDenied: e.isDenied,
+          gcs: e.data?.gcs
+        })),
+        forms: r.forms?.found?.map(f => ({
+          type: f.formType,
+          fields: f.fieldLabels
+        }))
+      };
+
+      const promptText = `
+=== RICHIESTA DI AUDIT TECNICO & COMPLIANCE ===
+Ruolo: Agisci come Senior Tracking Specialist & Technical Auditor, uno dei massimi esperti europei in GDPR, ePrivacy, Google Consent Mode v2 e architetture di tracciamento avanzate (GA4, GTM, Server-side, Meta Conversion API).
+
+Task: Analizza i dati grezzi di una scansione tecnica e fornisci un report analitico e strategico per il team marketing e sviluppo.
+
+--- DATI SITO ---
+URL: ${r.url}
+Data: ${new Date(r.timestamp).toLocaleString()}
+Score Attuale: ${r.score}/100
+
+--- DATI TECNICI JSON ---
+${JSON.stringify(aiData, null, 2)}
+
+--- ISTRUZIONI PER L'ANALISI ---
+1. EXECUTIVE SUMMARY: Valutazione sintetica del bilanciamento tra raccolta dati (KPI) e rispetto della privacy.
+2. TRACKING & MEASUREMENT: I tag di misurazione (GA4, Ads) sono configurati correttamente? Vedi anomalie nei parametri inviati?
+3. CONSENT MODE: Verifica i segnali GCS e GCD. La modalità "Advanced" o "Basic" è implementata a regola d'arte? I pings 'denied' rispettano i vincoli tecnici di Google?
+4. VIOLAZIONI & RISCHI: Identifica perdite di dati o attivazioni abusive di tracker pre-consenso che potrebbero invalidare i dati o creare rischi legali.
+5. AZIONI CORRETTIVE: Proponi 3 ottimizzazioni tecniche specifiche (es. configurazione GTM o script) per migliorare la precisione del tracciamento e la conformità.
+6. FORM ANALYSIS: I form rilevati raccolgono dati personali? Sono protetti o tracciati in modo eccessivo?
+
+Rispondi in italiano, con un approccio altamente tecnico ma chiaro. Usa formattazione Markdown.
+`.trim();
+
+      // Download file
+      const blob = new Blob([promptText], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit_ai_prompt_${new Date().getTime()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+  </script>
+
+  <div class="main-container" id="report" style="display:none; opacity:0; transition: opacity 0.5s;">
+
+    <!-- Hero / Verdict -->
+    <div class="verdict-section" id="verdictBanner">
+      <div class="verdict-info">
         <div class="verdict-icon" id="verdictIcon"></div>
-        <div class="verdict-content">
-          <h2 id="verdictTitle"></h2>
-          <p id="verdictDesc"></p>
+        <div class="verdict-text">
+          <h1 id="verdictTitle">Status</h1>
+          <p id="verdictDesc">Analisi in corso...</p>
         </div>
       </div>
-
-      <!-- Meta Info -->
-      <div class="meta-info">
-        <div class="meta-item">
-          <span>URL:</span>
-          <strong id="reportUrl"></strong>
+      <div class="verdict-meta">
+        <div class="meta-box">
+          <span>Sito Web</span>
+          <strong id="metaUrl">...</strong>
         </div>
-        <div class="meta-item">
-          <span>Data:</span>
-          <strong id="reportDate"></strong>
+        <div class="meta-box">
+          <span>Data Analisi</span>
+          <strong id="metaDate">...</strong>
         </div>
-      </div>
-
-      <!-- CMP Status -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon green">&#128274;</span>
-            Consent Management Platform
-          </h3>
-          <span id="cmpBadge" class="badge"></span>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value" id="cmpDetected">-</div>
-            <div class="stat-label">CMP Rilevato</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="blockedScripts">0</div>
-            <div class="stat-label">Script Bloccati</div>
-          </div>
-        </div>
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Stato Consenso Post-Click</h4>
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="collapsible-content">
-          <div class="code-block" id="consentState">{}</div>
+        <div class="meta-box">
+          <span>Punteggio</span>
+          <strong id="metaScore" style="color:var(--accent);">--/100</strong>
         </div>
       </div>
+    </div>
 
-      <!-- Violations -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon red">&#9888;</span>
-            Potenziali Violazioni
-          </h3>
-          <span id="violationsBadge" class="badge"></span>
-        </div>
-        <ul id="violationsList" class="item-list"></ul>
-        <div id="violationsEmpty" class="empty-state" style="display:none;">
-          <div class="icon">&#10004;</div>
-          <p>Nessuna violazione rilevata</p>
-        </div>
-      </div>
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
 
-      <!-- Eventi (tutti i tracker) -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon blue">&#128202;</span>
-            Eventi
-          </h3>
-          <span id="eventsBadge" class="badge badge-neutral"></span>
+      <!-- 1. CMP Status -->
+      <div class="card area-cmp">
+        <div class="card-title">
+          CMP & Consenso
+          <span style="font-size:1.5rem;">🍪</span>
         </div>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value" id="eventsPre">0</div>
-            <div class="stat-label">Pre-Consenso</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="eventsPost">0</div>
-            <div class="stat-label">Post-Consenso</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="eventsAutomatic">0</div>
-            <div class="stat-label">Eventi Automatici</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="eventsSimulated">0</div>
-            <div class="stat-label">Eventi Simulati</div>
-          </div>
-          <div class="stat-item" id="eventsFormTestContainer" style="display:none;">
-            <div class="stat-value" id="eventsFormTest" style="color:var(--accent);">0</div>
-            <div class="stat-label">Test Form</div>
-          </div>
-        </div>
-
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Eventi per Tracker</h4>
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="collapsible-content">
-          <div id="eventsByTracker"></div>
-        </div>
-
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Tutti gli Eventi Rilevati</h4>
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="collapsible-content">
-          <ul id="allEventsList" class="item-list"></ul>
-        </div>
-      </div>
-
-      <!-- Form -->
-      <div class="card" id="formCard">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon green">&#128221;</span>
-            Form
-          </h3>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <span id="formBadge" class="badge badge-neutral"></span>
-            <button id="testFormBtn" class="btn btn-secondary" style="display:none;padding:8px 16px;font-size:13px;" onclick="openFormTest()">
-              Testa Form
-            </button>
-          </div>
-        </div>
-        <ul id="formsList" class="item-list"></ul>
-        <div id="formsEmpty" class="empty-state" style="display:none;">
-          <div class="icon">&#128196;</div>
-          <p>Nessun form valido trovato</p>
-        </div>
-
-        <!-- Risultati test form -->
-        <div id="formTestResults" style="display:none;">
-          <div class="collapsible-header" onclick="toggleCollapsible(this)">
-            <h4>Eventi Live Monitor (<span id="formTestCount">0</span>)</h4>
-            <span class="arrow">&#9660;</span>
-          </div>
-          <div class="collapsible-content">
-            <div class="stats-grid" style="margin-top:12px;">
-              <div class="stat-item">
-                <div class="stat-value" id="testFormSubmit">0</div>
-                <div class="stat-label">form_submit</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-value" id="testGenerateLead">0</div>
-                <div class="stat-label">generate_lead</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-value" id="testTotalEvents">0</div>
-                <div class="stat-label">Totale</div>
-              </div>
+        <div class="cmp-status">
+          <div id="cmpBadge" class="cmp-badge">Rilevamento...</div>
+          <div class="cmp-detail">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+              <span>Script Bloccati:</span>
+              <strong id="blockedScriptsCount">0</strong>
             </div>
-            <div id="formTestVerdict" style="margin-top:16px;padding:16px;border-radius:8px;"></div>
-            <h5 style="margin-top:16px;margin-bottom:8px;color:var(--text-light);font-size:13px;text-transform:uppercase;">Lista Eventi</h5>
-            <ul id="formTestEventsList" class="item-list"></ul>
+            <div style="margin-top:0.5rem;">
+              <span style="display:block;margin-bottom:0.25rem;">Stato Consenso (GCS/GCD):</span>
+              <div id="consentStateBox"
+                style="font-family:monospace;background:var(--neutral-bg);padding:0.5rem;border-radius:4px;font-size:0.75rem;word-break:break-all;">
+                N/A</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Cookies -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            <span class="icon purple">&#127850;</span>
-            Cookie
-          </h3>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value" id="cookiesPre">0</div>
-            <div class="stat-label">Pre-Consenso</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="cookiesPost">0</div>
-            <div class="stat-label">Post-Consenso</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value" id="cookiesNew">0</div>
-            <div class="stat-label">Nuovi</div>
-          </div>
-        </div>
-
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Cookie Pre-Consenso</h4>
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="collapsible-content">
-          <ul id="cookiesPreList" class="item-list"></ul>
-        </div>
-
-        <div class="collapsible-header" onclick="toggleCollapsible(this)">
-          <h4>Cookie Post-Consenso</h4>
-          <span class="arrow">&#9660;</span>
-        </div>
-        <div class="collapsible-content">
-          <ul id="cookiesPostList" class="item-list"></ul>
-        </div>
+      <!-- 2. Violations -->
+      <div class="card area-violations">
+        <div class="card-title">Violazioni <span style="font-size:1.5rem;">⚠️</span></div>
+        <div id="violationsList"></div>
       </div>
 
-      <!-- Footer Actions -->
-      <div class="footer-actions">
-        <button onclick="window.print()" class="btn btn-secondary">
-          &#128424; Stampa Report
-        </button>
-        <button onclick="downloadJson()" class="btn btn-secondary">
-          &#128190; Scarica JSON
-        </button>
-        <button onclick="openLiveMonitor()" class="btn btn-secondary">
-          &#128225; Live Monitor
-        </button>
-        <a href="/" class="btn btn-primary">
-          &#128269; Nuova Scansione
-        </a>
+      <!-- 3. Cookie & Event Stats -->
+      <div class="card area-stats">
+        <div class="card-title">Panoramica Tracciamento</div>
+        <div class="stat-bars">
+          <div class="stat-group">
+            <div class="stat-label">
+              <span>Cookie Pre-Consenso</span>
+              <span id="statCookiePre">0</span>
+            </div>
+            <div class="bar-bg">
+              <div id="barCookiePre" class="bar-fill danger" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="stat-group">
+            <div class="stat-label">
+              <span>Cookie Post-Consenso</span>
+              <span id="statCookiePost">0</span>
+            </div>
+            <div class="bar-bg">
+              <div id="barCookiePost" class="bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stat-bars" style="margin-top:1.5rem;">
+          <div class="stat-group">
+            <div class="stat-label">
+              <span>Eventi DataLayer</span>
+              <span id="statEventsTotal">0</span>
+            </div>
+            <div class="bar-bg">
+              <div id="barEventsTotal" class="bar-fill accent" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="stat-group">
+            <div class="stat-label">
+              <span>Network Tracker</span>
+              <span id="statNetwork">0</span>
+            </div>
+            <div class="bar-bg">
+              <div id="barNetwork" class="bar-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <footer style="text-align:center;padding:24px;color:var(--text-light);font-size:14px;">
-        AuditTrackingTool - Realizzato da <a href="https://www.linkedin.com/in/andreacamolese/" target="_blank" style="color:inherit;text-decoration:underline;">Andrea Camolese</a>
-      </footer>
 
     </div>
-  </main>
+
+    <!-- Detailed Tabs -->
+    <div class="details-section">
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchTab('events')">Eventi per Tracker</button>
+        <button class="tab-btn" onclick="switchTab('cookies')">Cookie</button>
+        <button class="tab-btn" onclick="switchTab('forms')">Analisi Form</button>
+        <button class="tab-btn" onclick="switchTab('raw')">Log Completo</button>
+      </div>
+
+      <!-- Tab: Events Grouped -->
+      <div id="tab-events" class="tab-content active">
+        <div id="eventsGroupedContainer"></div>
+        <p id="noEventsMsg" style="text-align:center;padding:1rem;display:none;">Nessun evento rilevato.</p>
+      </div>
+
+      <!-- Tab: Cookies -->
+      <div id="tab-cookies" class="tab-content">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Dominio</th>
+              <th>Fase</th>
+            </tr>
+          </thead>
+          <tbody id="cookiesTableBody"></tbody>
+        </table>
+        <p id="noCookiesMsg" style="text-align:center;padding:1rem;display:none;">Nessun cookie trovato.</p>
+      </div>
+
+      <!-- Tab: Forms -->
+      <div id="tab-forms" class="tab-content">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;">
+          <button id="testFormBtn" class="btn-primary"
+            style="padding:0.5rem 1rem;border-radius:var(--radius-sm);cursor:pointer;display:none;"
+            onclick="openFormTest()">
+            ▶ Avvia Test Form
+          </button>
+        </div>
+        <div id="formsContainer"></div>
+        <p id="noFormsMsg" style="text-align:center;padding:1rem;display:none;">Nessun form rilevato nella pagina.</p>
+
+        <!-- Live Form Test Results -->
+        <div id="formTestResultsBox"
+          style="margin-top:2rem;display:none;border-top:1px solid var(--border-light);padding-top:1rem;">
+          <h3 style="font-size:1.1rem;margin-bottom:1rem;">Risultati Live Test</h3>
+          <div id="formTestLog"
+            style="background:var(--neutral-bg);padding:1rem;border-radius:8px;font-family:monospace;font-size:0.85rem;max-height:300px;overflow-y:auto;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Raw Log -->
+      <div id="tab-raw" class="tab-content">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tracker</th>
+              <th>Fase</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="rawEventsTableBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
 
   <script>
-    let reportData = null;
+    // Global State
+    let currentReportId = null;
+    let currentReportUrl = null;
 
-    function toggleCollapsible(header) {
-      header.classList.toggle('open');
-      const content = header.nextElementSibling;
-      content.classList.toggle('open');
-    }
+    // === Logic Script ===
+    window.switchTab = function (tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-    async function loadReport() {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+      event.target.classList.add('active');
+    };
 
-      if (!id) {
-        document.getElementById('loading').innerHTML = '<p>ID report mancante</p>';
+    // Open Form Test Logic
+    window.openFormTest = function () {
+      if (!currentReportId || !currentReportUrl) return;
+      window.open(
+        `/form-test.html?reportId=${currentReportId}&url=${encodeURIComponent(currentReportUrl)}`,
+        '_blank'
+      );
+
+      // Listen for updates (SSE or polling could be better, but simple listening here)
+      document.getElementById('formTestResultsBox').style.display = 'block';
+      document.getElementById('formTestLog').innerHTML = '<div>In attesa di eventi dal test (controlla la finestra popup)...</div>';
+    };
+
+    // Main Load
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      currentReportId = urlParams.get('id');
+
+      if (!currentReportId) {
+        alert('ID Report mancante');
+        window.location.href = '/';
         return;
       }
 
       try {
-        const response = await fetch(`/api/report/${id}`);
+        const response = await fetch(`/api/report/${currentReportId}`);
         const data = await response.json();
 
-        if (!data.success) {
-          document.getElementById('loading').innerHTML = '<p>Report non trovato</p>';
-          return;
-        }
+        if (!data.success) throw new Error(data.error);
 
-        reportData = data.report;
-        renderReport(reportData);
+        currentReportUrl = data.report.url;
+        window.reportData = data.report; // Store globally for AI Export
+        renderReport(data.report);
+
+        // Se il report è appena stato creato (o è in corso), prova a connettere SSE per i log finali o monitoraggio
+        // In realtà se siamo qui il report è "done", ma per uniformità con index.html manteniamo la logica se serve in futuro
+
+        // Hide loading, show report
+        document.getElementById('loading').style.display = 'none';
+        const reportEl = document.getElementById('report');
+        reportEl.style.display = 'block';
+        setTimeout(() => reportEl.style.opacity = 1, 10);
+
       } catch (err) {
-        document.getElementById('loading').innerHTML = '<p>Errore: ' + err.message + '</p>';
+        document.getElementById('loading').innerHTML = `<p style="color:var(--danger)">Errore: ${err.message}</p><a href="/">Torna alla Home</a>`;
       }
-    }
+    });
+
+    // Helper per aggiungere log al terminale di caricamento (chiamato dall'esterno o SSE se implementato qui)
+    window.appendTerminalLog = function (msg, level = 'info') {
+      const term = document.getElementById('loadingTerminal');
+      const body = document.getElementById('loadingTerminalBody');
+      if (!term || !body) return;
+
+      term.style.display = 'block';
+      const line = document.createElement('div');
+      line.className = `terminal-line ${level}`;
+      line.textContent = msg;
+      body.appendChild(line);
+      body.scrollTop = body.scrollHeight;
+    };
 
     function renderReport(report) {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('report').style.display = 'block';
+      // 0. Pre-process: Identify "Denied" events (Consent Mode) and filter violations
+      // Helper to check if event has denied consent (Simple check for Google 'gcs' with '0' or 'p'/'q' logic if needed, usually G100 is denied)
+      const isDenied = (e) => {
+        if (!e.data) return false;
+        // GCS: G1xx. x=Ad, x=Analytics. 0=Denied.
+        // e.g. G100 (All denied), G110 (Ads denied), G101 (Analytics denied)
+        // If GCS exists and contains '0', we treat it as partial/full denial.
+        if (e.data.gcs && (e.data.gcs.includes('0') || e.data.gcs === 'G100')) return true;
+        // NPA: Non-Personalized Ads
+        if (e.data.npa === '1') return true;
+        return false;
+      };
 
-      // Meta
-      document.getElementById('reportUrl').textContent = report.url;
-      document.getElementById('reportDate').textContent = new Date(report.timestamp).toLocaleString('it-IT');
+      // Patch events with a 'isDenied' flag
+      ['preConsent', 'postConsent', 'interactions'].forEach(phase => {
+        if (report.events && report.events[phase]) {
+          report.events[phase].forEach(e => {
+            if (isDenied(e)) e.isDenied = true;
+          });
+        }
+      });
 
-      // Verdict
-      const violations = report.summary?.violations || 0;
-      const cmpDetected = report.cmp?.detected;
-      const cmpType = report.cmp?.type || 'CMP';
+      // Filter Violations: Remove if the associated tracker event was actually "Denied"
+      if (report.violations) {
+        const preEvents = report.events?.preConsent || [];
+        report.violations = report.violations.filter(v => {
+          // Be lenient: If we find *any* event for this tracker pre-consent that was Denied, we assume the violation is invalid (safe ping)
+          // Unless we found Cookies for it? (Cookies are separate in report.violations usually?)
+          // Actually report.violations comes from Scanner.js logic.
+          // We'll trust that if it's a network-only violation (tracker) and we see denied signals, it's safe.
+          const match = preEvents.find(e => e.tracker === v.tracker);
+          if (match && match.isDenied) return false;
+          return true;
+        });
+      }
+
+      // 1. Meta Info
+      document.getElementById('metaUrl').textContent = report.url;
+      document.getElementById('metaDate').textContent = new Date(report.timestamp).toLocaleString('it-IT');
+
+      // Calculate Score
+      let score = 100;
+      if (!report.cmp?.detected) score -= 30;
+      score -= (report.violations?.length || 0) * 15;
+      score -= Math.min((report.summary?.cookiesPreConsent || 0) * 2, 20);
+      if (score < 0) score = 0;
+      document.getElementById('metaScore').textContent = `${score}/100`;
+
+      // 2. Verdict Logic
       const banner = document.getElementById('verdictBanner');
       const icon = document.getElementById('verdictIcon');
       const title = document.getElementById('verdictTitle');
       const desc = document.getElementById('verdictDesc');
 
-      if (violations === 0 && cmpDetected) {
-        banner.className = 'verdict-banner success';
-        icon.textContent = '✓';
+      const violations = report.violations?.length || 0;
+      const cmpDetected = report.cmp?.detected;
+
+      if (violations > 0) {
+        icon.style.background = 'var(--danger-bg)';
+        icon.innerHTML = '<span style="color:var(--danger)">⚠️</span>';
+        title.textContent = 'Non Conforme';
+        title.style.color = 'var(--danger)';
+        desc.textContent = `${violations} violazioni blocco preventivo rilevate.`;
+        banner.style.borderLeft = '6px solid var(--danger)';
+      } else if (cmpDetected) {
+        icon.style.background = 'var(--success-bg)';
+        icon.innerHTML = '<span style="color:var(--success)">✅</span>';
         title.textContent = 'Conforme';
-        desc.textContent = `Il sito rispetta le normative GDPR sui cookie (${cmpType})`;
-      } else if (violations > 0) {
-        banner.className = 'verdict-banner danger';
-        icon.textContent = '!';
-        title.textContent = 'Possibile Non Conformità';
-        desc.textContent = `Rilevate ${violations} potenziali violazioni pre-consenso`;
+        title.style.color = 'var(--success)';
+        desc.textContent = 'CMP attivo e blocco preventivo funzionante.';
+        banner.style.borderLeft = '6px solid var(--success)';
       } else {
-        banner.className = 'verdict-banner warning';
-        icon.textContent = '?';
+        icon.style.background = 'var(--warning-bg)';
+        icon.innerHTML = '<span style="color:var(--warning)">❓</span>';
         title.textContent = 'Da Verificare';
-        desc.textContent = 'CMP non rilevato, verifica manuale consigliata';
+        title.style.color = 'var(--warning)';
+        desc.textContent = 'Nessun CMP rilevato (o non riconosciuto).';
+        banner.style.borderLeft = '6px solid var(--warning)';
       }
 
-      // CMP
-      document.getElementById('cmpDetected').textContent = cmpDetected ? cmpType : 'No';
-      document.getElementById('blockedScripts').textContent = report.summary?.blockedScriptsCount || 0;
-      document.getElementById('cmpBadge').textContent = cmpDetected ? cmpType : 'Non rilevato';
-      document.getElementById('cmpBadge').className = 'badge ' + (cmpDetected ? 'badge-success' : 'badge-neutral');
-      document.getElementById('consentState').textContent = JSON.stringify(report.cmp?.consentState || {}, null, 2);
-
-      // Violations - raggruppa eventi pre-consenso per tracker
-      const violationsList = document.getElementById('violationsList');
-      const violationsEmpty = document.getElementById('violationsEmpty');
-
-      // Raggruppa eventi pre-consenso per tracker (escludi GA4 con consent denied)
-      const preConsentEvents = report.events?.preConsent || [];
-      const preConsentByTracker = {};
-      preConsentEvents.forEach(e => {
-        // Escludi eventi GA4 con consent mode "denied" - non sono vere violazioni
-        if (e.tracker === 'GA4' && e.consentMode && e.consentMode.toLowerCase().includes('denied')) {
-          return;
-        }
-        if (!preConsentByTracker[e.tracker]) {
-          preConsentByTracker[e.tracker] = [];
-        }
-        preConsentByTracker[e.tracker].push(e);
-      });
-
-      const totalViolations = Object.keys(preConsentByTracker).length;
-      document.getElementById('violationsBadge').textContent = totalViolations + ' tracker';
-      document.getElementById('violationsBadge').className = 'badge ' + (totalViolations > 0 ? 'badge-danger' : 'badge-success');
-
-      if (totalViolations === 0) {
-        violationsList.style.display = 'none';
-        violationsEmpty.style.display = 'block';
+      // 3. CMP & Consent
+      const cmpBadge = document.getElementById('cmpBadge');
+      if (cmpDetected) {
+        cmpBadge.textContent = report.cmp.type || 'CMP Rilevato';
+        cmpBadge.style.background = 'var(--success-bg)';
+        cmpBadge.style.color = '#065f46';
       } else {
-        violationsList.innerHTML = '';
+        cmpBadge.textContent = 'Nessun CMP';
+        cmpBadge.style.background = 'var(--neutral-bg)';
+        cmpBadge.style.color = 'var(--text-muted)';
+      }
+      document.getElementById('blockedScriptsCount').textContent = report.cmp?.blockedScripts?.length || 0;
 
-        // Mostra tracker con eventi pre-consenso (box grigi espandibili)
-        Object.entries(preConsentByTracker).forEach(([tracker, events]) => {
-          const trackerDiv = document.createElement('div');
-          trackerDiv.style.cssText = 'margin-bottom: 8px; background: var(--bg); border-radius: 8px; overflow: hidden;';
+      const consentText = JSON.stringify(report.cmp?.consentState || {}, null, 1).replace(/[{}"]/g, '').trim();
+      document.getElementById('consentStateBox').textContent = consentText || 'Nessun dato di consenso intercettato';
 
-          // Header cliccabile
-          const header = document.createElement('div');
-          header.style.cssText = 'display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; transition: background 0.2s;';
-          header.innerHTML = `
-            <span class="dot red"></span>
-            <span style="font-weight: 600; color: var(--text); flex: 1;">${tracker}</span>
-            <span style="font-size: 12px; color: var(--text-light);">${events.length} eventi pre-consenso</span>
-            <span class="arrow" style="transition: transform 0.2s; font-size: 10px; color: var(--text-light);">&#9660;</span>
-          `;
-
-          // Contenuto espandibile (nascosto di default)
-          const content = document.createElement('div');
-          content.style.cssText = 'display: none; padding: 0 16px 12px 42px; font-size: 13px;';
-
-          events.forEach(e => {
-            const eventDiv = document.createElement('div');
-            eventDiv.style.cssText = 'padding: 6px 0; border-bottom: 1px solid var(--border);';
-            let eventInfo = `<span style="color: var(--text);">${e.event}</span>`;
-            if (e.eventCategory) eventInfo += ` <span style="background: var(--surface); padding: 2px 6px; border-radius: 4px; font-size: 11px; color: var(--text-light);">${e.eventCategory}</span>`;
-            eventDiv.innerHTML = eventInfo;
-            content.appendChild(eventDiv);
-          });
-
-          // Toggle al click
-          header.onclick = () => {
-            const isOpen = content.style.display !== 'none';
-            content.style.display = isOpen ? 'none' : 'block';
-            header.querySelector('.arrow').style.transform = isOpen ? '' : 'rotate(180deg)';
-          };
-
-          // Hover effect
-          header.onmouseenter = () => { header.style.background = 'var(--surface)'; };
-          header.onmouseleave = () => { header.style.background = ''; };
-
-          trackerDiv.appendChild(header);
-          trackerDiv.appendChild(content);
-          violationsList.appendChild(trackerDiv);
+      // 4. Violations
+      const violationsList = document.getElementById('violationsList');
+      violationsList.innerHTML = ''; // Clear previous
+      if (violations > 0) {
+        report.violations.forEach(v => {
+          const div = document.createElement('div');
+          div.className = 'violation-item';
+          div.innerHTML = `<span>🔴</span><div><strong>${v.tracker}</strong><br>Attivato pre-consenso</div>`;
+          violationsList.appendChild(div);
         });
+      } else {
+        violationsList.innerHTML = `<div class="violation-item empty"><span>✨ Nessuna violazione trovata</span></div>`;
       }
 
-      // Cookies
-      document.getElementById('cookiesPre').textContent = report.summary?.cookiesPreConsent || 0;
-      document.getElementById('cookiesPost').textContent = report.summary?.cookiesPostConsent || 0;
-      document.getElementById('cookiesNew').textContent = report.summary?.newCookiesAfterConsent || 0;
+      // 5. Stats
+      const preC = report.summary?.cookiesPreConsent || 0;
+      const postC = report.summary?.cookiesPostConsent || 0;
+      const evTotal = report.summary?.events?.total || 0;
+      const netReq = report.summary?.trackersPostConsent || 0;
 
-      const cookiesPreList = document.getElementById('cookiesPreList');
-      cookiesPreList.innerHTML = '';
-      (report.preConsent?.cookies || []).forEach(c => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <span class="dot gray"></span>
-          <span class="tracker-name">${c.name}</span>
-          <span class="tracker-detail">${c.domain}</span>
-        `;
-        cookiesPreList.appendChild(li);
-      });
+      document.getElementById('statCookiePre').textContent = preC;
+      document.getElementById('barCookiePre').style.width = Math.min((preC / 20) * 100, 100) + '%';
+      document.getElementById('statCookiePost').textContent = postC;
+      document.getElementById('barCookiePost').style.width = Math.min((postC / 50) * 100, 100) + '%';
+      document.getElementById('statEventsTotal').textContent = evTotal;
+      document.getElementById('barEventsTotal').style.width = Math.min((evTotal / 50) * 100, 100) + '%';
+      document.getElementById('statNetwork').textContent = netReq;
+      document.getElementById('barNetwork').style.width = Math.min((netReq / 50) * 100, 100) + '%';
 
-      const cookiesPostList = document.getElementById('cookiesPostList');
-      cookiesPostList.innerHTML = '';
-      (report.postConsent?.cookies || []).forEach(c => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <span class="dot gray"></span>
-          <span class="tracker-name">${c.name}</span>
-          <span class="tracker-detail">${c.domain}</span>
-        `;
-        cookiesPostList.appendChild(li);
-      });
-
-      // Eventi (tutti i tracker)
-      const eventsSummary = report.summary?.events || {};
-      document.getElementById('eventsPre').textContent = eventsSummary.preConsent || 0;
-      document.getElementById('eventsPost').textContent = eventsSummary.postConsent || 0;
-      
-      // Calcola eventi automatici e simulati
-      const allEventsCombined = [
+      // 6. Events by Tracker (Restored)
+      const container = document.getElementById('eventsGroupedContainer');
+      container.innerHTML = '';
+      const allEvents = [
         ...(report.events?.preConsent || []),
         ...(report.events?.postConsent || []),
-        ...(report.events?.interactions || []),
-        ...(report.events?.formTest || [])
-      ];
-      
-      const automaticEvents = allEventsCombined.filter(e => e.source === 'automatic').length;
-      const simulatedEvents = allEventsCombined.filter(e => e.source === 'simulated').length;
-      
-      document.getElementById('eventsAutomatic').textContent = automaticEvents;
-      document.getElementById('eventsSimulated').textContent = simulatedEvents;
-
-      // Mostra eventi form test se presenti
-      const formTestEventsCount = report.events?.formTest?.length || 0;
-      if (formTestEventsCount > 0) {
-        document.getElementById('eventsFormTestContainer').style.display = 'block';
-        document.getElementById('eventsFormTest').textContent = formTestEventsCount;
-      }
-
-      document.getElementById('eventsBadge').textContent = (eventsSummary.total || 0) + ' eventi';
-
-      // Eventi per tracker (organizzati per categoria)
-      const eventsByTrackerDiv = document.getElementById('eventsByTracker');
-      eventsByTrackerDiv.innerHTML = '';
-      const byTracker = eventsSummary.byTracker || {};
-
-      const categoryLabels = {
-        standard: 'Eventi Standard',
-        custom: 'Eventi Custom',
-        click: 'Eventi Click',
-        session: 'Session Recording',
-        conversion: 'Conversioni'
-      };
-
-      const categoryColors = {
-        standard: 'green',
-        custom: 'blue',
-        click: 'purple',
-        session: 'gray',
-        conversion: 'orange'
-      };
-
-      if (Object.keys(byTracker).length === 0) {
-        eventsByTrackerDiv.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">Nessun evento rilevato</p>';
-      } else {
-        Object.entries(byTracker).forEach(([tracker, categories]) => {
-          const trackerDiv = document.createElement('div');
-          trackerDiv.style.marginBottom = '24px';
-          trackerDiv.style.padding = '16px';
-          trackerDiv.style.background = 'var(--bg)';
-          trackerDiv.style.borderRadius = '12px';
-
-          let categoriesHtml = '';
-          Object.entries(categories).forEach(([category, events]) => {
-            const label = categoryLabels[category] || category;
-            const color = categoryColors[category] || 'gray';
-
-            const eventsHtml = events.map(ev => {
-              let detail = '';
-              if (ev.destinationUrl) {
-                detail = ev.destinationUrl.length > 50 ? ev.destinationUrl.substring(0, 50) + '...' : ev.destinationUrl;
-              } else if (ev.productName) {
-                detail = ev.productName;
-              } else if (ev.params && Object.keys(ev.params).length > 0) {
-                detail = Object.entries(ev.params).map(([k,v]) => `${k}: ${v}`).join(', ');
-              }
-              return `
-                <li style="padding:12px 16px;">
-                  <span class="dot ${color}"></span>
-                  <span class="tracker-name">${ev.name}</span>
-                  ${detail ? `<span class="tracker-detail">${detail}</span>` : ''}
-                </li>
-              `;
-            }).join('');
-
-            categoriesHtml += `
-              <div style="margin-top:12px;">
-                <span style="font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);font-weight:600;">${label}</span>
-                <ul class="item-list" style="margin-top:8px;">${eventsHtml}</ul>
-              </div>
-            `;
-          });
-
-          trackerDiv.innerHTML = `
-            <h5 style="font-size:16px;color:var(--primary);margin-bottom:4px;font-weight:600;">${tracker}</h5>
-            ${categoriesHtml}
-          `;
-          eventsByTrackerDiv.appendChild(trackerDiv);
-        });
-      }
-
-      // Lista tutti gli eventi rilevati
-      const allEventsList = document.getElementById('allEventsList');
-      allEventsList.innerHTML = '';
-      const allEvents = [
-        ...(report.events?.preConsent || []).map(e => ({...e, phase: 'Pre'})),
-        ...(report.events?.postConsent || []).map(e => ({...e, phase: 'Post'})),
-        ...(report.events?.interactions || []).map(e => ({...e, phase: 'Interaction'})),
-        ...(report.events?.formTest || []).map(e => ({...e, phase: 'Form Test'}))
+        ...(report.events?.interactions || [])
       ];
 
       if (allEvents.length === 0) {
-        allEventsList.innerHTML = '<li style="text-align:center;color:#888;">Nessun evento rilevato</li>';
+        document.getElementById('noEventsMsg').style.display = 'block';
       } else {
+        // Group by tracker
+        const grouped = {};
         allEvents.forEach(e => {
-          const li = document.createElement('li');
-          let dotColor = 'gray';
-
-          if (e.phase === 'Pre') dotColor = 'gray';
-          else if (e.phase === 'Post') dotColor = 'green';
-          else if (e.phase === 'Interaction') dotColor = 'blue';
-          else if (e.phase === 'Form Test') dotColor = 'orange';
-
-          li.innerHTML = `
-            <span class="dot ${dotColor}"></span>
-            <span class="tracker-name">${e.tracker}: ${e.event}</span>
-            <span class="tracker-detail">${e.phase}${e.consentMode ? ' - ' + e.consentMode : ''}</span>
-          `;
-          allEventsList.appendChild(li);
-        });
-      }
-
-      // Form - nascosto in Fast Mode
-      const formCard = document.getElementById('formCard');
-      if (report.scanMode === 'fast') {
-        formCard.style.display = 'none';
-      } else {
-        const forms = report.forms?.found || [];
-        const formsList = document.getElementById('formsList');
-        const formsEmpty = document.getElementById('formsEmpty');
-        document.getElementById('formBadge').textContent = forms.length + ' form validi';
-
-        if (forms.length === 0) {
-          formsList.style.display = 'none';
-          formsEmpty.style.display = 'block';
-        } else {
-        formsList.innerHTML = '';
-        forms.forEach(f => {
-          const li = document.createElement('li');
-          li.style.flexDirection = 'column';
-          li.style.alignItems = 'flex-start';
-          li.style.gap = '4px';
-
-          const fields = [];
-          if (f.hasNameField) fields.push('nome');
-          if (f.hasSurnameField) fields.push('cognome');
-          if (f.hasEmailField) fields.push('email');
-          if (f.hasPasswordField) fields.push('password');
-
-          const visibilityBadge = f.isVisible
-            ? '<span style="background:#22c55e20;color:#22c55e;padding:2px 6px;border-radius:4px;font-size:11px;">visibile</span>'
-            : '<span style="background:#ef444420;color:#ef4444;padding:2px 6px;border-radius:4px;font-size:11px;">nascosto</span>';
-
-          const typeBadge = `<span style="background:#3b82f620;color:#3b82f6;padding:2px 6px;border-radius:4px;font-size:11px;">${f.formType || 'altro'}</span>`;
-
-          li.innerHTML = `
-            <div style="display:flex;align-items:center;gap:8px;width:100%;">
-              <span class="dot ${f.isVisible ? 'green' : 'yellow'}"></span>
-              <span class="tracker-name">Form #${f.index + 1}</span>
-              ${typeBadge}
-              ${visibilityBadge}
-            </div>
-            <div style="margin-left:20px;font-size:12px;color:var(--text-light);">
-              ${f.submitText ? `<div><strong>Pulsante:</strong> "${f.submitText}"</div>` : ''}
-              ${f.fieldLabels?.length ? `<div><strong>Campi:</strong> ${f.fieldLabels.join(', ')}</div>` : `<div><strong>Campi:</strong> ${fields.join(', ')}</div>`}
-              ${f.id ? `<div><strong>ID:</strong> ${f.id}</div>` : ''}
-              ${f.className ? `<div><strong>Classe:</strong> ${f.className}</div>` : ''}
-            </div>
-          `;
-          formsList.appendChild(li);
+          const t = e.tracker || 'Sconosciuto';
+          if (!grouped[t]) grouped[t] = [];
+          grouped[t].push(e);
         });
 
-        // Mostra pulsante test form
-        document.getElementById('testFormBtn').style.display = 'inline-block';
-      }
+        Object.keys(grouped).forEach(tracker => {
+          const groupDiv = document.createElement('div');
+          groupDiv.style.marginBottom = '1.5rem';
 
-      // Mostra risultati test form se presenti
-      if (report.formTest || (report.events?.formTest && report.events.formTest.length > 0)) {
-        const ft = report.formTest || {};
-        const formTestEvents = report.events?.formTest || [];
+          // Check if ANY denied data present
+          let statusBadge = '';
+          const groupedEvents = grouped[tracker];
+          const hasDenied = groupedEvents.some(e => e.isDenied);
 
-        document.getElementById('formTestResults').style.display = 'block';
-        document.getElementById('formTestCount').textContent = formTestEvents.length;
-        document.getElementById('testFormSubmit').textContent = ft.formEventCounts?.form_submit || 0;
-        document.getElementById('testFormSubmit').style.color = (ft.formEventCounts?.form_submit > 0) ? 'var(--success)' : 'var(--text)';
-        document.getElementById('testGenerateLead').textContent = ft.formEventCounts?.generate_lead || 0;
-        document.getElementById('testGenerateLead').style.color = (ft.formEventCounts?.generate_lead > 0) ? 'var(--success)' : 'var(--text)';
-        document.getElementById('testTotalEvents').textContent = formTestEvents.length;
-        document.getElementById('testTotalEvents').style.color = (formTestEvents.length > 0) ? 'var(--success)' : 'var(--text)';
+          if (hasDenied) {
+            statusBadge = '<span class="tag" style="margin-left:8px;background:#e0e7ff;color:#4338ca">Consent Mode Active</span>';
+          }
 
-        const verdict = document.getElementById('formTestVerdict');
-        if (formTestEvents.length > 0) {
-          verdict.style.background = 'rgba(6, 232, 159, 0.15)';
-          verdict.innerHTML = `<strong style="color:var(--success);">Live Monitor Completato</strong><br><span style="font-size:13px;color:var(--text-light);">${formTestEvents.length} eventi catturati durante la sessione live</span>`;
-        } else {
-          verdict.style.background = 'rgba(255, 184, 77, 0.15)';
-          verdict.innerHTML = '<strong style="color:var(--warning);">Nessun Evento</strong><br><span style="font-size:13px;color:var(--text-light);">Non sono stati aggiunti eventi dal Live Monitor</span>';
-        }
+          groupDiv.innerHTML = `
+                <div style="background:var(--bg-page);padding:0.75rem;border-radius:8px;font-weight:600;display:flex;align-items:center;">
+                    ${tracker} <span style="margin-left:auto;font-weight:400;color:var(--text-muted);font-size:0.85rem;">${grouped[tracker].length} eventi</span>
+                    ${statusBadge}
+                </div>
+             `;
 
-        // Popola lista eventi
-        const eventsList = document.getElementById('formTestEventsList');
-        if (formTestEvents.length > 0) {
-          eventsList.innerHTML = formTestEvents.map(e => `
-            <li style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
-              <span>
-                <strong style="color:var(--primary);">${e.tracker || 'Unknown'}</strong>
-                ${e.event ? `<span style="background:rgba(6,232,159,0.2);padding:2px 8px;border-radius:4px;margin-left:8px;font-size:12px;">${e.event}</span>` : ''}
-              </span>
-              <span style="font-size:12px;color:var(--text-light);">${e.eventCategory || 'custom'}</span>
-            </li>
-          `).join('');
-        } else {
-          eventsList.innerHTML = '<li style="color:var(--text-light);font-style:italic;padding:12px 0;">Nessun evento</li>';
-        }
-      }
-      } // Fine else scanMode !== 'fast'
+          const ul = document.createElement('ul');
+          ul.style.listStyle = 'none';
+          ul.style.padding = '0.5rem';
 
-    }
+          grouped[tracker].forEach(e => {
+            const li = document.createElement('li');
+            li.style.padding = '0.75rem';
+            li.style.borderBottom = '1px solid var(--border-light)';
+            li.style.fontSize = '0.875rem';
 
-    // Apri pagina test form
-    function openFormTest() {
-      const params = new URLSearchParams(window.location.search);
-      const reportId = params.get('id');
-      const url = reportData?.url;
+            // --- 1. Interpretazione GCS (Google Consent Status) ---
+            let consentBadges = '';
+            if (e.data?.gcs) {
+              const gcs = e.data.gcs;
+              let label = gcs;
+              let colorClass = 'neutral'; // gray
 
-      if (!url) return;
+              if (gcs === 'G100' || gcs.includes('0')) {
+                label = 'Ads/Analytics Denied';
+                colorClass = 'success'; // Green because it's safe if it was denied in pre-consent or respected
+              } else if (gcs === 'G111') {
+                label = 'Ads/Analytics Granted';
+                colorClass = 'info';
+              } else if (gcs === 'G110') {
+                label = 'Ads Granted / Analytics Denied';
+              } else if (gcs === 'G101') {
+                label = 'Ads Denied / Analytics Granted';
+              }
 
-      const testUrl = `/form-test.html?url=${encodeURIComponent(url)}&reportId=${reportId}`;
-      window.open(testUrl, 'formTest', 'width=1400,height=900');
-    }
-
-    function downloadJson() {
-      if (!reportData) return;
-      const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `audit-${reportData.url.replace(/[^a-z0-9]/gi, '_')}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function openLiveMonitor() {
-      const params = new URLSearchParams(window.location.search);
-      const reportId = params.get('id');
-      const url = reportData?.url;
-
-      if (!url) return;
-
-      const monitorUrl = `/form-test.html?url=${encodeURIComponent(url)}&reportId=${reportId}`;
-      window.open(monitorUrl, 'liveMonitor', 'width=1400,height=900');
-    }
-
-    // Mobile menu toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
-    // Listen for form-test updates via BroadcastChannel
-    try {
-      const channel = new BroadcastChannel('audit-report-update');
-      channel.onmessage = (event) => {
-        const params = new URLSearchParams(window.location.search);
-        const currentReportId = params.get('id');
-        if (event.data.type === 'form-test-updated' && event.data.reportId === currentReportId) {
-          console.log('Form test aggiornato, ricarico report...');
-          loadReport(); // Refresh report data
-        }
-      };
-    } catch (e) {
-      // Fallback: listen to localStorage changes
-      window.addEventListener('storage', (event) => {
-        if (event.key === 'audit-report-update') {
-          try {
-            const data = JSON.parse(event.newValue);
-            const params = new URLSearchParams(window.location.search);
-            const currentReportId = params.get('id');
-            if (data.type === 'form-test-updated' && data.reportId === currentReportId) {
-              console.log('Form test aggiornato, ricarico report...');
-              loadReport();
+              // Se siamo in pre-consenso e ho G100 -> "Denied (Safe)" già gestito dal badge principale, 
+              // ma qui diamo il dettaglio tecnico "leggibile".
+              consentBadges += `<span class="badge ${colorClass}" title="Raw: ${gcs}">${label}</span>`;
             }
-          } catch (e) {}
-        }
-      });
-    }
 
-    loadReport();
+            // GCD è spesso inutile per l'umanità, lo mettiamo solo come title o nascosto se non serve. 
+            // Se l'utente vuole vederlo, lo mettiamo piccolo.
+            if (e.data?.gcd) {
+              consentBadges += `<span class="badge neutral" style="font-size:0.7rem; opacity:0.7;" title="Google Consent Default: ${e.data.gcd}">GCD (Info)</span>`;
+            }
+
+            // --- 2. Interpretazione Parametri (Smart Params) ---
+            // Mappa chiavi tecniche a label leggibili
+            const keyMap = {
+              'dl': 'Page URL',
+              'dt': 'Page Title',
+              'dr': 'Referrer',
+              'ul': 'User Language',
+              'de': 'Encoding',
+              'sd': 'Screen Colors',
+              'sr': 'Screen Res',
+              'vp': 'Viewport',
+              'je': 'Java Enabled',
+              '_p': 'Hit ID',
+              'cid': 'Client ID',
+              'tid': 'Tracking ID',
+              'en': 'Event Name',
+            };
+
+            let importantParams = [];
+            let technicalParams = [];
+
+            if (e.params) {
+              for (const [k, v] of Object.entries(e.params)) {
+                // Filtra roba inutile
+                if (k.startsWith('gtm.') || k.startsWith('_') || k === 'v' || k === 'z') continue;
+
+                // Decodifica label
+                const readableLabel = keyMap[k] || k.replace(/^ep\./, 'Param: ').replace(/^epn\./, 'Metric: ');
+
+                const itemHtml = `<div class="param-row"><span class="param-key">${readableLabel}:</span> <span class="param-val">${v}</span></div>`;
+
+                // Se è un valore di business o standard, va in important
+                if (['value', 'currency', 'items', 'content_name', 'content_ids', 'page_location', 'page_path'].includes(k) || k in keyMap) {
+                  importantParams.push(itemHtml);
+                } else {
+                  technicalParams.push(itemHtml);
+                }
+              }
+            }
+
+            // --- 3. Badge Fase (Pre/Post) ---
+            // Robust check for Denied status (inline)
+            let isComplianceSafe = false;
+            if (e.data) {
+              const gcs = e.data.gcs ? String(e.data.gcs).trim() : '';
+              if (gcs === 'G100' || gcs.includes('0')) isComplianceSafe = true;
+            }
+            if (e.isDenied) isComplianceSafe = true;
+
+            let phaseBadge = '';
+            if (e.phase === 'PRE_CONSENT' || e.phase === 'Pre-Consenso') {
+              if (isComplianceSafe) {
+                phaseBadge = `<span class="tag tag-safe">Denied (Safe)</span>`;
+              } else {
+                phaseBadge = `<span class="tag tag-danger">Pre-Consenso (Risk)</span>`;
+              }
+            } else {
+              phaseBadge = `<span class="tag tag-neutral">${e.phase}</span>`;
+            }
+
+            // --- 4. Costruzione HTML ---
+            const detailsHtml = importantParams.length > 0 ?
+              `<div class="params-box important">${importantParams.join('')}</div>` : '';
+
+            // Parametri tecnici nascosti di default o meno evidenti? Li mettiamo sotto come "Dettagli extra"
+            const extraHtml = technicalParams.length > 0 ?
+              `<div class="params-box technical" style="margin-top:4px; opacity:0.8; font-size:0.75rem;">${technicalParams.join('')}</div>` : '';
+
+            li.innerHTML = `
+                    <div style="width:100%;">
+                        <div class="event-header">
+                            <div class="event-title-group">
+                                <span class="event-name">${e.event}</span>
+                                <div class="event-badges">${consentBadges}</div>
+                            </div>
+                            <div class="event-phase">${phaseBadge}</div>
+                        </div>
+                        ${detailsHtml}
+                        ${extraHtml}
+                    </div>
+                 `;
+            ul.appendChild(li);
+          });
+          groupDiv.appendChild(ul);
+          container.appendChild(groupDiv);
+        });
+      }
+
+      // 7. Raw Table Populate
+      const rawBody = document.getElementById('rawEventsTableBody');
+      rawBody.innerHTML = '';
+      allEvents.forEach(e => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${e.event}</td><td>${e.tracker}</td><td>${e.phase}</td><td>${new Date(e.timestamp).toLocaleTimeString()}</td>`;
+        rawBody.appendChild(row);
+      });
+
+      // 8. Cookies
+      const cBody = document.getElementById('cookiesTableBody');
+      cBody.innerHTML = '';
+      const cookies = [
+        ...(report.preConsent?.cookies || []).map(c => ({ ...c, p: 'Pre' })),
+        ...(report.postConsent?.cookies || []).map(c => ({ ...c, p: 'Post' }))
+      ];
+      // Unique
+      const cSet = new Set();
+      cookies.forEach(c => {
+        if (cSet.has(c.name)) return;
+        cSet.add(c.name);
+        const row = document.createElement('tr');
+        row.innerHTML = `<td><strong>${c.name}</strong></td><td>${c.domain}</td><td><span class="tag" style="${c.p === 'Pre' ? 'background:var(--danger-bg);color:var(--danger)' : ''}">${c.p}</span></td>`;
+        cBody.appendChild(row);
+      });
+      if (cookies.length === 0) document.getElementById('noCookiesMsg').style.display = 'block';
+
+      // 9. Forms
+      const formsCont = document.getElementById('formsContainer');
+      formsCont.innerHTML = '';
+      const forms = report.forms?.found || [];
+      if (forms.length > 0) {
+        document.getElementById('testFormBtn').style.display = 'block'; // Show button
+        forms.forEach((f, idx) => {
+          const div = document.createElement('div');
+          div.className = 'form-card';
+
+          // Badges per i campi rilevati
+          let fieldsBadges = '';
+          if (f.hasEmailField) fieldsBadges += `<span class="badge info">Email</span> `;
+          if (f.hasPhoneField) fieldsBadges += `<span class="badge info">Telefono</span> `;
+          if (f.hasNameField) fieldsBadges += `<span class="badge neutral">Nome</span> `;
+          if (f.hasSurnameField) fieldsBadges += `<span class="badge neutral">Cognome</span> `;
+          if (f.hasPasswordField) fieldsBadges += `<span class="badge warning">Password</span> `;
+
+          // Stato validità
+          const statusBadge = (f.hasEmailField || f.hasPhoneField) ?
+            `<span class="badge success">Valido per Test</span>` :
+            `<span class="badge neutral">Non testabile</span>`;
+
+          div.innerHTML = `
+            <div class="form-header">
+              <div class="form-title">
+                <span class="form-idx">#${idx + 1}</span>
+                <span class="form-type">${f.formType ? f.formType.toUpperCase() : 'GENERICO'}</span>
+              </div>
+              ${statusBadge}
+            </div>
+            
+            <div class="form-body">
+                <div class="form-row">
+                    <span class="form-label">ID / Class:</span>
+                    <span class="form-val code">${f.id || '-'} / ${f.className || '-'}</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">Action / Method:</span>
+                    <span class="form-val code">${f.action || 'self'} (${f.method || '?'})</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">Submit Text:</span>
+                    <span class="form-val">"${f.submitText || 'Invia'}"</span>
+                </div>
+                
+                <div class="form-row" style="margin-top:1rem;">
+                    <span class="form-label">Campi Rilevati:</span>
+                    <div class="form-badges">${fieldsBadges || '<span class="text-muted" style="font-size:0.8rem;">Nessun campo standard</span>'}</div>
+                </div>
+                
+                ${f.fieldLabels && f.fieldLabels.length > 0 ? `
+                <div style="margin-top:1rem; background:var(--bg-card); padding:0.75rem; border-radius:4px; border:1px dashed var(--border-light);">
+                    <span class="form-label" style="display:block; margin-bottom:0.5rem;">Struttura (Campi):</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        ${f.fieldLabels.map(label => `<span class="field-chip">${label}</span>`).join('')}
+                    </div>
+                </div>` : ''}
+
+            </div>
+          `;
+          formsCont.appendChild(div);
+        });
+      } else {
+        document.getElementById('noFormsMsg').style.display = 'block';
+      }
+    }
   </script>
 </body>
+
 </html>

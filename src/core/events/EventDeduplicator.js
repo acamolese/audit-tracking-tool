@@ -27,22 +27,44 @@ class EventDeduplicator {
     }
 
     isDuplicate(details, timestamp) {
-        const key = this.generateKey(details);
+        // Special handling for Session Recording tools (Clarity, Hotjar)
+        // These send constant heartbeats that flood the report.
+        if (['Clarity', 'Hotjar'].includes(details.tracker) &&
+            ['Recording', 'Heatmap', 'Heartbeat'].includes(details.event)) {
+
+            // Generate a generic signature that ignores params for these tools
+            const genericSig = `${details.tracker}:${details.event}:${details.phase}`;
+
+            // Check if we've seen this generic event recently (e.g., last 60 seconds)
+            const lastTime = this.events.get(genericSig);
+
+            // Update timestamp
+            this.events.set(genericSig, timestamp);
+
+            // If seen within last 60s, consider it a duplicate (throttling)
+            if (lastTime && (timestamp - lastTime < 60000)) {
+                return true;
+            }
+            return false;
+        }
+
+        // Standard deduplication for other events
+        const signature = this.generateKey(details);
 
         // Per eventi 'set' e 'consent', non deduplicare se sono separati da più di 1 secondo
         if (details.event === 'set' || details.event === 'consent') {
-            const lastTime = this.events.get(key);
+            const lastTime = this.events.get(signature);
             if (lastTime && (timestamp - lastTime) < 1000) {
                 return true; // Troppo vicini, probabilmente duplicato
             }
         }
 
         // Per altri eventi, deduplicazione standard
-        if (this.events.has(key)) {
+        if (this.events.has(signature)) {
             return true;
         }
 
-        this.events.set(key, timestamp);
+        this.events.set(signature, timestamp);
         return false;
     }
 
