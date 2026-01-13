@@ -618,19 +618,24 @@
             }
 
             // Stats
-            document.getElementById('statPages').textContent = summary.pagesAnalyzed;
-            document.getElementById('statCookies').textContent = summary.totalCookies;
-            document.getElementById('trackerCount').textContent = summary.uniqueTrackers.length;
-            document.getElementById('statForms').textContent = summary.formsSummary.totalFound;
-            document.getElementById('formsSubtext').textContent = `Rilevati su ${summary.formsSummary.pagesWithForms} pagine`;
-            document.getElementById('statViolations').textContent = summary.violations.length;
+            document.getElementById('statPages').textContent = summary.pagesAnalyzed || 0;
+            document.getElementById('statCookies').textContent = summary.totalCookies || 0;
+            document.getElementById('trackerCount').textContent = (summary.uniqueTrackers?.length || 0);
+
+            if (summary.formsSummary) {
+                document.getElementById('statForms').textContent = summary.formsSummary.totalFound || 0;
+                document.getElementById('formsSubtext').textContent = `Rilevati su ${summary.formsSummary.pagesWithForms || 0} pagine`;
+            }
+
+            document.getElementById('statViolations').textContent = (summary.violations?.length || 0);
 
             // Tracker Distribution Bars
             const distCont = document.getElementById('trackerDistribution');
+            distCont.innerHTML = ''; // Clear previous
             const sortedTrackers = Object.entries(summary.trackerDistribution || {}).sort((a, b) => b[1] - a[1]).slice(0, 10);
 
             sortedTrackers.forEach(([name, count]) => {
-                const perc = Math.round((count / summary.pagesAnalyzed) * 100);
+                const perc = Math.round((count / (summary.pagesAnalyzed || 1)) * 100);
                 const div = document.createElement('div');
                 div.className = 'tracker-dist-item';
                 div.innerHTML = `

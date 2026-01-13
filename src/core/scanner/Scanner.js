@@ -681,6 +681,20 @@ class Scanner {
                     };
                 }
 
+                // TrustCommander / TagCommander (e.g. brt.it)
+                const tcBanner = document.querySelector('#popin_tc_privacy') ||
+                    document.querySelector('.tc-privacy-banner') ||
+                    window.tc_privacy || window.TagCommander;
+                if (tcBanner) {
+                    return {
+                        detected: true,
+                        type: 'TrustCommander',
+                        loaded: true,
+                        consent: null,
+                        hasResponse: document.querySelector('#popin_tc_privacy') === null // Se non c'è il banner ma c'è l'oggetto, assume risposta data
+                    };
+                }
+
                 // Rilevamento generico
                 const genericBanners = [
                     '#cookie-banner', '#cookie-notice', '#cookie-consent',
@@ -788,6 +802,9 @@ class Scanner {
             '.uc-accept-all',
             '.osano-cm-accept-all',
             '.osano-cm-button--type_accept',
+            '#popin_tc_privacy_button', // TrustCommander (BRT.it)
+            '#popin_tc_privacy_button_all',
+            '[id*="tc-privacy-button"]',
             '#ccc-notify-accept',
             '#ccc-module-close',
             '#cookie_action_close_header',

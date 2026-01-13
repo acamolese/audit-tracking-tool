@@ -24,6 +24,12 @@ class BulkScanStore {
                 globalVerdict: 'CONFORME',
                 violations: [],
                 aggregatedCookies: [],
+                trackerDistribution: {},
+                formsSummary: {
+                    totalFound: 0,
+                    pagesWithForms: 0,
+                    types: {}
+                },
                 lastUpdate: null
             } : null,
             results: urls.map(u => ({
