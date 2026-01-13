@@ -329,13 +329,19 @@ AuditTrackingTool/
 
 ## Changelog
 
-### v1.1.0 (Gennaio 2026) - UI/UX & Intelligence Update
-- **Deep Scan Mode**: Supporto per analisi aggregata di interi domini nel Bulk Scan.
+### v1.2.0 (Gennaio 2026) - Deep Scan & Technical Insights
+- **Aggregated Technical Report**: Nuova dashboard per domini con inventario cookie, distribuzione tracker e analisi form.
+- **Tracker Distribution**: Visualizzazione dell'incidenza dei tracker su tutto il parco pagine scansionato.
+- **Form Inventory**: Rilevamento e categorizzazione automatica dei form (Login, Checkout, Leads) a livello di dominio.
+- **Site-Wide AI Audit**: Export prompt ottimizzato per l'analisi strategica dell'intera property digitale.
+- **Enhanced Data Aggregation**: Motore di storage potenziato per la persistenza di metriche tecniche avanzate.
+
+### v1.1.0 (Gennaio 2026) - Matrix Mode & AI Evolution
+- **Deep Scan Mode**: Supporto iniziale per analisi aggregata di interi domini.
 - **Log Engine "Matrix Mode"**: Terminale live durante la scansione per feedback tecnico istantaneo.
 - **AI Prompt Export**: Template avanzato per analisi con ChatGPT/Gemini (Specialista Tracking & GDPR).
 - **Event Enrichment**: Decodifica automatica dei parametri Google Consent Mode (GCS/GCD).
 - **Deduplicazione Throttled**: Riduzione del rumore per tracker ad alta frequenza (Clarity/Hotjar).
-- **Refactoring Modulare**: Nuova architettura backend per una migliore manutenibilità.
 
 ### v1.0.0 (Gennaio 2026)
 - Rilascio iniziale: Scansione singola e Bulk, Live Monitor.
