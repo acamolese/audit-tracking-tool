@@ -1,6 +1,6 @@
 # AuditTrackingTool
 
-**Strumento professionale di analisi GDPR compliance per siti web**
+**Motore di Scansione Avanzato per Audit Tecnici e Tracking Analysis**
 
 Copyright (c) 2024-2026 Andrea Camolese. Tutti i diritti riservati.
 
@@ -8,16 +8,16 @@ Copyright (c) 2024-2026 Andrea Camolese. Tutti i diritti riservati.
 
 ## Descrizione
 
-AuditTrackingTool è uno strumento di audit automatizzato che verifica la conformità GDPR dei siti web italiani ed europei. Analizza in modo approfondito il comportamento dei tracker e cookie prima e dopo il consenso dell'utente, identificando potenziali violazioni della normativa sulla privacy.
+AuditTrackingTool è uno strumento di audit automatizzato per la mappatura dei tracker e l'analisi tecnica delle property digitali. Analizza in modo approfondito il comportamento di cookie, script e flussi dati, fornendo insight tecnici dettagliati oltre alla semplice verifica della compliance.
 
 ### Cosa fa
 
-- Rileva automaticamente i sistemi di gestione cookie (CMP)
-- Monitora le richieste di rete verso tracker e analytics
-- Identifica violazioni di tracking pre-consenso
-- Analizza eventi di Google Analytics 4, Facebook Pixel, LinkedIn e altri
-- Verifica il corretto funzionamento del consent mode
-- Genera report dettagliati con verdetto di conformità
+- Mappatura completa dei sistemi di gestione cookie (CMP)
+- Monitoraggio granulare delle richieste verso tracker e analytics
+- Identificazione di tracciamenti non autorizzati o anomali
+- Analisi tecnica di GA4, Facebook Pixel, LinkedIn e altri tracker
+- Verifica del funzionamento del Google Consent Mode v2
+- Generazione di report tecnici IA con suggerimenti di ottimizzazione
 
 ---
 
