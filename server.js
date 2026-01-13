@@ -1419,6 +1419,24 @@ function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
+// Validazione API Key
+function validateApiKey(req) {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) return true; // Se non configurata, accesso libero
+
+  const providedKey = req.headers['x-api-key'];
+  return providedKey === apiKey;
+}
+
+// Risposta 401 Unauthorized
+function sendUnauthorized(res) {
+  res.writeHead(401, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  });
+  res.end(JSON.stringify({ error: 'Unauthorized', message: 'Valid API key required in X-API-Key header' }));
+}
+
 // Parse del body JSON con timeout
 async function parseBody(req, maxBytes = 1048576) { // 1MB max
   return new Promise((resolve, reject) => {
@@ -1580,12 +1598,20 @@ async function handleRequest(req, res, reportStore, bulkStore) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-API-Key');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     res.end();
     return;
+  }
+
+  // API Key authentication per endpoint protetti
+  const protectedPaths = ['/api/', '/scan', '/proxy'];
+  const needsAuth = protectedPaths.some(p => url.pathname.startsWith(p) || url.pathname === p);
+
+  if (needsAuth && !validateApiKey(req)) {
+    return sendUnauthorized(res);
   }
 
   // Routes

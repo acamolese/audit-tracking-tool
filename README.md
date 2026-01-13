@@ -154,6 +154,47 @@ Il progetto è configurato per il deploy su Railway. Le variabili d'ambiente ven
 
 ---
 
+## Autenticazione API
+
+Le API sono protette tramite API key. Per abilitare l'autenticazione, imposta la variabile d'ambiente `API_KEY`:
+
+```bash
+# Avvia con autenticazione
+API_KEY=la-tua-chiave-segreta node server.js
+
+# Su Railway/produzione: configura API_KEY nelle variabili d'ambiente
+```
+
+### Header richiesto
+
+Tutte le chiamate agli endpoint `/api/*`, `/scan` e `/proxy` richiedono l'header:
+
+```
+X-API-Key: la-tua-chiave-segreta
+```
+
+### Esempio con curl
+
+```bash
+curl -X POST http://localhost:3000/scan \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: la-tua-chiave-segreta" \
+  -d '{"url":"https://esempio.com","fastMode":true}'
+```
+
+### Risposta senza API key valida
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Valid API key required in X-API-Key header"
+}
+```
+
+> **Nota**: Se la variabile `API_KEY` non è configurata, le API sono accessibili senza autenticazione (utile per sviluppo locale).
+
+---
+
 ## API Reference
 
 ### Scansione Singola
