@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Scan Report - Audit Tracking Tool</title>
+    <title>Deep Scan Technical Report - Audit Tracking Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -77,6 +77,11 @@
             color: var(--accent);
         }
 
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
         .btn-header {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -86,6 +91,24 @@
             font-size: 0.875rem;
             cursor: pointer;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-ai {
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 700;
+            border: none;
+        }
+
+        .btn-ai:hover {
+            background: #05c989;
         }
 
         .main-container {
@@ -127,6 +150,7 @@
             font-family: 'DM Serif Display', serif;
             font-size: 2.2rem;
             color: var(--primary);
+            margin-bottom: 0.2rem;
         }
 
         .verdict-text p {
@@ -174,18 +198,56 @@
         }
 
         .card-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .card-value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary);
+        }
+
+        .card-subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Tracker Bars */
+        .tracker-dist-list {
+            margin-top: 1rem;
+        }
+
+        .tracker-dist-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .tracker-dist-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .tracker-dist-bar-bg {
+            height: 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .tracker-dist-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
         }
 
         /* Tabs */
@@ -201,22 +263,25 @@
             display: flex;
             border-bottom: 1px solid var(--border-light);
             background: #fcfcfc;
+            overflow-x: auto;
         }
 
         .tab-btn {
             padding: 1rem 2rem;
             background: transparent;
             border: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
             color: var(--text-muted);
             cursor: pointer;
             position: relative;
+            white-space: nowrap;
         }
 
         .tab-btn.active {
             color: var(--primary);
             font-weight: 600;
+            background: white;
         }
 
         .tab-btn.active::after {
@@ -257,7 +322,7 @@
         .data-table td {
             padding: 1rem;
             border-bottom: 1px solid var(--border-light);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .data-table tr:hover {
@@ -271,6 +336,7 @@
             background: var(--bg-page);
             color: var(--text-muted);
             border: 1px solid var(--border-light);
+            font-weight: 500;
         }
 
         .tag-danger {
@@ -285,13 +351,29 @@
             border-color: #bbf7d0;
         }
 
+        .tag-tracker {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #bfdbfe;
+            font-family: monospace;
+        }
+
+        .badge-count {
+            background: var(--primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
         .btn-sm {
             padding: 0.4rem 0.8rem;
             border-radius: 4px;
             border: 1px solid var(--border-light);
             text-decoration: none;
             color: var(--primary);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.2s;
         }
@@ -299,6 +381,28 @@
         .btn-sm:hover {
             background: var(--primary);
             color: white;
+        }
+
+        /* Form Analysis Grid */
+        .form-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-summary-card {
+            background: #f9fafb;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        .form-summary-type {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
         #loading {
@@ -326,21 +430,46 @@
                 transform: rotate(360deg);
             }
         }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verdict-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .verdict-info {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="loading">
         <div class="spinner"></div>
-        <p style="margin-top: 1rem; font-weight: 500; color: var(--text-muted);">Generazione Report Riassuntivo...</p>
+        <p style="margin-top: 1rem; font-weight: 500; color: var(--text-muted);">Analisi aggregata in corso...</p>
     </div>
 
     <header class="header">
         <div class="header-inner">
             <a href="/" class="logo"><span>Audit</span>TrackingTool</a>
             <div class="header-actions">
-                <a href="/bulk-scan.html" class="btn-header">← Torna a Bulk Scan</a>
-                <button onclick="window.print()" class="btn-header">Stampa PDF</button>
+                <a href="/bulk-scan.html" class="btn-header">← <span>Esci</span></a>
+                <button onclick="downloadAggregatedPrompt()" class="btn-header btn-ai">
+                    📥 Scarica Prompt AI Dominio
+                </button>
+                <button onclick="window.print()" class="btn-header">Stampa</button>
             </div>
         </div>
     </header>
@@ -351,39 +480,51 @@
             <div class="verdict-info">
                 <div id="verdictIcon" class="verdict-icon">❓</div>
                 <div class="verdict-text">
-                    <p id="domainName">Analisi Sito</p>
+                    <p id="domainName" style="text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">
+                        DOMINIO ANALIZZATO</p>
                     <h1 id="globalVerdictTitle">In attesa...</h1>
                 </div>
             </div>
             <div id="globalVerdictBadge" class="verdict-badge verdict-da-verificare">-</div>
         </div>
 
-        <!-- Stats Bento -->
+        <!-- Main Stats -->
         <div class="dashboard-grid">
             <div class="card">
-                <div class="card-title">Pagine Analizzate</div>
+                <div class="card-title">Copertura Analisi</div>
                 <div id="statPages" class="card-value">-</div>
+                <p class="card-subtext">Pagine scansionate con successo</p>
             </div>
             <div class="card">
-                <div class="card-title">Cookie Unici</div>
+                <div class="card-title">Inventario Cookie</div>
                 <div id="statCookies" class="card-value">-</div>
+                <p class="card-subtext">Libreria unica deduplicata</p>
+            </div>
+            <div class="card" style="grid-row: span 2;">
+                <div class="card-title">Distribuzione Tracker <span class="badge-count" id="trackerCount">0</span></div>
+                <div id="trackerDistribution" class="tracker-dist-list">
+                    <!-- Tracker bars here -->
+                </div>
             </div>
             <div class="card">
-                <div class="card-title">Tracker Rilevati</div>
-                <div id="statTrackers" class="card-value">-</div>
+                <div class="card-title">Analisi Form</div>
+                <div id="statForms" class="card-value">-</div>
+                <p id="formsSubtext" class="card-subtext">Rilevati su 0 pagine</p>
             </div>
-            <div class="card">
-                <div class="card-title">Violazioni Uniche</div>
-                <div id="statViolations" class="card-value">-</div>
+            <div class="card" style="background: var(--danger-bg); border-color: #fecaca;">
+                <div class="card-title" style="color: var(--danger);">Rischio Compliance</div>
+                <div id="statViolations" class="card-value" style="color: var(--danger);">-</div>
+                <p class="card-subtext">Violazioni uniche rilevate</p>
             </div>
         </div>
 
         <!-- Detailed Content -->
         <div class="details-section">
             <div class="tabs-header">
-                <button class="tab-btn active" onclick="openTab('pages')">Pagine Scansionate</button>
-                <button class="tab-btn" onclick="openTab('cookies')">Libreria Cookie Unici</button>
-                <button class="tab-btn" onclick="openTab('violations')">Violazioni Riscontrate</button>
+                <button class="tab-btn active" onclick="openTab('pages')">Mappa delle Pagine</button>
+                <button class="tab-btn" onclick="openTab('cookies')">Libreria Cookie</button>
+                <button class="tab-btn" onclick="openTab('forms')">Analisi Form</button>
+                <button class="tab-btn" onclick="openTab('violations')">Dettaglio Violazioni</button>
             </div>
 
             <div id="pages" class="tab-content active">
@@ -392,8 +533,10 @@
                         <tr>
                             <th>URL Pagina</th>
                             <th>Verdetto</th>
+                            <th>Tracker</th>
+                            <th>Cookie</th>
                             <th>Violazioni</th>
-                            <th>Azioni</th>
+                            <th>Report</th>
                         </tr>
                     </thead>
                     <tbody id="pagesTableBody"></tbody>
@@ -406,11 +549,17 @@
                         <tr>
                             <th>Nome Cookie</th>
                             <th>Dominio</th>
-                            <th>Tracker</th>
+                            <th>Sorgente / Tracker</th>
                         </tr>
                     </thead>
                     <tbody id="cookiesTableBody"></tbody>
                 </table>
+            </div>
+
+            <div id="forms" class="tab-content">
+                <div id="formsSummary" class="form-summary-grid">
+                    <!-- Form summary cards here -->
+                </div>
             </div>
 
             <div id="violations" class="tab-content">
@@ -422,6 +571,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const batchId = urlParams.get('batchId');
+        let reportData = null;
 
         async function loadReport() {
             if (!batchId) {
@@ -434,13 +584,14 @@
                 const data = await response.json();
 
                 if (!data.success) throw new Error(data.error);
-                if (!data.summary) throw new Error("Questo batch non contiene un Deep Scan summary.");
+                if (!data.summary) throw new Error("Questo batch non è in modalità Deep Scan.");
 
+                reportData = data;
                 renderReport(data);
                 document.getElementById('loading').style.display = 'none';
             } catch (err) {
                 console.error(err);
-                alert("Errore nel caricamento del report: " + err.message);
+                alert("Errore caricamento report: " + err.message);
             }
         }
 
@@ -451,7 +602,7 @@
             document.getElementById('domainName').textContent = domain;
             document.getElementById('globalVerdictTitle').textContent = summary.globalVerdict === 'CONFORME'
                 ? 'Sito Conforme'
-                : (summary.globalVerdict === 'NON CONFORME' ? 'Criticità Rilevate' : 'Da Verificare');
+                : (summary.globalVerdict === 'NON CONFORME' ? 'Criticità Rilevate' : 'Ambito da Verificare');
 
             const badge = document.getElementById('globalVerdictBadge');
             badge.textContent = summary.globalVerdict;
@@ -459,31 +610,53 @@
 
             const icon = document.getElementById('verdictIcon');
             if (summary.globalVerdict === 'CONFORME') {
-                icon.textContent = '✅';
-                icon.style.background = 'var(--success-bg)';
+                icon.textContent = '✅'; icon.style.background = 'var(--success-bg)';
             } else if (summary.globalVerdict === 'NON CONFORME') {
-                icon.textContent = '❌';
-                icon.style.background = 'var(--danger-bg)';
+                icon.textContent = '❌'; icon.style.background = 'var(--danger-bg)';
             } else {
-                icon.textContent = '⚠️';
-                icon.style.background = 'var(--warning-bg)';
+                icon.textContent = '⚠️'; icon.style.background = 'var(--warning-bg)';
             }
 
             // Stats
             document.getElementById('statPages').textContent = summary.pagesAnalyzed;
             document.getElementById('statCookies').textContent = summary.totalCookies;
+            document.getElementById('trackerCount').textContent = summary.uniqueTrackers.length;
             document.getElementById('statTrackers').textContent = summary.uniqueTrackers.length;
+            document.getElementById('statForms').textContent = summary.formsSummary.totalFound;
+            document.getElementById('formsSubtext').textContent = `Rilevati su ${summary.formsSummary.pagesWithForms} pagine`;
             document.getElementById('statViolations').textContent = summary.violations.length;
+
+            // Tracker Distribution Bars
+            const distCont = document.getElementById('trackerDistribution');
+            const sortedTrackers = Object.entries(summary.trackerDistribution || {}).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+            sortedTrackers.forEach(([name, count]) => {
+                const perc = Math.round((count / summary.pagesAnalyzed) * 100);
+                const div = document.createElement('div');
+                div.className = 'tracker-dist-item';
+                div.innerHTML = `
+            <div class="tracker-dist-label">
+                <span>${name}</span>
+                <span>${perc}% (${count})</span>
+            </div>
+            <div class="tracker-dist-bar-bg">
+                <div class="tracker-dist-bar-fill" style="width: ${perc}%"></div>
+            </div>
+          `;
+                distCont.appendChild(div);
+            });
 
             // Pages Table
             const pagesBody = document.getElementById('pagesTableBody');
             data.results.forEach(res => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-          <td style="font-weight:500;">${res.url}</td>
+          <td style="font-weight:500; font-size:0.8rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">${res.url}</td>
           <td><span class="tag ${res.verdict === 'CONFORME' ? 'tag-conforme' : (res.verdict === 'NON CONFORME' ? 'tag-danger' : '')}">${res.verdict}</span></td>
-          <td>${res.violations || 0}</td>
-          <td><a href="/report.html?id=${res.reportId}" class="btn-sm" target="_blank">Dettagli</a></td>
+          <td><span class="badge-count">${res.trackers?.length || 0}</span></td>
+          <td><span class="badge-count" style="background:#6366f1;">${res.totalCookies || 0}</span></td>
+          <td><span class="badge-count" style="background:${(res.violations || 0) > 0 ? 'var(--danger)' : 'var(--success)'}">${res.violations || 0}</span></td>
+          <td><a href="/report.html?id=${res.reportId}" class="btn-sm" target="_blank">Apri</a></td>
         `;
                 pagesBody.appendChild(tr);
             });
@@ -493,17 +666,33 @@
             summary.aggregatedCookies.forEach(c => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-          <td style="font-family:monospace; font-weight:bold;">${c.name}</td>
-          <td>${c.domain}</td>
-          <td><span class="tag">${c.tracker || 'Sconosciuto'}</span></td>
+          <td style="font-family:monospace; font-weight:bold; color:var(--primary);">${c.name}</td>
+          <td style="font-size:0.8rem;">${c.domain}</td>
+          <td><span class="tag tag-tracker">${c.tracker || 'Sconosciuto'}</span></td>
         `;
                 cookiesBody.appendChild(tr);
             });
 
+            // Forms Summary
+            const formsCont = document.getElementById('formsSummary');
+            Object.entries(summary.formsSummary.types || {}).forEach(([type, count]) => {
+                const div = document.createElement('div');
+                div.className = 'form-summary-card';
+                div.innerHTML = `
+            <div class="form-summary-type">${type}</div>
+            <div style="font-size: 1.5rem; font-weight:700;">${count}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Occorrenze nel dominio</div>
+          `;
+                formsCont.appendChild(div);
+            });
+            if (summary.formsSummary.totalFound === 0) {
+                formsCont.innerHTML = '<p class="text-muted">Nessun form rilevato durante la scansione.</p>';
+            }
+
             // Violations List
             const vList = document.getElementById('violationsList');
             if (summary.violations.length === 0) {
-                vList.innerHTML = '<p style="color:var(--success); font-weight:600;">Complimenti! Non sono state rilevate violazioni comuni su questo dominio.</p>';
+                vList.innerHTML = '<p style="color:var(--success); font-weight:600;">✅ Nessuna violazione comune rilevata sull\'intero dominio.</p>';
             } else {
                 summary.violations.forEach(v => {
                     const div = document.createElement('div');
@@ -522,6 +711,51 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
+        }
+
+        // AI PROMPT AGGREGATO
+        function downloadAggregatedPrompt() {
+            if (!reportData || !reportData.summary) return;
+            const s = reportData.summary;
+            const domain = document.getElementById('domainName').textContent;
+
+            const prompt = `SEI UN SENIOR TRACKING SPECIALIST & TECHNICAL AUDITOR.
+Analizza questo report AGGREGATO (DEEP SCAN) per il dominio: ${domain}
+
+PANORAMICA SITO:
+- Pagine Analizzate: ${s.pagesAnalyzed}
+- Verdetto Globale: ${s.globalVerdict}
+- Tracker Totali Unici: ${s.uniqueTrackers.join(', ')}
+- Cookie Totali Unici: ${s.totalCookies}
+- Violazioni Riscontrate: ${s.violations.length}
+
+DISTRIBUZIONE TRACKER (Frequenza su ${s.pagesAnalyzed} pagine):
+${Object.entries(s.trackerDistribution).map(([t, c]) => `- ${t}: presente su ${c} pagine`).join('\n')}
+
+FORMS RILEVATI:
+- Totali: ${s.formsSummary.totalFound} su ${s.formsSummary.pagesWithForms} pagine
+- Tipologie: ${Object.entries(s.formsSummary.types).map(([k, v]) => `${k} (${v})`).join(', ')}
+
+VIOLAZIONI TECNICHE (Deduplicate):
+${s.violations.map(v => `[${v.type}] - ${v.description}`).join('\n')}
+
+OBIETTIVO:
+Fornisci una consulenza strategica di alto livello.
+1. Valuta la qualità del setup di tracciamento (GA4, CAPI ecc.) sull'intero sito.
+2. Identifica i rischi legali maggiori (es. cookie installati sistematicamente senza consenso).
+3. Suggerisci ottimizzazioni per la misurazione (es. tracciamento dei form incompleto).
+4. Fornisci un piano d'azione in 5 punti per il cliente.
+
+DATI COOKIE DETTAGLIATI (Top 50):
+${s.aggregatedCookies.slice(0, 50).map(c => `- ${c.name} (${c.domain}) -> Tracker: ${c.tracker}`).join('\n')}
+`;
+
+            const blob = new Blob([prompt], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `AI-Audit-DeepScan-${domain}.txt`;
+            a.click();
         }
 
         loadReport();

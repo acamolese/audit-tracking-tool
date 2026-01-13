@@ -52,10 +52,16 @@ class BulkScanStore {
         const summary = {
             totalCookies: new Set(),
             uniqueTrackers: new Set(),
+            trackerDistribution: {}, // trackerName -> count
             globalVerdict: 'CONFORME',
             violations: [],
             aggregatedCookies: [], // Dettaglio deduplicato
-            pagesAnalyzed: 0
+            pagesAnalyzed: 0,
+            formsSummary: {
+                totalFound: 0,
+                pagesWithForms: 0,
+                types: {} // formType -> count
+            }
         };
 
         batch.results.forEach(res => {
@@ -79,8 +85,11 @@ class BulkScanStore {
                 }
             });
 
-            // 2. Aggrega Tracker
-            (res.trackers || []).forEach(t => summary.uniqueTrackers.add(t));
+            // 2. Aggrega Tracker e Distribuzione
+            (res.trackers || []).forEach(t => {
+                summary.uniqueTrackers.add(t);
+                summary.trackerDistribution[t] = (summary.trackerDistribution[t] || 0) + 1;
+            });
 
             // 3. Verdetto Globale (Pessimistico)
             if (res.verdict === 'NON CONFORME') {
@@ -95,16 +104,29 @@ class BulkScanStore {
                     summary.violations.push(v);
                 }
             });
+
+            // 5. Aggrega Form
+            const totalFormsOnPage = report.forms?.found?.length || 0;
+            if (totalFormsOnPage > 0) {
+                summary.formsSummary.totalFound += totalFormsOnPage;
+                summary.formsSummary.pagesWithForms++;
+                report.forms.found.forEach(f => {
+                    const type = f.formType || 'generico';
+                    summary.formsSummary.types[type] = (summary.formsSummary.types[type] || 0) + 1;
+                });
+            }
         });
 
         batch.summary = {
             ...batch.summary,
             totalCookies: summary.totalCookies.size,
             uniqueTrackers: Array.from(summary.uniqueTrackers),
+            trackerDistribution: summary.trackerDistribution,
             globalVerdict: summary.globalVerdict,
             violations: summary.violations,
             aggregatedCookies: summary.aggregatedCookies,
             pagesAnalyzed: summary.pagesAnalyzed,
+            formsSummary: summary.formsSummary,
             lastUpdate: Date.now()
         };
 

@@ -31,7 +31,8 @@ async function runBulkScan(batchId, bulkStore, reportStore) {
                         cmp: result.cmp,
                         violations: result.violations,
                         verdict: result.verdict,
-                        trackers: result.trackers
+                        trackers: result.trackers,
+                        totalCookies: result.totalCookies
                     });
                 })
                 .catch(err => {
@@ -78,6 +79,7 @@ async function scanSingleUrlWithPhases(batchId, index, result, bulkStore, report
     result.reportId = reportId;
     result.cmp = report.cmp?.type || null;
     result.violations = report.violations?.length || 0;
+    result.totalCookies = (report.preConsent?.cookies?.length || 0) + (report.postConsent?.cookies?.length || 0);
 
     if (result.violations > 0) {
         result.verdict = 'NON CONFORME';
