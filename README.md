@@ -117,8 +117,8 @@ Lo strumento rileva automaticamente i seguenti sistemi di gestione cookie:
 
 ```bash
 # Clona il repository
-git clone https://github.com/acamolese/att.git
-cd att
+git clone https://github.com/acamolese/audit-tracking-tool.git
+cd audit-tracking-tool
 
 # Installa dipendenze
 npm install
