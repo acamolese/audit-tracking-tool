@@ -1161,12 +1161,27 @@
               <span style="background: var(--primary); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">3</span>
               <div style="flex: 1;">
                 <h5 style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 4px;">Testa i Form</h5>
-                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Compila automaticamente i form con dati di test e inviali per verificare gli eventi di conversione (generate_lead, form_submit, ecc.).</p>
+                <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">Rileva i form nella pagina, seleziona quello da testare, compilalo e invialo per verificare gli eventi di conversione.</p>
+
+                <!-- Selezione Form -->
+                <div id="formSelectionArea" style="margin-bottom: 12px;">
+                  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                    <button class="btn btn-secondary" onclick="detectForms()" id="detectFormsBtn">
+                      Rileva Form
+                    </button>
+                    <span id="formsCount" style="font-size: 12px; color: var(--text-secondary);"></span>
+                  </div>
+                  <select id="formSelector" style="width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg); color: var(--text); display: none;">
+                    <option value="">-- Seleziona un form --</option>
+                  </select>
+                  <div id="selectedFormInfo" style="display: none; margin-top: 8px; padding: 10px; background: var(--surface-2); border-radius: 8px; font-size: 12px;"></div>
+                </div>
+
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  <button class="btn btn-secondary" onclick="executeAction('fillForm')">
+                  <button class="btn btn-secondary" onclick="fillSelectedForm()" id="fillFormBtn">
                     Compila Form
                   </button>
-                  <button class="btn btn-primary" onclick="executeAction('submitForm')">
+                  <button class="btn btn-primary" onclick="submitSelectedForm()" id="submitFormBtn">
                     Invia Form
                   </button>
                 </div>
@@ -1369,12 +1384,90 @@
               preview.style.display = 'block';
             }
           }
+
+          return result;
         } else {
           showToast('Errore', result.error || 'Azione fallita', 'danger');
+          return result;
         }
       } catch (err) {
         showToast('Errore', err.message, 'danger');
+        return { success: false, error: err.message };
       }
+    }
+
+    // === FORM SELECTION FUNCTIONS ===
+    let detectedForms = [];
+
+    async function detectForms() {
+      const result = await executeAction('getForms');
+      if (result && result.success && result.forms) {
+        detectedForms = result.forms;
+        const select = document.getElementById('formSelector');
+        const countSpan = document.getElementById('formsCount');
+
+        // Clear and populate select
+        select.innerHTML = '<option value="">-- Seleziona un form --</option>';
+
+        result.forms.forEach((form, i) => {
+          const option = document.createElement('option');
+          option.value = form.selector;
+          const visibility = form.isVisible ? '✓' : '✗';
+          const fields = form.fieldLabels?.slice(0, 3).join(', ') || 'N/A';
+          option.textContent = `Form #${form.index + 1} [${form.formType}] ${visibility} - ${fields}`;
+          option.dataset.formIndex = i;
+          select.appendChild(option);
+        });
+
+        select.style.display = 'block';
+        countSpan.textContent = `${result.forms.length} form trovati`;
+
+        // Add change listener
+        select.onchange = function() {
+          const selectedIndex = this.options[this.selectedIndex]?.dataset?.formIndex;
+          updateFormInfo(selectedIndex !== undefined ? parseInt(selectedIndex) : null);
+        };
+
+        showToast('Form Rilevati', `${result.forms.length} form trovati nella pagina`, 'success');
+      }
+    }
+
+    function updateFormInfo(formIndex) {
+      const infoDiv = document.getElementById('selectedFormInfo');
+      if (formIndex === null || formIndex === undefined || !detectedForms[formIndex]) {
+        infoDiv.style.display = 'none';
+        return;
+      }
+
+      const form = detectedForms[formIndex];
+      const visibilityBadge = form.isVisible
+        ? '<span style="background:#22c55e30;color:#22c55e;padding:2px 6px;border-radius:4px;">visibile</span>'
+        : '<span style="background:#ef444430;color:#ef4444;padding:2px 6px;border-radius:4px;">nascosto</span>';
+
+      infoDiv.innerHTML = `
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+          <strong>Form #${form.index + 1}</strong>
+          <span style="background:#3b82f630;color:#3b82f6;padding:2px 6px;border-radius:4px;">${form.formType}</span>
+          ${visibilityBadge}
+        </div>
+        ${form.submitText ? `<div><strong>Pulsante:</strong> "${form.submitText}"</div>` : ''}
+        ${form.fieldLabels?.length ? `<div><strong>Campi:</strong> ${form.fieldLabels.join(', ')}</div>` : ''}
+        ${form.id ? `<div><strong>ID:</strong> ${form.id}</div>` : ''}
+        <div style="margin-top:4px;color:var(--text-muted);font-size:11px;"><strong>Selettore:</strong> ${form.selector}</div>
+      `;
+      infoDiv.style.display = 'block';
+    }
+
+    async function fillSelectedForm() {
+      const select = document.getElementById('formSelector');
+      const formSelector = select.value || 'form';
+      await executeAction('fillForm', { formSelector });
+    }
+
+    async function submitSelectedForm() {
+      const select = document.getElementById('formSelector');
+      const formSelector = select.value || 'form';
+      await executeAction('submitForm', { formSelector });
     }
 
     async function stopHeadlessSession() {

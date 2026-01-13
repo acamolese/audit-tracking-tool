@@ -433,6 +433,8 @@ class HeadlessFormTestSession {
           return await this.actionAcceptCookies();
         case 'click':
           return await this.actionClick(params);
+        case 'getForms':
+          return await this.actionGetForms();
         case 'fillForm':
           return await this.actionFillForm(params);
         case 'submitForm':
@@ -524,6 +526,87 @@ class HeadlessFormTestSession {
     this.logAction(`Click su ${selector}`);
     await this.page.waitForTimeout(500);
     return { success: true, message: `Click eseguito su ${selector}` };
+  }
+
+  async actionGetForms() {
+    const forms = await this.page.evaluate(() => {
+      const formElements = document.querySelectorAll('form');
+      return Array.from(formElements).map((form, index) => {
+        const hasNameField = !!form.querySelector('input[name*="name" i], input[name*="nome" i], input[placeholder*="nome" i], input[placeholder*="name" i]');
+        const hasSurnameField = !!form.querySelector('input[name*="surname" i], input[name*="cognome" i], input[placeholder*="cognome" i], input[placeholder*="surname" i]');
+        const hasEmailField = !!form.querySelector('input[type="email"], input[name*="email" i], input[placeholder*="email" i]');
+        const hasPasswordField = !!form.querySelector('input[type="password"]');
+        const hasSearchField = !!form.querySelector('input[type="search"], input[name*="search" i], input[name*="query" i], input[name*="q" i]');
+        const hasPhoneField = !!form.querySelector('input[type="tel"], input[name*="phone" i], input[name*="telefono" i]');
+
+        // Verifica visibilità
+        const rect = form.getBoundingClientRect();
+        const style = window.getComputedStyle(form);
+        const isVisible = rect.width > 0 && rect.height > 0 &&
+                         style.display !== 'none' &&
+                         style.visibility !== 'hidden' &&
+                         style.opacity !== '0';
+
+        // Trova testo del pulsante submit
+        const submitBtn = form.querySelector('button[type="submit"], input[type="submit"], button:not([type])');
+        const submitText = submitBtn ? (submitBtn.textContent || submitBtn.value || '').trim().substring(0, 50) : null;
+
+        // Trova labels/placeholder dei campi
+        const inputs = form.querySelectorAll('input:not([type="hidden"]):not([type="submit"])');
+        const fieldLabels = Array.from(inputs).slice(0, 5).map(input => {
+          const label = form.querySelector(`label[for="${input.id}"]`);
+          return label?.textContent?.trim()?.substring(0, 30) ||
+                 input.placeholder?.substring(0, 30) ||
+                 input.name?.substring(0, 30) ||
+                 input.type;
+        }).filter(Boolean);
+
+        // Determina tipo probabile del form
+        let formType = 'altro';
+        if (hasPasswordField && hasEmailField && !hasNameField && !hasSurnameField) {
+          formType = 'login';
+        } else if (hasSearchField && !hasEmailField && !hasNameField) {
+          formType = 'ricerca';
+        } else if (hasEmailField && !hasPasswordField && !hasNameField && !hasSurnameField) {
+          formType = 'newsletter';
+        } else if (hasEmailField && (hasNameField || hasSurnameField) && !hasPasswordField) {
+          formType = 'contatto/iscrizione';
+        } else if (hasPasswordField && (hasNameField || hasEmailField)) {
+          formType = 'registrazione';
+        } else if (hasPhoneField || hasNameField || hasSurnameField) {
+          formType = 'contatto';
+        }
+
+        // Genera selettore per questo form
+        let selector = 'form';
+        if (form.id) {
+          selector = `form#${form.id}`;
+        } else if (form.className) {
+          const firstClass = form.className.split(' ')[0];
+          if (firstClass) selector = `form.${firstClass}`;
+        } else {
+          selector = `form:nth-of-type(${index + 1})`;
+        }
+
+        return {
+          index,
+          selector,
+          id: form.id || null,
+          className: form.className?.substring(0, 50) || null,
+          formType,
+          isVisible,
+          submitText,
+          fieldLabels,
+          hasEmailField,
+          hasNameField,
+          hasSurnameField,
+          hasPasswordField
+        };
+      });
+    });
+
+    this.logAction(`Trovati ${forms.length} form`);
+    return { success: true, forms };
   }
 
   async actionFillForm(params) {
