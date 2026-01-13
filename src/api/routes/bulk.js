@@ -115,10 +115,12 @@ async function handleBulkRoutes(req, res, { bulkStore, reportStore }) {
         res.end(JSON.stringify({
             success: true,
             batchId: batch.batchId,
+            mode: batch.mode,
             status: batch.status,
             total: batch.total,
             completed: batch.completed,
             avgScanTime: batch.avgScanTime,
+            summary: batch.summary,
             results: batch.results
         }));
         return true;

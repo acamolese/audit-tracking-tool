@@ -23,6 +23,10 @@ function handleStaticRoutes(req, res) {
         serveStatic(res, path.join(PUBLIC_DIR, 'bulk-scan.html'));
         return true;
     }
+    else if (pathname === '/deep-scan-report.html') {
+        serveStatic(res, path.join(PUBLIC_DIR, 'deep-scan-report.html'));
+        return true;
+    }
     else if (pathname === '/favicon.ico') {
         res.writeHead(204); // No Content
         res.end();

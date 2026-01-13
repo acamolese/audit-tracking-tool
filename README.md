@@ -312,6 +312,7 @@ AuditTrackingTool/
 ├── server.js              # Server bootstrapper
 ├── report.html            # UI Report (Single Page App)
 ├── bulk-scan.html         # UI Scansione Multipla
+├── deep-scan-report.html  # UI Report Aggregato (Deep Scan)
 ├── index.html             # UI Home (Scansione Singola)
 ├── form-test.html         # UI Live Monitor
 ├── src/

@@ -885,7 +885,12 @@ https://esempio3.com"></textarea>
         <div id="summaryReportCard" class="summary-report-card">
           <div class="summary-header">
             <h2 style="margin:0; color:white; font-size: 1.2rem;">📊 Report Riassuntivo Dominio</h2>
-            <div id="globalVerdictBadge" class="verdict verdict-da-verificare">Analisi in corso...</div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div id="globalVerdictBadge" class="verdict verdict-da-verificare">Analisi in corso...</div>
+              <a id="viewFullReportBtn" href="#" class="btn btn-header btn-sm"
+                style="display:none; background:rgba(255,255,255,0.2); border-color:rgba(255,255,255,0.3); color:white;">Visualizza
+                Report Completo</a>
+            </div>
           </div>
           <div class="summary-grid">
             <div class="summary-stat">
@@ -1358,6 +1363,11 @@ https://esempio3.com"></textarea>
       const badge = document.getElementById('globalVerdictBadge');
       badge.textContent = summary.globalVerdict;
       badge.className = `verdict verdict-${summary.globalVerdict.toLowerCase().replace(/ /g, '-')}`;
+
+      // Update link and show button
+      const fullReportBtn = document.getElementById('viewFullReportBtn');
+      fullReportBtn.href = `/deep-scan-report.html?batchId=${currentBatchId}`;
+      fullReportBtn.style.display = 'block';
 
       // Highlight violations if present
       if (summary.globalVerdict === 'NON CONFORME') {
