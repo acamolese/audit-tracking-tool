@@ -43,56 +43,86 @@ class InteractionSimulator {
         this.logger.log('Simulazione click REALISTICA...');
 
         try {
-            const phoneLinks = await this.page.evaluate(() => {
+            const interactiveElements = await this.page.evaluate(() => {
                 const selectors = [
                     'a[href^="tel:"]',
                     'a[href*="tel"]',
                     'a[href*="phone"]',
                     'a[href*="call"]',
                     'a[href*="whatsapp"]',
-                    'a[href*="wa.me"]'
+                    'a[href*="wa.me"]',
+                    'a.btn', 'a.button', 'button.btn', 'button.button',
+                    '[role="button"]',
+                    'a[href^="#"]' // Link interni (ancore) che spesso sono CTAs
+                ];
+
+                const keywords = [
+                    'vieni', 'trova', 'sede', 'mappa', 'maps', 'contatti',
+                    'richiedi', 'prenota', 'info', 'scopri', 'guarda',
+                    'whatsapp', 'chiamaci', 'telefonaci', 'contattaci'
                 ];
 
                 const elements = [];
-                selectors.forEach(selector => {
-                    document.querySelectorAll(selector).forEach(el => {
-                        if (el.offsetParent !== null) {
-                            const href = el.getAttribute('href') || '';
-                            const onclick = el.getAttribute('onclick') || '';
-                            const text = el.textContent?.trim() || '';
-                            elements.push({
-                                selector: selector,
-                                tagName: el.tagName,
-                                href: href,
-                                onclick: onclick,
-                                text: text,
-                                isPhone: href.includes('tel:') || href.includes('phone') || href.includes('call') || onclick.includes('tel:') || onclick.includes('phone') || onclick.includes('click_phone')
-                            });
+                const seen = new Set();
+
+                const allPotential = document.querySelectorAll(selectors.join(','));
+
+                allPotential.forEach(el => {
+                    const text = el.textContent?.trim().toLowerCase() || '';
+                    const href = el.getAttribute('href') || '';
+                    const onclick = el.getAttribute('onclick') || '';
+
+                    // Verifica se è visibile e se ha senso cliccarlo
+                    if (el.offsetParent !== null && text.length > 0) {
+                        const isPhoneOrWa = href.includes('tel:') || href.includes('wa.me') ||
+                            href.includes('whatsapp') || text.includes('whatsapp') ||
+                            text.includes('chiamaci') || text.includes('telefonaci');
+
+                        const isCtaKeyword = keywords.some(k => text.includes(k));
+
+                        // Escludi link di navigazione banali (privacy, home, ecc) se non sono esplicitamente CTAs
+                        const isNavNoise = ['home', 'privacy', 'cookie', 'legal', 'termini', 'condizioni'].some(k => text.includes(k));
+
+                        if ((isPhoneOrWa || isCtaKeyword) && !isNavNoise) {
+                            const key = `${el.tagName}|${href}|${text.substring(0, 20)}`;
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                elements.push({
+                                    tagName: el.tagName,
+                                    href: href,
+                                    text: el.textContent.trim(),
+                                    isPhoneOrWa: isPhoneOrWa
+                                });
+                            }
                         }
-                    });
+                    }
                 });
+
                 return elements;
             });
 
-            this.logger.log(`   Trovati ${phoneLinks.length} link telefonici/interattivi`);
+            this.logger.log(`   Trovati ${interactiveElements.length} elementi interattivi/CTA`);
 
             let clicks = 0;
-            for (const link of phoneLinks) {
-                if (clicks >= 5) break;
+            // Ordiniamo per dare precedenza a Phone/WA e poi alle altre keywords
+            const sortedElements = interactiveElements.sort((a, b) => (b.isPhoneOrWa ? 1 : 0) - (a.isPhoneOrWa ? 1 : 0));
+
+            for (const link of sortedElements) {
+                if (clicks >= 6) break;
 
                 try {
                     const elementHandle = await this.page.evaluateHandle((args) => {
-                        const { selector, href, text } = args;
-                        const elements = Array.from(document.querySelectorAll(selector));
+                        const { href, text } = args;
+                        const elements = Array.from(document.querySelectorAll('a, button, [role="button"]'));
                         return elements.find(el => {
                             const elHref = el.getAttribute('href') || '';
                             const elText = el.textContent?.trim() || '';
-                            return (href && elHref === href) || (text && elText.includes(text));
+                            return (href && elHref === href) && (text && elText === text);
                         });
-                    }, { selector: link.selector, href: link.href, text: link.text });
+                    }, { href: link.href, text: link.text });
 
                     if (elementHandle && elementHandle.asElement()) {
-                        this.logger.log(`   Clicco: ${link.href} (${link.text.substring(0, 30)})`);
+                        this.logger.log(`   Clicco: ${link.text.substring(0, 30)} (${link.href || 'button'})`);
 
                         await this.page.evaluate((el) => {
                             if (!el) return;
@@ -111,10 +141,10 @@ class InteractionSimulator {
                         }, elementHandle);
 
                         clicks++;
-                        await this.page.waitForTimeout(1500);
+                        await this.page.waitForTimeout(2000); // Leggermente più lungo per permettere l'invio di eventi
                     }
                 } catch (e) {
-                    this.logger.error(`   Errore click: ${e.message}`);
+                    this.logger.error(`   Errore click su "${link.text}": ${e.message}`);
                 }
             }
         } catch (e) {

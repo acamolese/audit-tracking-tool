@@ -116,12 +116,15 @@ class TrackerParser {
             // GA4: estrai evento e parametri
             if (trackerName === 'GA4') {
                 let en = urlObj.searchParams.get('en');
+                const bodyEvents = postData ? this.parseGA4PostBody(postData) : [];
 
-                if (!en && postData) {
-                    const events = this.parseGA4PostBody(postData);
-                    if (events.length > 0) {
-                        details.events = events;
-                        en = events[0];
+                if (bodyEvents.length > 0) {
+                    details.events = bodyEvents;
+                    if (!en) en = bodyEvents[0];
+                    // Se en è presente nel URL ma diverso dai bodyEvents, lo aggiungiamo?
+                    // Di solito se c'è un batch, en nel URL è il primo o manca.
+                    if (en && !bodyEvents.includes(en)) {
+                        details.events.unshift(en);
                     }
                 }
 
@@ -170,39 +173,28 @@ class TrackerParser {
         return details;
     }
 
-    // Parsing del POST body GA4
+    // Parsing del POST body GA4 - Supporto per batch multipli e formati diversi
     parseGA4PostBody(postData) {
+        if (!postData || typeof postData !== 'string') return [];
         const events = [];
-        if (!postData) return events;
 
         try {
-            // Cerca eventi in formato standard (en=nome_evento)
-            const enMatches = postData.match(/(?:^|&)en=([^&\r\n]+)/g);
-            if (enMatches) {
-                for (const match of enMatches) {
-                    const eventName = match.replace(/^&?en=/, '');
-                    if (eventName && !events.includes(eventName)) {
-                        events.push(eventName);
-                    }
+            // GA4 Batch: gli eventi iniziano con 'en=' e sono separati da '&' o newline
+            // Usiamo una regex più robusta per catturare tutte le occorrenze di en=
+            const enRegex = (/(?:^|[&\n\r])en=([^&\n\r]+)/g);
+            let match;
+            while ((match = enRegex.exec(postData)) !== null) {
+                const eventName = decodeURIComponent(match[1]);
+                if (eventName && !events.includes(eventName)) {
+                    events.push(eventName);
                 }
             }
 
-            // Cerca eventi in formato custom (ev=nome_evento o event=nome_evento)
-            const evMatches = postData.match(/(?:^|&)(?:ev|event)=([^&\r\n]+)/g);
-            if (evMatches) {
-                for (const match of evMatches) {
-                    const eventName = match.replace(/^&?(?:ev|event)=/, '');
-                    if (eventName && !events.includes(eventName)) {
-                        events.push(eventName);
-                    }
-                }
-            }
-
-            // Cerca eventi in formato GA4 avanzato (con parametri)
-            const advancedMatches = postData.match(/(?:^|&)e=([^&\r\n]+)/g);
-            if (advancedMatches) {
-                for (const match of advancedMatches) {
-                    const eventName = match.replace(/^&?e=/, '');
+            // Fallback per altri parametri comuni se non troviamo 'en'
+            if (events.length === 0) {
+                const altRegex = (/(?:^|[&\n\r])(?:ev|event|e)=([^&\n\r]+)/g);
+                while ((match = altRegex.exec(postData)) !== null) {
+                    const eventName = decodeURIComponent(match[1]);
                     if (eventName && !events.includes(eventName)) {
                         events.push(eventName);
                     }

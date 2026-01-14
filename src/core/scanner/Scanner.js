@@ -10,7 +10,7 @@ const {
 } = require('../../config/constants');
 const { BROWSER_CONFIG, USER_AGENTS } = require('../../config/config');
 
-class Scanner {
+class CookieAuditScanner {
     constructor(url, options = {}) {
         this.url = url;
         this.options = {
@@ -307,13 +307,19 @@ class Scanner {
                 await this.page.addInitScript(() => {
                     window.__dataLayerEvents = [];
                     window.__auditPhase = 'UNKNOWN';
-                    // ... dataLayer monitoring logic (kept unified for now as it's small)
+
                     if (!window.dataLayer) window.dataLayer = [];
                     const originalPush = window.dataLayer.push.bind(window.dataLayer);
                     window.dataLayer.push = function (...args) {
                         args.forEach(item => {
                             if (item && typeof item === 'object') {
-                                const eventName = item.event || item[0];
+                                let eventName = item.event;
+
+                                // Supporto formato gtag: ['event', 'nome_evento', { ... }]
+                                if (!eventName && Array.isArray(item) && item[0] === 'event') {
+                                    eventName = item[1];
+                                }
+
                                 if (eventName) {
                                     window.__dataLayerEvents.push({
                                         event: eventName,
@@ -381,7 +387,9 @@ class Scanner {
                     await this.simulator.simulateScroll();
                     await this.simulator.simulateClicks();
                     await this.simulator.interactWithForm();
-                    await this.page.waitForTimeout(1500);
+                    // GA4 invia spesso i batched events dopo qualche secondo o engagement time
+                    this.logger.log('In attesa di eventi post-interazione...');
+                    await this.page.waitForTimeout(5000);
                 }
 
                 this.logger.log('\n--- RACCOLTA EVENTI DATALAYER ---');
@@ -443,4 +451,4 @@ class Scanner {
     }
 }
 
-module.exports = Scanner;
+module.exports = { CookieAuditScanner };
