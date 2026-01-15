@@ -166,6 +166,50 @@ class TrackerParser {
                 if (dl) details.pageUrl = decodeURIComponent(dl);
             }
 
+            // Matomo: estrai evento e parametri
+            if (trackerName === 'Matomo') {
+                // Matomo usa parametri specifici
+                const action_name = urlObj.searchParams.get('action_name');
+                const url_param = urlObj.searchParams.get('url');
+                const e_c = urlObj.searchParams.get('e_c'); // Event Category
+                const e_a = urlObj.searchParams.get('e_a'); // Event Action
+                const e_n = urlObj.searchParams.get('e_n'); // Event Name
+                const idsite = urlObj.searchParams.get('idsite');
+                const rec = urlObj.searchParams.get('rec');
+
+                // Determina il tipo di evento
+                if (e_c && e_a) {
+                    // È un evento custom
+                    details.event = e_n || e_a;
+                    details.eventCategory = 'custom';
+                    details.params = {
+                        category: decodeURIComponent(e_c),
+                        action: decodeURIComponent(e_a)
+                    };
+                    if (e_n) details.params.name = decodeURIComponent(e_n);
+                    const e_v = urlObj.searchParams.get('e_v');
+                    if (e_v) details.params.value = e_v;
+                } else if (action_name) {
+                    // È un pageview
+                    details.event = 'page_view';
+                    details.eventCategory = 'standard';
+                    details.pageTitle = decodeURIComponent(action_name);
+                }
+
+                if (url_param) details.pageUrl = decodeURIComponent(url_param);
+                if (idsite) details.siteId = idsite;
+
+                // Parametri ecommerce Matomo
+                const ec_id = urlObj.searchParams.get('ec_id'); // Order ID
+                const revenue = urlObj.searchParams.get('revenue');
+                if (ec_id) {
+                    details.orderId = ec_id;
+                    details.eventCategory = 'ecommerce';
+                }
+                if (revenue) details.revenue = revenue;
+            }
+
+
         } catch (e) {
             this.logger.error(`URL parsing failed: ${e.message}`, { url, trackerName });
         }

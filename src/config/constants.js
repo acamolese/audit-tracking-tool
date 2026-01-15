@@ -24,6 +24,7 @@ const TRACKER_PATTERNS = {
   'Axeptio': /axeptio\.eu|client\.axept\.io/i,
   'Usercentrics': /usercentrics\.eu|app\.usercentrics\.eu/i,
   'Quantcast': /quantcast\.com|quantserve\.com/i,
+  'Matomo': /matomo\.php|piwik\.php|matomo\.js|piwik\.js|\/matomo\/|\/piwik\//i,
 };
 
 // Pattern per Google Consent Mode

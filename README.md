@@ -83,6 +83,7 @@ Lo strumento rileva automaticamente i seguenti sistemi di gestione cookie:
 - Google Analytics 4 (GA4)
 - Google Tag Manager (GTM)
 - Google Ads / Conversion Tracking
+- **Matomo (ex-Piwik)**
 
 ### Social & Advertising
 - Facebook/Meta Pixel
